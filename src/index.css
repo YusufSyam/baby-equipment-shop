@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "poppins";
+  src: url("./assets/fonts/Poppins/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: "poppins-bold";
+  src: url("./assets/fonts/Poppins/Poppins-Bold.ttf");
+}
+
+
+@font-face {
+  font-family: "poppins-semibold";
+  src: url("./assets/fonts/Poppins/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "poppins-light";
+  src: url("./assets/fonts/Roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: "roboto";
+  src: url("./assets/fonts/Roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+  font-family: "roboto-bold";
+  src: url("./assets/fonts/Roboto/Roboto-Black.ttf");
+}
+
+
+@font-face {
+  font-family: "roboto-semibold";
+  src: url("./assets/fonts/Roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+  font-family: "roboto-light";
+  src: url("./assets/fonts/Roboto/Roboto-Light.ttf");
+}
+
+body {
+  font-size: 14px;
+  font-weight: normal;
+  min-width: fit-content;
+}
+
+#root{
+  margin: 0;
+  padding: 0;
+  background-color: "#FFE6E6";
+}
