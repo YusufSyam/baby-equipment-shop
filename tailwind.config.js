@@ -23,6 +23,7 @@ export default {
       "primary-text": "#334155",
       "primary-text-500": "#334155",
       "secondary-text": "#808fa4",
+      // F76D6D
       "secondary-text-500": "#808fa4",
       "white-purple": "#FFE6E6",
       "light-purple": "#E1AFD1",
