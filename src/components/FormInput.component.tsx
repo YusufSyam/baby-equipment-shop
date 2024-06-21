@@ -63,6 +63,46 @@ export const getDefaultStyleSearch = (
     : isFocus
     ? theme.colors["primary-text"][5]
     : theme.colors["secondary-text"][7];
+  const bacol = isError
+    ? theme.colors.error[5]
+    : isFocus
+    ? theme.colors["orange"][5]
+    : theme.colors["secondary"][7];
+  return {
+    rightSection: {
+      width: "50px",
+    },
+    input: {
+      borderRadius: "2px",
+      borderWidth: "1px",
+      borderColor: bacol,
+      color,
+      letterSpacing: "0.01em",
+      backgroundColor: theme.colors["white"][5],
+      fontSize: "14px"
+    },
+    label: {
+      fontFamily: "poppins",
+      color
+    },
+    icon: {
+      paddingLeft: "6px"
+    }
+  };
+};
+
+export const getDefaultStyleSearch2 = (
+  isFocus: boolean,
+  isError: boolean
+):
+  | Styles<TextInputStylesNames | NumberInputStylesNames | SelectStylesNames>
+  | undefined => {
+  const theme = useMantineTheme();
+  const color = isError
+    ? theme.colors.error[5]
+    : isFocus
+    ? theme.colors["primary-text"][5]
+    : theme.colors["secondary-text"][7];
   return {
     rightSection: {
       width: "50px",
