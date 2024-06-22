@@ -8,7 +8,7 @@ export interface IHome {}
 
 const Home: React.FC<IHome> = ({ }) => {
   return (
-    <AppLayout activePage='Beranda'>
+    <AppLayout activePage='Beranda' headerBackgroundType='transparent'>
       <Stack className=''>
         <HomeJumbotron />
         <HomeCatalog />

@@ -7,15 +7,16 @@ export type TPageName = "Beranda" | "";
 
 export interface IAppLayout {
   children: JSX.Element;
-  activePage: TPageName;
+  activePage?: TPageName;
+  headerBackgroundType?: 'normal' | 'transparent' 
 }
 
-const AppLayout: React.FC<IAppLayout> = ({ children, activePage }) => {
+const AppLayout: React.FC<IAppLayout> = ({ children, activePage, headerBackgroundType='transparent' }) => {
   return (
     
     <Stack className="relative">
       {/* Header */}
-      <Header />
+      <Header headerBackgroundType={headerBackgroundType} />
 
       {/* Children */}
       <Stack>

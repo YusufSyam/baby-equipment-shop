@@ -1,28 +1,48 @@
 import { Group, Text } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 
 export interface ICatalogSortItem {
-  isActive?: boolean;
+  label: string;
+  sortType: TSortBy;
+  currentShortType?: TSortBy;
+  onClick(e:TSortBy): void;
 }
 
 export const CatalogSortItem: React.FC<ICatalogSortItem> = ({
-  isActive = false
+  sortType,
+  onClick,
+  label,
+  currentShortType
 }) => {
   return (
-    <Text className={`${isActive ? "bg-darker-orange text-white" : "bg-white"} px-6 py-2 rounded-sm cursor-pointer`}>
-      Terkait
+    <Text
+      onClick={()=>{
+        onClick(sortType)
+      }}
+      className={`${
+         sortType===currentShortType? "bg-darker-orange text-white border-darker-orange" : "bg-white text-primary-text border-secondary"
+      } px-4 py-[6px] rounded-sm cursor-pointer border font-medium shadow-md`}
+    >
+      {label}
     </Text>
   );
 };
 
 export interface ICatalogSort {}
 
+type TSortBy = "price" | "newest" | "alphabet";
+
 const CatalogSort: React.FC<ICatalogSort> = ({}) => {
+  const [sortBy, setsortBy] = useState<TSortBy>();
+
+  function onClickSort(type:TSortBy){
+    setsortBy(type)
+  }
   return (
     <Group>
-      <CatalogSortItem isActive />
-      <CatalogSortItem />
-      <CatalogSortItem />
+      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="newest" label="Terbaru" />
+      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="price" label="Harga" />
+      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="alphabet" label="A - Z"  />
     </Group>
   );
 };

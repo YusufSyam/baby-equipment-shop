@@ -6,6 +6,7 @@ import { MantineProvider } from '@mantine/core'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MAINROUTES } from './utils/const/routes'
 import Home from './pages/home/Home.page'
+import ItemDetail from './pages/item-detail/ItemDetail.page'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -191,6 +192,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path={MAINROUTES.home} element={<Home />} />
+              <Route path={`${MAINROUTES.home}/item`} element={<ItemDetail />} />
             </Routes>
           </BrowserRouter>
     </MantineProvider>

@@ -1,12 +1,19 @@
 import { Group, Stack, Text } from "@mantine/core";
 import React from "react";
 import image from "../../assets/images/dummy7.jpg";
+import { useNavigate } from "react-router-dom";
 
 export interface ICatalogCard {}
 
 const CatalogCard: React.FC<ICatalogCard> = ({}) => {
+  const navigate= useNavigate();
+
   return (
-    <Stack className="relative border shadow-lg border-secondary gap-0 hover:border-purple cursor-pointer hover:scale-[1.005] duration-200 pb-2">
+    <Stack
+    onClick={()=>{
+      navigate(`item`)
+    }}
+    className="relative border shadow-lg border-secondary gap-0 hover:border-purple cursor-pointer hover:scale-[1.005] duration-200 pb-2">
       <Group className="absolute bg-orange/85 px-2 py-1 left-1 top-1">
         <Text className="text-md font-poppins-semibold text-white">
           Pakaian
