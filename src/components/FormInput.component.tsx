@@ -27,6 +27,30 @@ export const getDefaultStyle = (
   const theme = useMantineTheme();
   const color = isError
     ? theme.colors.error[5]
+    : theme.colors["dark-purple"][7]
+  return {
+    input: {
+      ":focus": {
+        border: "1px solid",
+        borderColor: color
+      },
+      borderWidth: "1px",
+      borderRadius: theme.radius.sm,
+      color,
+    },
+    label: {
+      color
+    },
+  };
+};
+
+export const getDefaultStyleOld = (
+  isFocus: boolean,
+  isError: boolean
+): Styles<TextInputStylesNames> | undefined => {
+  const theme = useMantineTheme();
+  const color = isError
+    ? theme.colors.error[5]
     : isFocus
     ? theme.colors["primary-text"][5]
     : theme.colors["secondary-text"][7];

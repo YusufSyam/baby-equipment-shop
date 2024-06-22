@@ -12,7 +12,7 @@ export interface IHeaderMenu {
 const HeaderMenu: React.FC<IHeaderMenu> = ({ href, label, activePage }) => {
   return (
     <Link className="cursor-pointer" to={href}>
-      <Text className='text-white font-poppins-semibold tracking-5 cursor-pointer'>  
+      <Text className='text-white font-medium tracking-5 cursor-pointer'>  
         {label}
       </Text>
       {/* <Text

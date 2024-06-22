@@ -9,7 +9,7 @@ export interface IHomeJumbotron {}
 
 const HomeJumbotron: React.FC<IHomeJumbotron> = ({ }) => {
   return (
-    <Stack className='relative bg-gradient-to-br from-light-purple to-dark-purple h-[450px] border-b-4 border-purple overflow-hidden'>
+    <Stack className='relative bg-gradient-to-tl from-light-purple to-dark-purple h-[450px] border-purple overflow-hidden'>
       <Group className='absolute bottom-0 self-center gap-0 flex-nowrap'>
         <StickerBabyGear2 size={320} className='opacity-20' /> 
         <StickerBabyGear size={320} className='opacity-20 -ml-10' /> 
