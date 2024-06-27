@@ -40,9 +40,9 @@ const CatalogSort: React.FC<ICatalogSort> = ({}) => {
   }
   return (
     <Group>
-      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="newest" label="Terbaru" />
-      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="price" label="Harga" />
+      {/* <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="newest" label="Terbaru" /> */}
       <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="alphabet" label="A - Z"  />
+      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="price" label="Harga" />
     </Group>
   );
 };

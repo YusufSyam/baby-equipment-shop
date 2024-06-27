@@ -63,7 +63,7 @@ export const dummyCatalogData: ICatalogCard[] = [
   {
     id:"6", 
     itemName: 'Gendongan Bayi',
-    price: 200000,
+    price: 600000,
     image: dummy6,
     isAvailable: true,
     category: 'alat bayi',

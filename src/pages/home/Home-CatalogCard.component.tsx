@@ -4,6 +4,7 @@ import image from "../../assets/images/dummy7.jpg";
 import { useNavigate } from "react-router-dom";
 import { IconCheckOutline, IconCloseOutline } from "../../assets/icon/Fluent";
 import { toTitleCase } from "../../utils/functions/string";
+import { TCategoryType } from "./Home-CatalogFilter.section";
 
 export interface ICatalogCard {
   id?: string;
@@ -11,7 +12,7 @@ export interface ICatalogCard {
   price?: number;
   image?: string;
   isAvailable?: boolean;
-  category?: string;
+  category?: TCategoryType;
   soldCount?: number;
   description?: string;
 }
