@@ -48,10 +48,11 @@ body {
   font-size: 14px;
   font-weight: normal;
   min-width: fit-content;
+  /* background-color: #FFE6E6 !important; */
 }
 
 #root{
   margin: 0;
   padding: 0;
-  background-color: "#FFE6E6";
+  /* background-color: "#FFE6E6"; */
 }

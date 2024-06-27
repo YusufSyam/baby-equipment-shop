@@ -1,12 +1,16 @@
 import { Grid, Group, Stack, Text } from "@mantine/core";
-import React from "react";
-import CatalogCard from "./Home-CatalogCard.component";
+import React, { useState } from "react";
+import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter from "./Home-CatalogFilter.section";
 import CatalogSort from "./Home-CatalogSort.section";
+import { dummyCatalogData } from "../../utils/const/dummy";
+import { number } from "yup";
 
 export interface IHomeCatalog {}
 
 const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
+  const [itemList, setItemList] = useState(dummyCatalogData);
+
   return (
     <Stack className="gap-8 mt-8 mb-8">
       <Group className="mx-8 justify-between">
@@ -18,7 +22,6 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
           </Text>
         </Stack>
-
       </Group>
       <Grid className="mx-8" gutter={32} columns={24}>
         <Grid.Col span={5} className="">
@@ -28,33 +31,13 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
           <Stack>
             <CatalogSort />
             <Grid gutter={16} className="">
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <CatalogCard />
-              </Grid.Col>
+              {itemList?.map((item: ICatalogCard, idx: number) => {
+                return (
+                  <Grid.Col span={3} key={idx}>
+                    <CatalogCard {...item} />
+                  </Grid.Col>
+                );
+              })}
             </Grid>
           </Stack>
         </Grid.Col>

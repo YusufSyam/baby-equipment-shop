@@ -192,7 +192,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path={MAINROUTES.home} element={<Home />} />
-              <Route path={`${MAINROUTES.home}/item`} element={<ItemDetail />} />
+              <Route path={`${MAINROUTES.home}/item/:itemId`} element={<ItemDetail />} />
             </Routes>
           </BrowserRouter>
     </MantineProvider>
