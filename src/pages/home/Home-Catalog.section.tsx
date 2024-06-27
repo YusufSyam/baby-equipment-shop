@@ -2,6 +2,7 @@ import { Grid, Group, Stack, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter, {
+  TAvailabilityType,
   TCategoryType,
   TPriceType
 } from "./Home-CatalogFilter.section";
@@ -21,11 +22,8 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
     "pakaian"
   ]);
   const [filterPrice, setFilterPrice] = useState<TPriceType>("0");
-  const [filterAvailability, setfilterAvailability] = useState<string[]>([
-    "alat bayi",
-    "makanan & minuman",
-    "pakaian"
-  ]);
+  const [filterAvailability, setfilterAvailability] =
+    useState<TAvailabilityType>("semua");
 
   useEffect(() => {
     const tempItemList = defaultData;
@@ -62,8 +60,20 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
       );
     }
 
+    if (filterAvailability !== "semua") {
+      if (filterAvailability === "tersedia") {
+        filteredItemList = filteredItemList?.filter(
+          (item: ICatalogCard) => item.isAvailable === true
+        );
+      } else {
+        filteredItemList = filteredItemList?.filter(
+          (item: ICatalogCard) => item.isAvailable === false
+        );
+      }
+    }
+
     setItemList(filteredItemList);
-  }, [categoryList, filterPrice]);
+  }, [categoryList, filterPrice, filterAvailability]);
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
@@ -84,6 +94,8 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
             setCategory={setCategory}
             filterPrice={filterPrice}
             setFilterPrice={setFilterPrice}
+            filterAvailability={filterAvailability}
+            setFilterAvailability={setfilterAvailability}
           />
         </Grid.Col>
         <Grid.Col span={19}>

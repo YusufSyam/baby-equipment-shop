@@ -8,17 +8,23 @@ export interface ICatalogFilter {
   setCategory: React.Dispatch<React.SetStateAction<TCategoryType[]>>;
   filterPrice: TPriceType;
   setFilterPrice: React.Dispatch<React.SetStateAction<TPriceType>>;
+  filterAvailability: TAvailabilityType;
+  setFilterAvailability: React.Dispatch<
+    React.SetStateAction<TAvailabilityType>
+  >;
 }
 
 export type TCategoryType = "pakaian" | "makanan & minuman" | "alat bayi";
 export type TPriceType = "0" | "1" | "2" | "3" | "4" | "5";
-// export type TCategoryType = "pakaian" | "makanan & minuman" | "alat bayi";
+export type TAvailabilityType = "semua" | "tersedia" | "tidak tersedia";
 
 const CatalogFilter: React.FC<ICatalogFilter> = ({
   category,
   setCategory,
   filterPrice,
-  setFilterPrice
+  setFilterPrice,
+  filterAvailability,
+  setFilterAvailability
 }) => {
   return (
     <Stack className="gap-8">
@@ -72,26 +78,35 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
             <Stack mt="xs">
               <Radio color="purple.5" value="0" label="Semua Harga" />
               <Radio color="purple.5" value="1" label="< 50.000" />
-              <Radio
-                color="purple.5"
-                value="2"
-                label=">= 50.000 & <100.000"
-              />
-              <Radio
-                color="purple.5"
-                value="3"
-                label=">= 100.000 & 250.000"
-              />
-              <Radio
-                color="purple.5"
-                value="4"
-                label=">= 250.000 & <500.000"
-              />
+              <Radio color="purple.5" value="2" label=">= 50.000 & <100.000" />
+              <Radio color="purple.5" value="3" label=">= 100.000 & 250.000" />
+              <Radio color="purple.5" value="4" label=">= 250.000 & <500.000" />
               <Radio color="purple.5" value="5" label=">= 500.000" />
             </Stack>
           </Radio.Group>
         </Stack>
-        <Divider className="mt-4" />
+      </Stack>
+      <Divider className="mt-4" />
+      <Stack className="gap-2">
+        <Text>Ketersediaan</Text>
+        <Stack>
+          <Radio.Group
+            value={filterAvailability}
+            onChange={(newValue: any) => {
+              setFilterAvailability(newValue);
+            }}
+          >
+            <Stack mt="xs">
+              <Radio color="light-purple.5" value="semua" label="Semua" />
+              <Radio color="light-purple.5" value="tersedia" label="Tersedia" />
+              <Radio
+                color="light-purple.5"
+                value="tidak tersedia"
+                label="Tidak Tersedia"
+              />
+            </Stack>
+          </Radio.Group>
+        </Stack>
       </Stack>
     </Stack>
   );
