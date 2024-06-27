@@ -99,9 +99,9 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
           />
         </Grid.Col>
         <Grid.Col span={19}>
-          <Stack>
+          <Stack className="gap-[30px] rounded-sm">
             <CatalogSort />
-            <Grid gutter={16} className="">
+            <Grid gutter={24} className=" bg-secondary/50">
               {itemList?.map((item: ICatalogCard, idx: number) => {
                 return (
                   <Grid.Col span={3} key={idx}>

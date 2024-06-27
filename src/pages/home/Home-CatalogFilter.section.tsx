@@ -32,80 +32,101 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
         <IconFilterFilled />
         <Text>Filter</Text>
       </Group>
-
-      <Stack className="gap-2">
-        <Text>Cari</Text>
-        <MySearchInput />
-        <Divider className="mt-4" />
-      </Stack>
-
-      <Stack className="gap-2">
-        <Text>Kategori</Text>
-        <Stack>
-          <Checkbox.Group
-            value={category}
-            onChange={(checkedCategories: TCategoryType[]) => {
-              setCategory(checkedCategories);
-            }}
-            color="purple.5"
-          >
-            <Group mt="xs">
-              <Checkbox color="dark-purple.5" value="pakaian" label="Pakaian" />
-              <Checkbox
-                color="dark-purple.5"
-                value="makanan & minuman"
-                label="Makanan & minuman"
-              />
-              <Checkbox
-                color="dark-purple.5"
-                value="alat bayi"
-                label="Alat bayi"
-              />
-            </Group>
-          </Checkbox.Group>
+      <Stack className="gap-8">
+        <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
+          <Text>Cari</Text>
+          <MySearchInput />
         </Stack>
-        <Divider className="mt-4" />
-      </Stack>
-      <Stack className="gap-2">
-        <Text>Harga</Text>
-        <Stack>
-          <Radio.Group
-            value={filterPrice}
-            onChange={(newValue: any) => {
-              setFilterPrice(newValue);
-            }}
-          >
-            <Stack mt="xs">
-              <Radio color="purple.5" value="0" label="Semua Harga" />
-              <Radio color="purple.5" value="1" label="< 50.000" />
-              <Radio color="purple.5" value="2" label=">= 50.000 & <100.000" />
-              <Radio color="purple.5" value="3" label=">= 100.000 & 250.000" />
-              <Radio color="purple.5" value="4" label=">= 250.000 & <500.000" />
-              <Radio color="purple.5" value="5" label=">= 500.000" />
-            </Stack>
-          </Radio.Group>
+        {/* <Divider className="" /> */}
+
+        <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
+          <Text>Kategori</Text>
+          <Stack>
+            <Checkbox.Group
+              value={category}
+              onChange={(checkedCategories: TCategoryType[]) => {
+                setCategory(checkedCategories);
+              }}
+              color="purple.5"
+            >
+              <Group mt="xs">
+                <Checkbox
+                  color="dark-purple.5"
+                  value="pakaian"
+                  label="Pakaian"
+                />
+                <Checkbox
+                  color="dark-purple.5"
+                  value="makanan & minuman"
+                  label="Makanan & minuman"
+                />
+                <Checkbox
+                  color="dark-purple.5"
+                  value="alat bayi"
+                  label="Alat bayi"
+                />
+              </Group>
+            </Checkbox.Group>
+          </Stack>
         </Stack>
-      </Stack>
-      <Divider className="mt-4" />
-      <Stack className="gap-2">
-        <Text>Ketersediaan</Text>
-        <Stack>
-          <Radio.Group
-            value={filterAvailability}
-            onChange={(newValue: any) => {
-              setFilterAvailability(newValue);
-            }}
-          >
-            <Stack mt="xs">
-              <Radio color="light-purple.5" value="semua" label="Semua" />
-              <Radio color="light-purple.5" value="tersedia" label="Tersedia" />
-              <Radio
-                color="light-purple.5"
-                value="tidak tersedia"
-                label="Tidak Tersedia"
-              />
-            </Stack>
-          </Radio.Group>
+        {/* <Divider className="" /> */}
+        <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
+          <Text>Harga</Text>
+          <Stack>
+            <Radio.Group
+              value={filterPrice}
+              onChange={(newValue: any) => {
+                setFilterPrice(newValue);
+              }}
+            >
+              <Stack mt="xs">
+                <Radio color="dark-purple.5" value="0" label="Semua Harga" />
+                <Radio color="dark-purple.5" value="1" label="< 50.000" />
+                <Radio
+                  color="dark-purple.5"
+                  value="2"
+                  label=">= 50.000 & <100.000"
+                />
+                <Radio
+                  color="dark-purple.5"
+                  value="3"
+                  label=">= 100.000 & 250.000"
+                />
+                <Radio
+                  color="dark-purple.5"
+                  value="4"
+                  label=">= 250.000 & <500.000"
+                />
+                <Radio color="dark-purple.5" value="5" label=">= 500.000" />
+              </Stack>
+            </Radio.Group>
+          </Stack>
+        </Stack>
+        {/* <Divider className="" /> */}
+        <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
+          <Text>Ketersediaan</Text>
+          <Stack>
+            <Radio.Group
+              value={filterAvailability}
+              onChange={(newValue: any) => {
+                setFilterAvailability(newValue);
+              }}
+            >
+              <Stack mt="xs">
+                <Radio color="dark-purple.5" value="semua" label="Semua" />
+                <Radio
+                  color="dark-purple.5"
+                  value="tersedia"
+                  label="Tersedia"
+                />
+                <Radio
+                  color="dark-purple.5"
+                  value="tidak tersedia"
+                  label="Tidak Tersedia"
+                />
+              </Stack>
+            </Radio.Group>
+          </Stack>
         </Stack>
       </Stack>
     </Stack>
