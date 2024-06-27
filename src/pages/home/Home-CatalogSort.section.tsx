@@ -20,7 +20,7 @@ export const CatalogSortItem: React.FC<ICatalogSortItem> = ({
         onClick(sortType)
       }}
       className={`${
-         sortType===currentShortType? "bg-darker-orange text-white border-darker-orange" : "bg-white text-primary-text border-secondary"
+         sortType===currentShortType? "bg-dark-purple text-white border-dark-purple" : "bg-white text-primary-text border-secondary"
       } px-4 py-[6px] rounded-sm cursor-pointer border font-medium shadow-md`}
     >
       {label}
