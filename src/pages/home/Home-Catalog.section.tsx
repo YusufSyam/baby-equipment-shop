@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   Group,
   Pagination,
@@ -18,14 +19,17 @@ import { dummyCatalogData } from "../../utils/const/dummy";
 import { number } from "yup";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearchOff } from "../../assets/icon/Fluent";
+import AddNewCatalogModal from "../../components/AddNewCatalogModal.component";
 
 export interface IHomeCatalog {
-  targetRef: React.MutableRefObject<HTMLDivElement>;
+  targetRef: React.MutableRefObject<any>;
 }
 
 const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
   const [defaultData, setDefaultData] = useState(dummyCatalogData);
   const theme = useMantineTheme();
+
+  const [openedAddItemModal, setOpenedAddItemModal] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [query] = useDebouncedValue(searchTerm, 500);
@@ -142,6 +146,10 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
+      <AddNewCatalogModal
+        opened={openedAddItemModal}
+        setOpened={setOpenedAddItemModal}
+      />
       <Group className="mx-8 justify-between self-center mb-4">
         <Stack className="gap-0">
           <Text className="font-roboto-semibold text-primary-text text-[24px] text-center">
@@ -152,7 +160,19 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           </Text>
         </Stack>
       </Group>
-      <Grid ref={targetRef} className="mx-8" gutter={32} columns={24}>
+
+      <Button
+        onClick={() => {
+          setOpenedAddItemModal(true);
+        }}
+        ref={targetRef}
+        className="self-end mx-12 bg-dark-purple hover:bg-dark-purple text-white tracking-5 duration-100 -mt-4 rounded-sm"
+        // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+        size="md"
+      >
+        Tambah Barang Baru
+      </Button>
+      <Grid className="mx-8" gutter={32} columns={24}>
         <Grid.Col span={5} className="">
           <CatalogFilter
             onSearch={handleSearchChange}
