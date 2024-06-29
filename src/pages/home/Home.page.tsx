@@ -3,15 +3,21 @@ import AppLayout from '../../layouts/AppLayout';
 import { Stack } from '@mantine/core';
 import HomeJumbotron from './Home-Jumbotron.section';
 import HomeCatalog from './Home-Catalog.section';
+import { useScrollIntoView } from '@mantine/hooks';
 
 export interface IHome {}
 
 const Home: React.FC<IHome> = ({ }) => {
+  
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    
+  });
+
   return (
     <AppLayout activePage='Beranda' headerBackgroundType='transparent'>
       <Stack className=''>
-        <HomeJumbotron />
-        <HomeCatalog />
+        <HomeJumbotron scrollIntoView={scrollIntoView} />
+        <HomeCatalog targetRef={targetRef} />
         Halo
       </Stack>
     </AppLayout>

@@ -1,4 +1,11 @@
-import { Grid, Group, Pagination, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  Grid,
+  Group,
+  Pagination,
+  Stack,
+  Text,
+  useMantineTheme
+} from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter, {
@@ -10,17 +17,19 @@ import CatalogSort, { TSortBy } from "./Home-CatalogSort.section";
 import { dummyCatalogData } from "../../utils/const/dummy";
 import { number } from "yup";
 
-export interface IHomeCatalog {}
+export interface IHomeCatalog {
+  targetRef: React.MutableRefObject<HTMLDivElement>;
+}
 
-const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
+const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
   const [defaultData, setDefaultData] = useState(dummyCatalogData);
-  const theme= useMantineTheme();
-  
+  const theme = useMantineTheme();
+
   const [activePage, setActivePage] = useState<number>(1);
   const [pageAmt, setPageAmt] = useState(0);
   const dataPerPageAmt = 8;
 
-  const [sortBy, setSortBy] = useState<TSortBy>("alphabet");
+  const [sortBy, setSortBy] = useState<TSortBy>("no-sort");
 
   const [itemList, setItemList] = useState(defaultData);
   const [categoryList, setCategory] = useState<TCategoryType[]>([
@@ -32,7 +41,6 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
   const [filterAvailability, setfilterAvailability] =
     useState<TAvailabilityType>("semua");
 
-    
   useEffect(() => {
     setPageAmt(Math.round(itemList?.length / dataPerPageAmt + 0.4));
   }, [itemList]);
@@ -119,17 +127,17 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
-      <Group className="mx-8 justify-between">
+      <Group className="mx-8 justify-between self-center mb-4">
         <Stack className="gap-0">
-          <Text className="font-roboto-semibold text-primary-text text-[24px]">
-            Jelajahi Katalog
+          <Text className="font-roboto-semibold text-primary-text text-[24px] text-center">
+            Katalog Dzikribabyshop
           </Text>
-          <Text className="text-secondary-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+          <Text className="text-secondary-text text-center">
+            Produk-produk favorit dengan harga terbaik
           </Text>
         </Stack>
       </Group>
-      <Grid className="mx-8" gutter={32} columns={24}>
+      <Grid ref={targetRef} className="mx-8" gutter={32} columns={24}>
         <Grid.Col span={5} className="">
           <CatalogFilter
             category={categoryList}
@@ -144,17 +152,18 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
           <Stack className="gap-[30px] rounded-sm">
             <CatalogSort setSortBy={setSortBy} sortBy={sortBy} />
             <Grid gutter={24} className=" bg-secondary/50">
-              {itemList?.slice(
-                (activePage - 1) * dataPerPageAmt,
-                (activePage - 1) * dataPerPageAmt + dataPerPageAmt
-              )
-              ?.map((item: ICatalogCard, idx: number) => {
-                return (
-                  <Grid.Col span={3} key={idx}>
-                    <CatalogCard {...item} />
-                  </Grid.Col>
-                );
-              })}
+              {itemList
+                ?.slice(
+                  (activePage - 1) * dataPerPageAmt,
+                  (activePage - 1) * dataPerPageAmt + dataPerPageAmt
+                )
+                ?.map((item: ICatalogCard, idx: number) => {
+                  return (
+                    <Grid.Col span={3} key={idx}>
+                      <CatalogCard {...item} />
+                    </Grid.Col>
+                  );
+                })}
             </Grid>
             <Group className="gap-0 self-center mt-2">
               <Pagination
@@ -169,7 +178,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
                   control: {
                     color: theme.colors["primary-text"][5],
                     borderRadius: "1px",
-                    padding: "16px 14px",  
+                    padding: "16px 14px",
                     fontSize: "16px",
                     fontWeight: "normal",
                     // backgroundColor: theme.colors['white'][5],
@@ -181,8 +190,8 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
                         theme.colors["dark-purple"][5] + " !important",
                       color: theme.colors["white"][5]
                     },
-                    ":disabled":{
-                      backgroundColor: theme.colors['secondary'][8]
+                    ":disabled": {
+                      backgroundColor: theme.colors["secondary"][8]
                     }
                   }
                 }}

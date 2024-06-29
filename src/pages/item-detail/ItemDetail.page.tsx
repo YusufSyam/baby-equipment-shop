@@ -65,7 +65,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                     Kembali
                   </Text>
                 </Group>
-                <Text className="text-[32px] font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_4px_18px_rgb(0_0_0_/_40%)]">
+                <Text className="text-[32px] font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
                   {currentItem?.itemName}
                 </Text>
                 <Group className="mt-1 gap-4">
@@ -124,7 +124,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                 </Text>
               </Stack>
               <Button
-                className="bg-purple hover:bg-light-purple w-1/4 duration-100 mt-4"
+                className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
                 // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                 size="md"
                 disabled={currentItem?.isAvailable===false}

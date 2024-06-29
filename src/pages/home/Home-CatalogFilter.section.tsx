@@ -1,6 +1,6 @@
-import { Checkbox, Divider, Group, Radio, Stack, Text } from "@mantine/core";
+import { Checkbox, Divider, Group, Radio, Stack, Text, useMantineTheme } from "@mantine/core";
 import React, { useState } from "react";
-import { IconFilterFilled } from "../../assets/icon/Fluent";
+import { IconFilterFilled, IconFilterOutlined } from "../../assets/icon/Fluent";
 import { MySearchInput } from "../../components/FormInput.component";
 
 export interface ICatalogFilter {
@@ -26,11 +26,12 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
   filterAvailability,
   setFilterAvailability
 }) => {
+  const theme= useMantineTheme();
   return (
     <Stack className="gap-8">
-      <Group>
-        <IconFilterFilled />
-        <Text>Filter</Text>
+      <Group className="gap-2">
+        <IconFilterOutlined color={theme.colors['primary-text'][5]} />
+        <Text className="text-primary-text-500 font-roboto-semibold">Filter</Text>
       </Group>
       <Stack className="gap-8">
         <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">

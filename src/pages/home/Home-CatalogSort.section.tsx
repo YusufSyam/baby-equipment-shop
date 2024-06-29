@@ -1,5 +1,6 @@
-import { Group, Text } from "@mantine/core";
+import { Group, Text, useMantineTheme } from "@mantine/core";
 import React, { useState } from "react";
+import { IconDownArrowNoTailOutline, IconFilterOutlined, IconUpArrowNoTailOutline } from "../../assets/icon/Fluent";
 
 export interface ICatalogSortItem {
   label: string;
@@ -46,9 +47,16 @@ const CatalogSort: React.FC<ICatalogSort> = ({ setSortBy, sortBy }) => {
     setSortBy(type);
   }
 
+  const theme= useMantineTheme();
+
   return (
-    <Group>
+    <Group className="self-end">
       {/* <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="newest" label="Terbaru" /> */}
+      
+      <Group className="gap-[10px] mr-1">
+        <IconDownArrowNoTailOutline size={15} color={theme.colors['primary-text'][5]} />
+        <Text className="text-primary-text-500 font-roboto-semibold">Urutkan</Text>
+      </Group>
       <CatalogSortItem
         onClick={onClickSort}
         currentShortType={sortBy}

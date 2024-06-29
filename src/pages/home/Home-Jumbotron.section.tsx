@@ -1,38 +1,193 @@
-import { Button, Group, Stack, Text } from '@mantine/core';
-import React from 'react';
-import { SearchFilled } from '../../assets/icon/Fluent';
-import { MySearchInput } from '../../components/FormInput.component';
-import MediumButton from '../../components/MyButton';
-import { StickerBabyGear, StickerBabyGear2 } from '../../assets/icon/Sticker';
+import { Button, Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import React from "react";
+import { SearchFilled } from "../../assets/icon/Fluent";
+import { MySearchInput } from "../../components/FormInput.component";
+import MediumButton from "../../components/MyButton";
+import {
+  StickerBabyBottle,
+  StickerBabyGear,
+  StickerBabyGear2,
+  StickerBabyStroller,
+  StickerBearDoll
+} from "../../assets/icon/Sticker";
 
-export interface IHomeJumbotron {}
+export interface IHomeJumbotron {
+  scrollIntoView: any;
 
-const HomeJumbotron: React.FC<IHomeJumbotron> = ({ }) => {
+
+}
+
+const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
+  const theme = useMantineTheme();
+  
   return (
-    <Stack className='relative bg-gradient-to-tl from-light-purple to-dark-purple h-[450px] border-purple overflow-hidden'>
-      <Group className='absolute bottom-0 self-center gap-0 flex-nowrap'>
-        <StickerBabyGear2 size={320} className='opacity-20' /> 
-        <StickerBabyGear size={320} className='opacity-20 -ml-10' /> 
-        <StickerBabyGear2 size={320} className='opacity-20 -ml-10' /> 
-        <StickerBabyGear2 size={320} className='opacity-20' /> 
-        <StickerBabyGear size={320} className='opacity-20 -ml-10' /> 
-        <StickerBabyGear2 size={320} className='opacity-20 -ml-10' /> 
-      </Group>
-      <Stack className='mt-40 gap-0 z-50'>
-        <Text className='text-[48px] font-roboto-semibold text-white text-center tracking-5 [text-shadow:_0_6px_18px_rgb(0_0_0_/_40%)]'>
-        Dzikribabyshop
+    <Stack className="relative bg-gradient-to-tl from-purple to-dark-purple h-[350px] border-purple overflow-hidden">
+      {/* <StickerBabyStroller size={320} className='absolute opacity-10 rotate-45 left-20' /> 
+        <StickerBabyGear2 size={320} className='absolute opacity-20 rotate-12 right-20' /> 
+        <StickerBabyGear size={320} className='absolute opacity-20 -rotate-[15deg] left-96 -bottom-32' />  */}
+      {/* <Group className="absolute bottom-0 self-center gap-40 flex-nowrap">
+        <StickerBabyGear2 size={320} className='opacity-10 rotate-45' /> 
+        <StickerBabyGear size={320} className='opacity-20 rotate-12 -ml-10 mt-40' /> 
+        <StickerBabyGear2 size={320} className='opacity-20 rotate-45 -ml-10' /> 
+      </Group> */}
+      <Stack className="absolute bottom-6 self-center">
+        <Group className=" gap-0 flex-nowrap">
+          <StickerBearDoll
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyStroller
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyBottle
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBearDoll
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyStroller
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyBottle
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBearDoll
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyStroller
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyBottle
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBearDoll
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyStroller
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyBottle
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+        </Group>
+        <Group className=" gap-0 flex-nowrap">
+          <StickerBabyStroller
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyBottle
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBearDoll
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyStroller
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyBottle
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBearDoll
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyStroller
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyBottle
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBearDoll
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBabyStroller
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+          <StickerBabyBottle
+            color={theme.colors["light-purple"][5]}
+            size={110}
+            className=" opacity-20"
+          />
+          <StickerBearDoll
+            color={theme.colors["dark-purple"][5]}
+            size={110}
+            className=" opacity-40"
+          />
+        </Group>
+      </Stack>
+      <Stack className="mt-28 gap-8 z-50">
+        <Text className="text-[44px] font-roboto-semibold text-white text-center tracking-5 [text-shadow:_0_8px_18px_rgb(0_0_0_/_40%)]">
+          Dzikri
+          <span className="text-light-purple">babyshop</span>
         </Text>
-        {/* <Text className='text-white text-center -mt-1 tracking-4 font-semibold'>
-        Toko Perlengkapan Bayi Terlengkap
-        </Text> */}
+        <Stack className=" gap-0">
+          <Text className="text-white text-center tracking-5 font-roboto">
+            Selamat Datang di Dzikribabyshop!
+          </Text>
+          <Text className="text-white text-center tracking-5 font-roboto">
+            Temukan semua kebutuhan si kecil dengan produk berkualitas terbaik.
+          </Text>
+        </Stack>
       </Stack>
-      <Stack className='w-1/3 self-center mt-6 shadow-lg'>
+      {/* <Stack className='w-1/3 self-center mt-6 shadow-lg'>
         <MySearchInput />
-      </Stack>
-      <Stack>
-        <Button className='bg-darker-orange hover:bg-darker-orange w-fit self-center font-semibold tracking-1'>Jelajahi</Button>
+      </Stack> */}
+      <Stack className="-mt-4">
+        <Button
+        onClick={()=>{
+          scrollIntoView({
+            alignment: 'center',
+          })
+        }}
+          className="self-center bg-white-purple hover:bg-white-purple text-dark-purple tracking-5 duration-100 mt-4 rounded-sm"
+          // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+          size="md"
+        >
+          Belanja Sekarang
+        </Button>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 export default HomeJumbotron;

@@ -34,7 +34,7 @@ const CatalogCard: React.FC<ICatalogCard> = ({
       onClick={() => {
         navigate(`item/${id}`);
       }}
-      className="bg-white relative border shadow-lg border-secondary gap-0 hover:border-purple cursor-pointer hover:scale-[1.005] duration-200 pb-2"
+      className="h-full bg-white relative border shadow-lg border-secondary gap-0 hover:border-purple cursor-pointer hover:scale-[1.005] duration-200 pb-2"
     >
       <Group className="absolute bg-purple/75 px-2 py-1 left-1 top-1">
         <Text className="text-md font-poppins-semibold text-white">
@@ -73,7 +73,7 @@ const CatalogCard: React.FC<ICatalogCard> = ({
             </Group>
           )}
         </Stack>
-        <Stack className="gap-0">
+        <Stack className="gap-0 ">
           <Text className="font-roboto text-dark-purple">Rp. {price}</Text>
           <Text className="text-md text-secondary-text">
             {soldCount} Terjual
