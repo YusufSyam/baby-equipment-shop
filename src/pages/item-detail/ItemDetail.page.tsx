@@ -44,7 +44,6 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="">
-        {itemId}
         <BuyItemModal opened={openBuyModal} setOpened={setOpenBuyModal} />
         <Grid className=" mx-12 mt-4" columns={24}>
           <Grid.Col span={15}>

@@ -6,98 +6,58 @@ import dummy4 from "../../assets/images/dummy4.png";
 import dummy5 from "../../assets/images/dummy5.jpg";
 import dummy6 from "../../assets/images/dummy6.jpg";
 import dummy7 from "../../assets/images/dummy7.jpg";
-
-
+import dummy8 from "../../assets/images/dummy2.jpeg";
+import dummy9 from "../../assets/images/dummy3.jpeg";
 
 export const dummyCatalogData: ICatalogCard[] = [
-  {
-    id:"1", 
-    itemName: 'Baju Bayi Lengan Panjang',
-    price: 75000,
-    image: dummy1,
-    isAvailable: true,
-    category: 'pakaian',
-    soldCount: 150,
-    description: "tes123"
-  },
-  {
-    id:"2", 
-    itemName: 'Makanan Bayi Organik',
-    price: 55000,
-    image: dummy2,
-    isAvailable: true,
-    category: 'makanan & minuman',
-    soldCount: 200,
-    description: "tes123"
-  },
-  {
-    id:"3", 
-    itemName: 'Alat Sterilisasi Botol',
-    price: 300000,
-    image: dummy3,
-    isAvailable: false,
-    category: 'alat bayi',
-    soldCount: 75,
-    description: "tes123"
-  },
-  {
-    id:"4", 
-    itemName: 'Topi Bayi',
-    price: 25000,
-    image: dummy4,
-    isAvailable: true,
-    category: 'pakaian',
-    soldCount: 180,
-    description: "tes123"
-  },
-  {
-    id:"5", 
-    itemName: 'Susu Formula Bayi',
-    price: 120000,
-    image: dummy5,
-    isAvailable: false,
-    category: 'makanan & minuman',
-    soldCount: 220,
-    description: "tes123"
-  },
-  {
-    id:"6", 
-    itemName: 'Gendongan Bayi',
-    price: 600000,
-    image: dummy6,
-    isAvailable: true,
-    category: 'alat bayi',
-    soldCount: 130,
-    description: "tes123"
-  },
-  {
-    id:"7", 
-    itemName: 'Celana Bayi Pendek',
-    price: 45000,
-    image: dummy7,
-    isAvailable: true,
-    category: 'pakaian',
-    soldCount: 160,
-    description: "tes123"
-  },
-  {
-    id:"8", 
-    itemName: 'Biskuit Bayi',
-    price: 30000,
-    image: dummy3,
-    isAvailable: true,
-    category: 'makanan & minuman',
-    soldCount: 140,
-    description: "tes123"
-  },
-  {
-    id:"9", 
-    itemName: 'Tempat Penyimpanan Susu',
-    price: 180000,
-    image: dummy1,
-    isAvailable: false,
-    category: 'alat bayi',
-    soldCount: 90,
-    description: "tes123"
-  }
+  { id: "1", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Baju Bayi Lengan Panjang', price: 75000, image: dummy1, isAvailable: true, category: 'pakaian', soldCount: 150 },
+  { id: "2", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Makanan Bayi Organik', price: 55000, image: dummy2, isAvailable: true, category: 'makanan & minuman', soldCount: 200 },
+  { id: "3", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Alat Sterilisasi Botol', price: 300000, image: dummy3, isAvailable: false, category: 'alat bayi', soldCount: 75 },
+  { id: "4", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Topi Bayi', price: 25000, image: dummy4, isAvailable: true, category: 'pakaian', soldCount: 180 },
+  { id: "5", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Susu Formula Bayi', price: 120000, image: dummy5, isAvailable: false, category: 'makanan & minuman', soldCount: 220 },
+  { id: "6", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Gendongan Bayi', price: 200000, image: dummy6, isAvailable: true, category: 'alat bayi', soldCount: 130 },
+  { id: "7", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Celana Bayi Pendek', price: 45000, image: dummy7, isAvailable: true, category: 'pakaian', soldCount: 160 },
+  { id: "8", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Biskuit Bayi', price: 30000, image: dummy8, isAvailable: true, category: 'makanan & minuman', soldCount: 140 },
+  { id: "9", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Tempat Penyimpanan Susu', price: 180000, image: dummy9, isAvailable: false, category: 'alat bayi', soldCount: 90 },
+  { id: "10", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Kaos Kaki Bayi', price: 15000, image: dummy1, isAvailable: true, category: 'pakaian', soldCount: 170 },
+  { id: "11", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Mainan Gigit Bayi', price: 40000, image: dummy2, isAvailable: true, category: 'alat bayi', soldCount: 100 },
+  { id: "12", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Piyama Bayi', price: 85000, image: dummy3, isAvailable: false, category: 'pakaian', soldCount: 190 },
+  { id: "13", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Makanan Puree', price: 65000, image: dummy4, isAvailable: true, category: 'makanan & minuman', soldCount: 210 },
+  { id: "14", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Termos Susu Bayi', price: 110000, image: dummy5, isAvailable: true, category: 'alat bayi', soldCount: 85 },
+  { id: "15", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sweater Bayi', price: 95000, image: dummy6, isAvailable: true, category: 'pakaian', soldCount: 145 },
+  { id: "16", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Jus Buah Bayi', price: 50000, image: dummy7, isAvailable: false, category: 'makanan & minuman', soldCount: 115 },
+  { id: "17", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Bantal Bayi', price: 30000, image: dummy8, isAvailable: true, category: 'alat bayi', soldCount: 60 },
+  { id: "18", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sarung Tangan Bayi', price: 20000, image: dummy9, isAvailable: true, category: 'pakaian', soldCount: 130 },
+  { id: "19", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sup Bayi', price: 70000, image: dummy1, isAvailable: true, category: 'makanan & minuman', soldCount: 95 },
+  { id: "20", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Botol Susu', price: 45000, image: dummy2, isAvailable: false, category: 'alat bayi', soldCount: 140 },
+  { id: "21", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Setelan Bayi', price: 60000, image: dummy3, isAvailable: true, category: 'pakaian', soldCount: 165 },
+  { id: "22", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Bubur Bayi', price: 55000, image: dummy4, isAvailable: true, category: 'makanan & minuman', soldCount: 180 },
+  { id: "23", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Penghangat Botol Susu', price: 120000, image: dummy5, isAvailable: true, category: 'alat bayi', soldCount: 75 },
+  { id: "24", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Celana Panjang Bayi', price: 50000, image: dummy6, isAvailable: false, category: 'pakaian', soldCount: 155 },
+  { id: "25", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Makanan Camilan Bayi', price: 35000, image: dummy7, isAvailable: true, category: 'makanan & minuman', soldCount: 125 },
+  { id: "26", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Pembersih Botol', price: 65000, image: dummy8, isAvailable: true, category: 'alat bayi', soldCount: 90 },
+  { id: "27", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Jaket Bayi', price: 85000, image: dummy9, isAvailable: true, category: 'pakaian', soldCount: 140 },
+  { id: "28", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sereal Bayi', price: 50000, image: dummy1, isAvailable: false, category: 'makanan & minuman', soldCount: 105 },
+  { id: "29", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Alas Kaki Bayi', price: 30000, image: dummy2, isAvailable: true, category: 'alat bayi', soldCount: 95 },
+  { id: "30", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Baju Bayi Pendek', price: 65000, image: dummy3, isAvailable: true, category: 'pakaian', soldCount: 160 },
+  { id: "31", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Makanan Instan Bayi', price: 70000, image: dummy4, isAvailable: true, category: 'makanan & minuman', soldCount: 185 },
+  { id: "32", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Tatakan Botol', price: 100000, image: dummy5, isAvailable: false, category: 'alat bayi', soldCount: 50 },
+  { id: "33", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Romper Bayi', price: 90000, image: dummy6, isAvailable: true, category: 'pakaian', soldCount: 135 },
+  { id: "34", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Biskuit Gandum Bayi', price: 30000, image: dummy7, isAvailable: true, category: 'makanan & minuman', soldCount: 145 },
+  { id: "35", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Tempat Tidur Bayi', price: 250000, image: dummy8, isAvailable: true, category: 'alat bayi', soldCount: 70 },
+  { id: "36", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Kaos Bayi', price: 50000, image: dummy9, isAvailable: true, category: 'pakaian', soldCount: 175 },
+  { id: "37", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Jus Sayur Bayi', price: 45000, image: dummy1, isAvailable: false, category: 'makanan & minuman', soldCount: 110 },
+  { id: "38", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Pengaman Pintu', price: 75000, image: dummy2, isAvailable: true, category: 'alat bayi', soldCount: 65 },
+  { id: "39", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Setelan Baju Tidur Bayi', price: 80000, image: dummy3, isAvailable: true, category: 'pakaian', soldCount: 195 },
+  { id: "40", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Snack Bayi', price: 50000, image: dummy4, isAvailable: true, category: 'makanan & minuman', soldCount: 150 },
+  { id: "41", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Tempat Mainan', price: 90000, image: dummy5, isAvailable: true, category: 'alat bayi', soldCount: 85 },
+  { id: "42", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Topi Bayi', price: 25000, image: dummy6, isAvailable: true, category: 'pakaian', soldCount: 180 },
+  { id: "43", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Bubur Organik Bayi', price: 60000, image: dummy7, isAvailable: true, category: 'makanan & minuman', soldCount: 175 },
+  { id: "44", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Paket Steril Botol', price: 110000, image: dummy8, isAvailable: true, category: 'alat bayi', soldCount: 75 },
+  { id: "45", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sweater Bayi', price: 95000, image: dummy9, isAvailable: true, category: 'pakaian', soldCount: 145 },
+  { id: "46", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Puding Bayi', price: 35000, image: dummy1, isAvailable: false, category: 'makanan & minuman', soldCount: 90 },
+  { id: "47", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Tempat Makan Bayi', price: 80000, image: dummy2, isAvailable: true, category: 'alat bayi', soldCount: 70 },
+  { id: "48", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Romper Bayi', price: 75000, image: dummy3, isAvailable: true, category: 'pakaian', soldCount: 190 },
+  { id: "49", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Sereal Buah Bayi', price: 50000, image: dummy4, isAvailable: true, category: 'makanan & minuman', soldCount: 125 },
+  { id: "50", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Botol Susu Anti Kolik', price: 120000, image: dummy5, isAvailable: true, category: 'alat bayi', soldCount: 90 }
 ];
