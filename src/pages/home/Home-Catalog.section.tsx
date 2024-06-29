@@ -17,6 +17,7 @@ import CatalogSort, { TSortBy } from "./Home-CatalogSort.section";
 import { dummyCatalogData } from "../../utils/const/dummy";
 import { number } from "yup";
 import { useDebouncedValue } from "@mantine/hooks";
+import { IconSearchOff } from "../../assets/icon/Fluent";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<HTMLDivElement>;
@@ -167,18 +168,37 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           <Stack className="gap-[30px] rounded-sm">
             <CatalogSort setSortBy={setSortBy} sortBy={sortBy} />
             <Grid gutter={24} className=" bg-secondary/50">
-              {itemList
-                ?.slice(
-                  (activePage - 1) * dataPerPageAmt,
-                  (activePage - 1) * dataPerPageAmt + dataPerPageAmt
-                )
-                ?.map((item: ICatalogCard, idx: number) => {
-                  return (
-                    <Grid.Col span={3} key={idx}>
-                      <CatalogCard {...item} />
-                    </Grid.Col>
-                  );
-                })}
+              {itemList?.length <= 0 ? (
+                <Stack className="w-full p-16 pb-20">
+                  <IconSearchOff
+                    size={192}
+                    color={theme.colors["secondary-text"][8]}
+                    className="self-center"
+                  />
+                  <Text className="text-primary-text-500 font-semibold text-3xl text-center">
+                    Maaf, produk yang Anda cari tidak ditemukan
+                  </Text>
+                  <Text className="text-primary-text-500 -mt-4 text-center">
+                    Coba kata kunci lain atau telusuri kategori yang lain untuk
+                    menemukan produk yang sesuai.
+                  </Text>
+                </Stack>
+              ) : (
+                <>
+                  {itemList
+                    ?.slice(
+                      (activePage - 1) * dataPerPageAmt,
+                      (activePage - 1) * dataPerPageAmt + dataPerPageAmt
+                    )
+                    ?.map((item: ICatalogCard, idx: number) => {
+                      return (
+                        <Grid.Col span={3} key={idx}>
+                          <CatalogCard {...item} />
+                        </Grid.Col>
+                      );
+                    })}
+                </>
+              )}
             </Grid>
             <Group className="gap-0 self-center mt-2">
               <Pagination
