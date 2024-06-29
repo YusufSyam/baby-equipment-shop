@@ -1,4 +1,4 @@
-import { Grid, Group, Stack, Text } from "@mantine/core";
+import { Grid, Group, Pagination, Stack, Text, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter, {
@@ -6,7 +6,7 @@ import CatalogFilter, {
   TCategoryType,
   TPriceType
 } from "./Home-CatalogFilter.section";
-import CatalogSort from "./Home-CatalogSort.section";
+import CatalogSort, { TSortBy } from "./Home-CatalogSort.section";
 import { dummyCatalogData } from "../../utils/const/dummy";
 import { number } from "yup";
 
@@ -14,6 +14,13 @@ export interface IHomeCatalog {}
 
 const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
   const [defaultData, setDefaultData] = useState(dummyCatalogData);
+  const theme= useMantineTheme();
+  
+  const [activePage, setActivePage] = useState<number>(1);
+  const [pageAmt, setPageAmt] = useState(0);
+  const dataPerPageAmt = 8;
+
+  const [sortBy, setSortBy] = useState<TSortBy>("alphabet");
 
   const [itemList, setItemList] = useState(defaultData);
   const [categoryList, setCategory] = useState<TCategoryType[]>([
@@ -24,6 +31,11 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
   const [filterPrice, setFilterPrice] = useState<TPriceType>("0");
   const [filterAvailability, setfilterAvailability] =
     useState<TAvailabilityType>("semua");
+
+    
+  useEffect(() => {
+    setPageAmt(Math.round(itemList?.length / dataPerPageAmt + 0.4));
+  }, [itemList]);
 
   useEffect(() => {
     const tempItemList = defaultData;
@@ -72,8 +84,38 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
       }
     }
 
+    if (sortBy !== "no-sort" && filteredItemList.length > 0) {
+      if (sortBy === "alphabet") {
+        filteredItemList = filteredItemList
+          ?.slice()
+          ?.sort((a: ICatalogCard, b: ICatalogCard) =>
+            (a.itemName || "").localeCompare(b.itemName || "")
+          );
+      } else if (sortBy === "price") {
+        filteredItemList = filteredItemList
+          ?.slice()
+          .sort(
+            (a: ICatalogCard, b: ICatalogCard) =>
+              (a.price || 0) - (b.price || 0)
+          );
+      } else if (sortBy === "alphabet-desc") {
+        filteredItemList = filteredItemList
+          ?.slice()
+          ?.sort((a: ICatalogCard, b: ICatalogCard) =>
+            (b.itemName || "").localeCompare(a.itemName || "")
+          );
+      } else if (sortBy === "price-desc") {
+        filteredItemList = filteredItemList
+          ?.slice()
+          .sort(
+            (a: ICatalogCard, b: ICatalogCard) =>
+              (b.price || 0) - (a.price || 0)
+          );
+      }
+    }
+
     setItemList(filteredItemList);
-  }, [categoryList, filterPrice, filterAvailability]);
+  }, [categoryList, filterPrice, filterAvailability, sortBy]);
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
@@ -100,9 +142,13 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
         </Grid.Col>
         <Grid.Col span={19}>
           <Stack className="gap-[30px] rounded-sm">
-            <CatalogSort />
+            <CatalogSort setSortBy={setSortBy} sortBy={sortBy} />
             <Grid gutter={24} className=" bg-secondary/50">
-              {itemList?.map((item: ICatalogCard, idx: number) => {
+              {itemList?.slice(
+                (activePage - 1) * dataPerPageAmt,
+                (activePage - 1) * dataPerPageAmt + dataPerPageAmt
+              )
+              ?.map((item: ICatalogCard, idx: number) => {
                 return (
                   <Grid.Col span={3} key={idx}>
                     <CatalogCard {...item} />
@@ -110,6 +156,38 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({}) => {
                 );
               })}
             </Grid>
+            <Group className="gap-0 self-center mt-2">
+              <Pagination
+                color={"dark-purple"}
+                onChange={(e) => {
+                  setActivePage(e);
+                }}
+                total={pageAmt}
+                disabled={pageAmt == 0}
+                withEdges
+                styles={{
+                  control: {
+                    color: theme.colors["primary-text"][5],
+                    borderRadius: "1px",
+                    padding: "16px 14px",  
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    // backgroundColor: theme.colors['white'][5],
+                    ":active": {
+                      color: theme.colors["white"][5] + " !important"
+                    },
+                    ":hover": {
+                      backgroundColor:
+                        theme.colors["dark-purple"][5] + " !important",
+                      color: theme.colors["white"][5]
+                    },
+                    ":disabled":{
+                      backgroundColor: theme.colors['secondary'][8]
+                    }
+                  }
+                }}
+              />
+            </Group>
           </Stack>
         </Grid.Col>
       </Grid>

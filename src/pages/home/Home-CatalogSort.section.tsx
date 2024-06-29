@@ -5,7 +5,7 @@ export interface ICatalogSortItem {
   label: string;
   sortType: TSortBy;
   currentShortType?: TSortBy;
-  onClick(e:TSortBy): void;
+  onClick(e: TSortBy): void;
 }
 
 export const CatalogSortItem: React.FC<ICatalogSortItem> = ({
@@ -16,11 +16,17 @@ export const CatalogSortItem: React.FC<ICatalogSortItem> = ({
 }) => {
   return (
     <Text
-      onClick={()=>{
-        onClick(sortType)
+      onClick={() => {
+        if (currentShortType === sortType) {
+          onClick("no-sort");
+        } else {
+          onClick(sortType);
+        }
       }}
       className={`${
-         sortType===currentShortType? "bg-dark-purple text-white border-dark-purple" : "bg-white text-primary-text border-secondary"
+        sortType === currentShortType
+          ? "bg-dark-purple text-white border-dark-purple"
+          : "bg-white text-primary-text border-secondary"
       } px-4 py-[6px] rounded-sm cursor-pointer border font-medium shadow-md`}
     >
       {label}
@@ -28,21 +34,45 @@ export const CatalogSortItem: React.FC<ICatalogSortItem> = ({
   );
 };
 
-export interface ICatalogSort {}
+export interface ICatalogSort {
+  sortBy: TSortBy;
+  setSortBy: React.Dispatch<React.SetStateAction<TSortBy>>;
+}
 
-type TSortBy = "price" | "newest" | "alphabet";
+export type TSortBy = "price" | "newest" | "alphabet" | "no-sort" | "price-desc" | "alphabet-desc";
 
-const CatalogSort: React.FC<ICatalogSort> = ({}) => {
-  const [sortBy, setsortBy] = useState<TSortBy>();
-
-  function onClickSort(type:TSortBy){
-    setsortBy(type)
+const CatalogSort: React.FC<ICatalogSort> = ({ setSortBy, sortBy }) => {
+  function onClickSort(type: TSortBy) {
+    setSortBy(type);
   }
+
   return (
     <Group>
       {/* <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="newest" label="Terbaru" /> */}
-      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="alphabet" label="A - Z"  />
-      <CatalogSortItem onClick={onClickSort} currentShortType={sortBy} sortType="price" label="Harga" />
+      <CatalogSortItem
+        onClick={onClickSort}
+        currentShortType={sortBy}
+        sortType="alphabet"
+        label="A - Z"
+      />
+      <CatalogSortItem
+        onClick={onClickSort}
+        currentShortType={sortBy}
+        sortType="price"
+        label="Harga"
+      />
+      <CatalogSortItem
+        onClick={onClickSort}
+        currentShortType={sortBy}
+        sortType="alphabet-desc"
+        label="Z - A"
+      />
+      <CatalogSortItem
+        onClick={onClickSort}
+        currentShortType={sortBy}
+        sortType="price-desc"
+        label="Harga (Termahal)"
+      />
     </Group>
   );
 };
