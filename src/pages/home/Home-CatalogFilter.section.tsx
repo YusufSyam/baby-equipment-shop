@@ -4,6 +4,7 @@ import { IconFilterFilled, IconFilterOutlined } from "../../assets/icon/Fluent";
 import { MySearchInput } from "../../components/FormInput.component";
 
 export interface ICatalogFilter {
+  onSearch: (e: React.ChangeEvent<HTMLInputElement>)=>void;
   category: TCategoryType[];
   setCategory: React.Dispatch<React.SetStateAction<TCategoryType[]>>;
   filterPrice: TPriceType;
@@ -19,6 +20,7 @@ export type TPriceType = "0" | "1" | "2" | "3" | "4" | "5";
 export type TAvailabilityType = "semua" | "tersedia" | "tidak tersedia";
 
 const CatalogFilter: React.FC<ICatalogFilter> = ({
+  onSearch,
   category,
   setCategory,
   filterPrice,
@@ -36,7 +38,7 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
       <Stack className="gap-8">
         <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
           <Text>Cari</Text>
-          <MySearchInput />
+          <MySearchInput onChange={onSearch} />
         </Stack>
         {/* <Divider className="" /> */}
 

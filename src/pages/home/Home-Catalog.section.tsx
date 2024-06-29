@@ -16,6 +16,7 @@ import CatalogFilter, {
 import CatalogSort, { TSortBy } from "./Home-CatalogSort.section";
 import { dummyCatalogData } from "../../utils/const/dummy";
 import { number } from "yup";
+import { useDebouncedValue } from "@mantine/hooks";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<HTMLDivElement>;
@@ -24,6 +25,9 @@ export interface IHomeCatalog {
 const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
   const [defaultData, setDefaultData] = useState(dummyCatalogData);
   const theme = useMantineTheme();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [query] = useDebouncedValue(searchTerm, 500);
 
   const [activePage, setActivePage] = useState<number>(1);
   const [pageAmt, setPageAmt] = useState(0);
@@ -40,6 +44,11 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
   const [filterPrice, setFilterPrice] = useState<TPriceType>("0");
   const [filterAvailability, setfilterAvailability] =
     useState<TAvailabilityType>("semua");
+
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    setSearchTerm(e.target.value);
+    setActivePage(1);
+  }
 
   useEffect(() => {
     setPageAmt(Math.round(itemList?.length / dataPerPageAmt + 0.4));
@@ -122,8 +131,13 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
       }
     }
 
+    if (query !== "") {
+      filteredItemList = filteredItemList?.filter((d: ICatalogCard) =>
+        d?.itemName?.toLowerCase()?.includes(query?.toLowerCase())
+      );
+    }
     setItemList(filteredItemList);
-  }, [categoryList, filterPrice, filterAvailability, sortBy]);
+  }, [categoryList, filterPrice, filterAvailability, sortBy, query]);
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
@@ -140,6 +154,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
       <Grid ref={targetRef} className="mx-8" gutter={32} columns={24}>
         <Grid.Col span={5} className="">
           <CatalogFilter
+            onSearch={handleSearchChange}
             category={categoryList}
             setCategory={setCategory}
             filterPrice={filterPrice}
