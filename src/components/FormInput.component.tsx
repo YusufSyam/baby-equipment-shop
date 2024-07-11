@@ -5,10 +5,14 @@ import {
   NumberInputStylesNames,
   PasswordInput,
   PasswordInputProps,
+  Select,
+  SelectProps,
   SelectStylesNames,
   Styles,
   TextInputProps,
   TextInputStylesNames,
+  Textarea,
+  TextareaProps,
   useMantineTheme
 } from "@mantine/core";
 import {
@@ -27,20 +31,27 @@ export const getDefaultStyle = (
   const theme = useMantineTheme();
   const color = isError
     ? theme.colors.error[5]
-    : theme.colors["dark-purple"][7]
+    : theme.colors["primary-text"][5];
+  const bacol = isError
+    ? theme.colors.error[5]
+    : isFocus
+    ? theme.colors["orange"][5]
+    : theme.colors["secondary"][7];
   return {
     input: {
-      ":focus": {
-        border: "1px solid",
-        borderColor: color
-      },
+      borderRadius: "2px",
       borderWidth: "1px",
-      borderRadius: theme.radius.sm,
+      borderColor: bacol,
       color,
+      letterSpacing: "0.01em",
+      backgroundColor: theme.colors["white"][5],
+      fontSize: "14px",
+      marginTop: "8px"
     },
     label: {
-      color
-    },
+      color,
+      fontSize: "14px",
+    }
   };
 };
 
@@ -94,7 +105,7 @@ export const getDefaultStyleSearch = (
     : theme.colors["secondary"][7];
   return {
     rightSection: {
-      width: "50px",
+      width: "50px"
     },
     input: {
       borderRadius: "2px",
@@ -129,7 +140,7 @@ export const getDefaultStyleSearch2 = (
     : theme.colors["secondary-text"][7];
   return {
     rightSection: {
-      width: "50px",
+      width: "50px"
     },
     input: {
       borderRadius: "6px",
@@ -207,7 +218,6 @@ export const MyTextInput = ({ onFocus, onBlur, ...props }: TextInputProps) => {
     <>
       <MantineTextInput
         className="text-primary-text"
-        size="lg"
         styles={{ ...getDefaultStyle(isFocus, !!props.error) }}
         onFocus={(e) => {
           setIsFocus(true);
@@ -223,14 +233,61 @@ export const MyTextInput = ({ onFocus, onBlur, ...props }: TextInputProps) => {
   );
 };
 
-export const MyPasswordInput = ({ onFocus, onBlur, ...props }: PasswordInputProps) => {
+export const MyTextAreaInput = ({ onFocus, onBlur, ...props }: TextareaProps ) => {
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  return (
+    <>
+      <Textarea
+        className="text-primary-text"
+        styles={{ ...getDefaultStyle(isFocus, !!props.error) }}
+        onFocus={(e) => {
+          setIsFocus(true);
+          if (!!onFocus) onFocus(e);
+        }}
+        onBlur={(e) => {
+          setIsFocus(false);
+          if (!!onBlur) onBlur(e);
+        }}
+        {...props}
+      />
+    </>
+  );
+};
+
+export const MySelectInput = ({ onFocus, onBlur, ...props }: SelectProps ) => {
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  return (
+    <>
+      <Select
+        className="text-primary-text"
+        styles={{ ...getDefaultStyle(isFocus, !!props.error) }}
+        onFocus={(e) => {
+          setIsFocus(true);
+          if (!!onFocus) onFocus(e);
+        }}
+        onBlur={(e) => {
+          setIsFocus(false);
+          if (!!onBlur) onBlur(e);
+        }}
+        {...props}
+      />
+    </>
+  );
+};
+
+export const MyPasswordInput = ({
+  onFocus,
+  onBlur,
+  ...props
+}: PasswordInputProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
   return (
     <>
       <PasswordInput
         className="text-primary-text"
-        size="lg"
         styles={{ ...getDefaultStyle(isFocus, !!props.error) }}
         onFocus={(e) => {
           setIsFocus(true);
@@ -372,7 +429,7 @@ export const MySearchInput = ({
   return (
     <>
       <MantineTextInput
-        styles={{...getDefaultStyleSearch(isFocus, !!props.error) }}
+        styles={{ ...getDefaultStyleSearch(isFocus, !!props.error) }}
         placeholder="Lorem ipsum dolor sit amet."
         // rightSection={
         //   <SearchFilled size={20} color={theme.colors["white"][7]} className="cursor-pointer bg-orange h-full w-full p-[6px] rounded-r-md" />

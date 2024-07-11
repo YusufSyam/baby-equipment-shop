@@ -73,7 +73,7 @@ const ConfirmationModal = ({
         ) : (
           <>{children}</>
         )}
-        <Group className="self-start gap-4">
+        <Group className="self-end gap-4">
           <SmallButton
             className="!text-dark-purple !border-dark-purple !rounded-sm"
             disabled={disableNoButton}
