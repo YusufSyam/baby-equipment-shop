@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { IconReportFilled } from "../assets/icon/Fluent";
 import Modal from "./MyModal.component";
+import { SmallButton } from "./MyButton";
 
 interface IWarningModal {
   opened: boolean;
@@ -52,15 +53,6 @@ const WarningModal = ({
       subTitle={subTitle}
       title={
         <Group className="gap-3 ">
-          {leftTitleIcon == null ? (
-            <IconReportFilled
-              color={theme.colors["error"][5]}
-              size={40}
-              className=""
-            />
-          ) : (
-            <>{leftTitleIcon}</>
-          )}
           <Text className="text-[24px] text-primary-text-500 font-poppins-semibold">
             {title}
           </Text>
@@ -69,29 +61,27 @@ const WarningModal = ({
     >
       <Stack className="relative ">
         {typeof children === "string" ? (
-          <Text className="text-lg text-primary-text-500 ml-[48px]">
+          <Text className="text-lg text-primary-text-500">
             {children}
           </Text>
         ) : (
-          <div className="text-lg text-primary-text-500 ml-[48px]">{children}</div>
+          <div className="text-lg text-primary-text-500">{children}</div>
         )}
-        <Group className="self-end mt-4 gap-6">
-          <Button
-            className="text-red !border-white bg-white hover:!bg-white rounded-full"
+        <Group className="self-end gap-4">
+          <SmallButton
+            className="!text-red !border-red !rounded-sm"
             disabled={disableNoButton}
             onClick={() => setOpened(false)}
-            size="md"
           >
             {noButtonLabel}
-          </Button>
-          <Button
-            className="bg-red !border-transparent !text-white rounded-full hover:bg-light-red duration-200"
+          </SmallButton>
+          <SmallButton
+            className="!bg-red !rounded-sm !border-transparent !text-white !hover:bg-darker-500"
             // disabled={value == null}
             onClick={onSubmit}
-            size="md"
           >
             {yesButtonLabel}
-          </Button>
+          </SmallButton>
         </Group>
       </Stack>
     </Modal>

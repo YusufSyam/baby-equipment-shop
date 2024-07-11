@@ -21,6 +21,8 @@ import BuyItemModal from "./BuyItem.modal";
 import { dummyCatalogData } from "../../utils/const/dummy";
 import { ICatalogCard } from "../home/Home-CatalogCard.component";
 import { toTitleCase } from "../../utils/functions/string";
+import EditCatalogModal from "../../components/EditCatalogModal.component";
+import WarningModal from "../../components/WarningModal.component";
 
 export interface IItemDetail {}
 
@@ -28,6 +30,9 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const { itemId } = useParams();
+
+  const [openedEditItemModal, setOpenedEditItemModal] = useState(false);
+  const [openedDeleteItemModal, setOpenedDeleteItemModal] = useState(false);
 
   const tempAllData = dummyCatalogData;
   const [currentItem, setCurrentItem] = useState<ICatalogCard>({});
@@ -44,6 +49,28 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="">
+        <WarningModal
+          opened={openedDeleteItemModal}
+          setOpened={setOpenedDeleteItemModal}
+          title={"Hapus Barang"}
+          onClose={()=>{}}
+        />
+
+        <EditCatalogModal
+          opened={openedEditItemModal}
+          setOpened={setOpenedEditItemModal}
+          itemId={itemId || ""}
+          category={currentItem?.category || ""}
+          description={currentItem?.description || ""}
+          image={currentItem?.image || ""}
+          itemName={currentItem?.itemName || ""}
+          price={currentItem?.price || 0}
+          isAvailable={
+            currentItem?.isAvailable === true
+              ? "tersedia"
+              : "tidak tersedia" || "tersedia"
+          }
+        />
         <BuyItemModal opened={openBuyModal} setOpened={setOpenBuyModal} />
         <Grid className=" mx-12 mt-4" columns={24}>
           <Grid.Col span={15}>
@@ -122,17 +149,43 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                   {currentItem?.description}
                 </Text>
               </Stack>
-              <Button
-                className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
-                // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
-                size="md"
-                disabled={currentItem?.isAvailable===false}
-                onClick={() => {
-                  setOpenBuyModal(true);
-                }}
-              >
-                Beli
-              </Button>
+              <Group className="justify-between">
+                <Button
+                  className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
+                  // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+                  size="md"
+                  disabled={currentItem?.isAvailable === false}
+                  onClick={() => {
+                    setOpenBuyModal(true);
+                  }}
+                >
+                  Beli
+                </Button>
+                <Group>
+                  <Button
+                    className="bg-error hover:bg-error/75 w-32 duration-100 mt-4 rounded-sm"
+                    // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+                    size="md"
+                    disabled={currentItem?.isAvailable === false}
+                    onClick={() => {
+                      setOpenedDeleteItemModal(true);
+                    }}
+                  >
+                    Hapus
+                  </Button>
+                  <Button
+                    className="bg-darker-orange hover:bg-orange w-32 duration-100 mt-4 rounded-sm"
+                    // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+                    size="md"
+                    disabled={currentItem?.isAvailable === false}
+                    onClick={() => {
+                      setOpenedEditItemModal(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Group>
+              </Group>
             </Stack>
           </Grid.Col>
           <Grid.Col span={9} className="p-12 pt-4">

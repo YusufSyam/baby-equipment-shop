@@ -23,11 +23,11 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
   return (
     <Stack className="relative bg-gradient-to-tl from-purple to-dark-purple h-[350px] border-purple overflow-hidden">
       {/* <StickerBabyStroller size={320} className='absolute opacity-10 rotate-45 left-20' /> 
-        <StickerBabyGear2 size={320} className='absolute opacity-20 rotate-12 right-20' /> 
-        <StickerBabyGear size={320} className='absolute opacity-20 -rotate-[15deg] left-96 -bottom-32' />  */}
+        <StickerBabyGear2 size={320} className='absolute opacity-15 rotate-12 right-20' /> 
+        <StickerBabyGear size={320} className='absolute opacity-15 -rotate-[15deg] left-96 -bottom-32' />  */}
       {/* <Group className="absolute bottom-0 self-center gap-40 flex-nowrap">
         <StickerBabyGear2 size={320} className='opacity-10 rotate-45' /> 
-        <StickerBabyGear size={320} className='opacity-20 rotate-12 -ml-10 mt-40' /> 
+        <StickerBabyGear size={320} className='opacity-15 rotate-12 -ml-10 mt-40' /> 
         <StickerBabyGear2 size={320} className='opacity-20 rotate-45 -ml-10' /> 
       </Group> */}
       <Stack className="absolute bottom-6 self-center">
@@ -40,7 +40,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyStroller
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyBottle
             color={theme.colors["dark-purple"][5]}
@@ -50,7 +50,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBearDoll
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyStroller
             color={theme.colors["dark-purple"][5]}
@@ -60,7 +60,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyBottle
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBearDoll
             color={theme.colors["dark-purple"][5]}
@@ -70,7 +70,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyStroller
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyBottle
             color={theme.colors["dark-purple"][5]}
@@ -80,7 +80,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBearDoll
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyStroller
             color={theme.colors["dark-purple"][5]}
@@ -90,14 +90,14 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyBottle
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
         </Group>
         <Group className=" gap-0 flex-nowrap">
           <StickerBabyStroller
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyBottle
             color={theme.colors["dark-purple"][5]}
@@ -107,7 +107,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBearDoll
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyStroller
             color={theme.colors["dark-purple"][5]}
@@ -117,7 +117,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyBottle
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBearDoll
             color={theme.colors["dark-purple"][5]}
@@ -127,7 +127,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyStroller
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyBottle
             color={theme.colors["dark-purple"][5]}
@@ -137,7 +137,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBearDoll
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBabyStroller
             color={theme.colors["dark-purple"][5]}
@@ -147,7 +147,7 @@ const HomeJumbotron: React.FC<IHomeJumbotron> = ({scrollIntoView}) => {
           <StickerBabyBottle
             color={theme.colors["light-purple"][5]}
             size={110}
-            className=" opacity-20"
+            className=" opacity-15"
           />
           <StickerBearDoll
             color={theme.colors["dark-purple"][5]}
