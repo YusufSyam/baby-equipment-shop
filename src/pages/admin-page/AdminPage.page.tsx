@@ -26,6 +26,7 @@ import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function
 export interface IAdminPage {}
 
 export interface IActivityTableRow {
+  invoice?: string;
   itemName: string;
   itemId: string;
   buyerName: string;
@@ -52,7 +53,7 @@ const tableHeadings: IFETableHeadingProps[] = [
     cellKey: "item"
   },
   {
-    label: "Pembeli",
+    label: "Detail Pembelian",
     sortable: true,
     textAlign: "left",
     cellKey: "buyer"
@@ -129,9 +130,12 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           element: (
             <Stack className="gap-1">
               <Text className="text-[14px] font-roboto text-primary-text">
-                {data?.buyerName}
+                Pembeli: {data?.buyerName}
               </Text>
               <Stack className="gap-0">
+                <Text className="text-sm text-secondary-text-500">
+                  Invoice: {data?.invoice}
+                </Text>
                 <Text className="text-sm text-secondary-text-500">
                   User Id: {data?.buyerId}
                 </Text>

@@ -64,7 +64,7 @@ export const dummyCatalogData: ICatalogCard[] = [
 ];
 
 export const dummyActivityData: IActivityTableRow[]= [
-  { itemName: 'Baju Bayi Lengan Panjang', itemId: '1', buyerName: 'John Doe', buyerId: 'B001', status: 'completed', buyingTime: new Date('2023-01-16T10:00:00'),itemPrice: 15000, itemQuantity: 1, itemTotalPrice: 15000, buyerWANumber: "6287715883436" },
+  { itemName: 'Baju Bayi Lengan Panjang', itemId: '1', buyerName: 'John Doe', buyerId: 'B001', status: 'completed', buyingTime: new Date('2023-01-16T10:00:00'),itemPrice: 15000, itemQuantity: 1, itemTotalPrice: 15000, buyerWANumber: "6287715883436", invoice: "923891320" },
   { itemName: 'Makanan Bayi Organik', itemId: '2', buyerName: 'Jane Smith', buyerId: 'B002', status: 'pending', buyingTime: new Date('2023-01-16T12:30:00'),itemPrice: 45000, itemQuantity: 3, itemTotalPrice: 135000, buyerWANumber: "62887435199578" },
   { itemName: 'Alat Sterilisasi Botol', itemId: '3', buyerName: 'Alice Johnson', buyerId: 'B003', status: 'shipped', buyingTime: new Date('2023-01-16T09:15:00') },
   { itemName: 'Topi Bayi', itemId: '4', buyerName: 'Michael Brown', buyerId: 'B004', status: 'completed', buyingTime: new Date('2023-01-16T14:45:00') },
