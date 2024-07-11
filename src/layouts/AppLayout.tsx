@@ -1,6 +1,7 @@
 import { AppShell, Stack, Text } from "@mantine/core";
 import React from "react";
 import Header from "./Header.layout";
+import Footer from "./Footer.layout";
 // import Header from "./headers/Header.layout";
 
 export type TPageName = "Beranda" | "";
@@ -22,6 +23,8 @@ const AppLayout: React.FC<IAppLayout> = ({ children, activePage, headerBackgroun
       <Stack>
         {children}
       </Stack>
+
+      <Footer />
     </Stack>
   );
 };

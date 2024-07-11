@@ -1,15 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { MantineProvider } from '@mantine/core'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { MAINROUTES } from './utils/const/routes'
-import Home from './pages/home/Home.page'
-import ItemDetail from './pages/item-detail/ItemDetail.page'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { MantineProvider } from "@mantine/core";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MAINROUTES } from "./utils/const/routes";
+import Home from "./pages/home/Home.page";
+import ItemDetail from "./pages/item-detail/ItemDetail.page";
+import AdminPage from "./pages/admin-page/AdminPage.page";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <MantineProvider
@@ -150,7 +151,7 @@ function App() {
             "#E1AFD1",
             "#E1AFD1"
           ],
-          "purple": [
+          purple: [
             "#AD88C6",
             "#AD88C6",
             "#AD88C6",
@@ -189,14 +190,18 @@ function App() {
         }
       }}
     >
-          <BrowserRouter>
-            <Routes>
-              <Route path={MAINROUTES.home} element={<Home />} />
-              <Route path={`${MAINROUTES.home}/item/:itemId`} element={<ItemDetail />} />
-            </Routes>
-          </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path={MAINROUTES.home} element={<Home />} />
+          <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
+          <Route
+            path={`${MAINROUTES.home}/item/:itemId`}
+            element={<ItemDetail />}
+          />
+        </Routes>
+      </BrowserRouter>
     </MantineProvider>
-  )
+  );
 }
 
-export default App
+export default App;

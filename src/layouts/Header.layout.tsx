@@ -17,6 +17,7 @@ const Header: React.FC<IHeader> = ({
       className={`
     z-10 py-5 px-12
     justify-between
+    w-full
     ${
       headerBackgroundType === "transparent"
         ? "absolute"
@@ -35,6 +36,9 @@ const Header: React.FC<IHeader> = ({
         <HeaderMenu label="Beranda" href={MAINROUTES.home} />
         <HeaderMenu label="Galeri" href="" />
         <HeaderMenu label="Tentang Kami" href="" />
+      </Group>
+      <Group>
+        <HeaderMenu label="Halaman Admin" href={MAINROUTES.adminPage} />
       </Group>
     </Group>
   );

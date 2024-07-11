@@ -2232,3 +2232,27 @@ export function IconSearchOff({
     </svg>
   );
 }
+
+export function IconOutward({
+  size = 24,
+  color = 'black',
+  onClick,
+  className
+}: IFluentProps) {
+  return (
+    <svg
+      width={size+`px`}
+      height={size+`px`}
+      viewBox={`0 -960 960 960`}
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      onClick={onClick}
+      className={className}
+    >
+      <path
+      d='M261.65-221.35 187-296l371-371H232.65v-106h506v506h-106v-325.35l-371 371Z'
+      fill={color}
+      />
+    </svg>
+  );
+}

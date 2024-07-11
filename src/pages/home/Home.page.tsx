@@ -15,7 +15,6 @@ const Home: React.FC<IHome> = ({}) => {
       <Stack className="">
         <HomeJumbotron scrollIntoView={scrollIntoView} />
         <HomeCatalog targetRef={targetRef} />
-        Halo
       </Stack>
     </AppLayout>
   );

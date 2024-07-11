@@ -48,7 +48,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   const [openBuyModal, setOpenBuyModal] = useState(false);
   return (
     <AppLayout headerBackgroundType="normal">
-      <Stack className="">
+      <Stack className="mb-32">
         <WarningModal
           opened={openedDeleteItemModal}
           setOpened={setOpenedDeleteItemModal}
