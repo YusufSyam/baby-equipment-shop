@@ -91,7 +91,7 @@ export interface IActiveSort {
   order: "ASC" | "DESC";
 }
 
-export type IActionButtonBgColor = "red" | "green" | "white";
+export type IActionButtonBgColor = "red" | "purple" | "white";
 
 export interface IActivityTableAction {
   label: string;
@@ -111,7 +111,7 @@ export interface IActivityTableAction {
 // Add action color here
 const aciontBtnClsNames: { [x in IActionButtonBgColor]: string } = {
   red: "!bg-red !bg-opacity-20 !text-red",
-  green:
+  purple:
     "!bg-dark-purple !bg-opacity-20 text-dark-purple !disabled:bg-secondary !disabled:text-secondary-text",
   white: "!bg-white"
 };
@@ -325,7 +325,7 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                             {col.element != null ? (
                               <Text className="text-[14px]">{col.element}</Text>
                             ) : (
-                              <Text className="text-[14px] font-roboto">
+                              <Text className="text-[14px] font-roboto  text-primary-text">
                                 {col.label}
                               </Text>
                             )}
@@ -335,11 +335,11 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                       {!!actions?.length && (
                         <td className="text-center">
                           <div
-                            className={`flex justify-center items-center gap-1 ${
+                            className={`flex justify-center items-center ${
                               actionOrientation === "vertical"
                                 ? "flex-col gap-2"
-                                : "flex-row"
-                            } overflow-hidden ${
+                                : "flex-row gap-5"
+                            } ${
                               actionColumnRounded == true ? "rounded-full" : ""
                             } `}
                           >

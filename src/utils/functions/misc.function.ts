@@ -7,3 +7,12 @@ export function ParseFileBase64(file: File): Promise<string> {
     reader.onerror = (error) => reject(error);
   });
 }
+
+export function WhatsappMessageOpenInNewTab(
+  phoneNumber?: string,
+  message?: string
+) {
+  const encodedMessage = encodeURIComponent(message || "");
+  const url = `https://api.whatsapp.com/send?phone=${phoneNumber||""}&text=${encodedMessage}`;
+  window.open(url, "_blank");
+}

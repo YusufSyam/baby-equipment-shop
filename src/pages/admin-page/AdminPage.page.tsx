@@ -10,11 +10,18 @@ import ActivityTableComponent, {
 import { formatDateNormal } from "../../utils/functions/date.function";
 import { dummyActivityData } from "../../utils/const/dummy";
 import {
+  IconCheckOutline,
+  IconCloseOutline,
   IconExpandOutlinedRounded,
   IconInfoOutline,
-  IconOutward
+  IconOutward,
+  IconWhatsappOutline
 } from "../../assets/icon/Fluent";
 import { useNavigate } from "react-router-dom";
+import OrderStatusComp, {
+  TOrderStatus
+} from "../../components/OrderStatus.component";
+import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
 
 export interface IAdminPage {}
 
@@ -23,7 +30,8 @@ export interface IActivityTableRow {
   itemId: string;
   buyerName: string;
   buyerId: string;
-  status: string;
+  buyerWANumber?: string;
+  status: TOrderStatus;
   buyingTime: Date;
   itemQuantity?: number;
   itemPrice?: number;
@@ -109,16 +117,20 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                 navigate(`../item/${data?.itemId}`);
               }}
             >
-              <Text className="text-[14px] font-roboto">{data?.itemName}</Text>
-              <IconOutward color={theme.colors['dark-purple'][5]} size={18} />
+              <Text className="text-[14px] font-roboto text-primary-text">
+                {data?.itemName}
+              </Text>
+              <IconOutward color={theme.colors["dark-purple"][5]} size={18} />
             </Group>
           )
         },
         buyer: {
-          label: data?.buyerName,
+          label: data?.buyerWANumber,
           element: (
             <Stack className="gap-1">
-              <Text className="text-[14px] font-roboto">{data?.buyerName}</Text>
+              <Text className="text-[14px] font-roboto text-primary-text">
+                {data?.buyerName}
+              </Text>
               <Stack className="gap-0">
                 <Text className="text-sm text-secondary-text-500">
                   User Id: {data?.buyerId}
@@ -131,13 +143,18 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           )
         },
         status: {
-          label: data?.status
+          label: data?.status,
+          element: (
+            <>
+              <OrderStatusComp orderStatus={data?.status} />
+            </>
+          )
         },
         priceDetail: {
           label: data?.itemTotalPrice,
           element: (
             <Stack className="gap-1">
-              <Text className="text-[16px] font-roboto">
+              <Text className="text-[16px] font-roboto text-primary-text">
                 {data?.itemTotalPrice}
               </Text>
               <Stack className="gap-0">
@@ -155,14 +172,127 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   );
 
   const actions: IActivityTableAction[] = [
+    // {
+    //   label: "1",
+    //   eachButtonRounded: false,
+
+    //   backgroundColor: "purple",
+    //   // isDisabled: (row: any) => {
+    //   //   return row.activity.label == "return";
+    //   // },
+    //   // Row disini itu row yang ada di table rows
+    //   onClick: (row: any) => {
+    //     setSelectedRow(row.id.label);
+    //     setIsProcessItemModalOpened(true);
+    //   }
+    // },
     {
-      label: "Proses",
-      eachButtonRounded: true,
-      backgroundColor: "green",
-      // isDisabled: (row: any) => {
-      //   return row.activity.label == "return";
-      // },
-      // Row disini itu row yang ada di table rows
+      label: "",
+      type: "element",
+      backgroundColor: "white",
+      element: (row: any) => {
+        setSelectedRow(row.id.label);
+        return (
+          <Stack
+            className="gap-0 cursor-pointer"
+            onClick={()=>{
+              WhatsappMessageOpenInNewTab(row?.buyer?.label, "")
+            }}
+          >
+            <IconWhatsappOutline
+              size={30}
+              color="#25D366"
+              className="self-center"
+            />
+            <Text className="text-sm text-primary-text">Chat</Text>
+          </Stack>
+        );
+      },
+      onClick: (row: any) => {
+        setSelectedRow(row.id.label);
+        setIsProcessItemModalOpened(true);
+      }
+    },
+    {
+      label: "",
+      type: "element",
+      backgroundColor: "white",
+      element: (row: any) => {
+        setSelectedRow(row.id.label);
+        setIsProcessItemModalOpened(true);
+
+        const isDisabled = row?.status?.label !== "pending";
+
+        return (
+          <Stack
+            className={`gap-0 ${
+              isDisabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+          >
+            {
+              // Jika terdisable
+              isDisabled ? (
+                <IconCheckOutline
+                  size={30}
+                  color="white"
+                  className="bg-secondary-text/60 duration-100 rounded-full p-[6px] self-center"
+                />
+              ) : (
+                <IconCheckOutline
+                  size={30}
+                  color="white"
+                  className="bg-green hover:bg-green/80 duration-100 rounded-full p-[6px] self-center"
+                />
+              )
+            }
+
+            <Text className="text-sm text-primary-text">Complete</Text>
+          </Stack>
+        );
+      },
+      isDisabled: (row: any) => {
+        return row?.status?.label !== "pending";
+      },
+      onClick: (row: any) => {
+        setSelectedRow(row.id.label);
+        setIsProcessItemModalOpened(true);
+      }
+    },
+    {
+      label: "",
+      type: "element",
+      backgroundColor: "white",
+      element: (row: any) => {
+        setSelectedRow(row.id.label);
+        setIsProcessItemModalOpened(true);
+        const isDisabled = row?.status?.label !== "pending";
+
+        return (
+          <Stack
+            className={`gap-0 ${
+              isDisabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+          >
+            {
+              // Jika terdisable
+              isDisabled ? (
+                <IconCloseOutline
+                  size={30}
+                  color="white"
+                  className="bg-secondary-text/60 duration-100 rounded-full p-[7px] self-center"
+                />
+              ) : (
+                <IconCloseOutline
+                  size={30}
+                  color="white"
+                  className="bg-red hover:bg-red/80 duration-100 rounded-full p-[6px] self-center"
+                />
+              )
+            }
+            <Text className="text-sm text-primary-text">Cancel</Text>
+          </Stack>
+        );
+      },
       onClick: (row: any) => {
         setSelectedRow(row.id.label);
         setIsProcessItemModalOpened(true);
@@ -190,10 +320,11 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           tableRows={tableRows}
           tableHeadings={tableHeadings}
           withSearch={false}
-          actionOrientation="vertical"
+          actionOrientation="horizontal"
           onProgressData={0}
           showTableHeader
-          actionColumnWidth="200px"
+          actionColumnWidth="240px"
+          actionColumnRounded={false}
         />
       </Stack>
     </AppLayout>
