@@ -53,7 +53,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
           opened={openedDeleteItemModal}
           setOpened={setOpenedDeleteItemModal}
           title={"Hapus Barang"}
-          onClose={()=>{}}
+          onClose={() => {}}
         />
 
         <EditCatalogModal
@@ -71,7 +71,13 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
               : "tidak tersedia" || "tersedia"
           }
         />
-        <BuyItemModal opened={openBuyModal} setOpened={setOpenBuyModal} />
+        <BuyItemModal
+          opened={openBuyModal}
+          setOpened={setOpenBuyModal}
+          price={currentItem?.price || 0}
+          category={currentItem?.category}
+          itemName={currentItem?.itemName}
+        />
         <Grid className=" mx-12 mt-4" columns={24}>
           <Grid.Col span={15}>
             <Stack className="gap-6">

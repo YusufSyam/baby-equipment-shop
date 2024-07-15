@@ -308,7 +308,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   ];
 
   const itemDetailToProcess = (
-    <Group className="items-start">
+    <Group className="items-start mb-4">
       <Stack className="gap-1 w-1/2">
         <Text className="text-[16px] font-roboto text-primary-text">
           Detail Transaksi
