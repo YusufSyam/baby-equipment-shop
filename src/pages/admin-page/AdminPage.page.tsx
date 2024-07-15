@@ -22,6 +22,8 @@ import OrderStatusComp, {
   TOrderStatus
 } from "../../components/OrderStatus.component";
 import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
+import ConfirmationModal from "../../components/ConfirmationModal.component";
+import WarningModal from "../../components/WarningModal.component";
 
 export interface IAdminPage {}
 
@@ -59,16 +61,16 @@ const tableHeadings: IFETableHeadingProps[] = [
     cellKey: "buyer"
   },
   {
-    label: "Status",
-    sortable: true,
-    textAlign: "left",
-    cellKey: "status"
-  },
-  {
     label: "Harga",
     sortable: true,
     textAlign: "left",
     cellKey: "priceDetail"
+  },
+  {
+    label: "Status",
+    sortable: true,
+    textAlign: "left",
+    cellKey: "status"
   }
   // {
   //   label: "Keterangan",
@@ -99,6 +101,8 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   const [selectedRow, setSelectedRow] = useState(0);
   const [isProcessItemModalOpened, setIsProcessItemModalOpened] =
     useState(false);
+
+  const [isCancelItemModalOpened, setIsCancelItemModalOpened] = useState(false);
 
   const tableRows = activityList?.map(
     (data, idx) =>
@@ -195,12 +199,11 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       type: "element",
       backgroundColor: "white",
       element: (row: any) => {
-        setSelectedRow(row.id.label);
         return (
           <Stack
             className="gap-0 cursor-pointer"
-            onClick={()=>{
-              WhatsappMessageOpenInNewTab(row?.buyer?.label, "")
+            onClick={() => {
+              WhatsappMessageOpenInNewTab(row?.buyer?.label, "");
             }}
           >
             <IconWhatsappOutline
@@ -222,9 +225,6 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       type: "element",
       backgroundColor: "white",
       element: (row: any) => {
-        setSelectedRow(row.id.label);
-        setIsProcessItemModalOpened(true);
-
         const isDisabled = row?.status?.label !== "pending";
 
         return (
@@ -246,6 +246,10 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   size={30}
                   color="white"
                   className="bg-green hover:bg-green/80 duration-100 rounded-full p-[6px] self-center"
+                  onClick={() => {
+                    setSelectedRow(row.id.label);
+                    setIsProcessItemModalOpened(true);
+                  }}
                 />
               )
             }
@@ -267,8 +271,6 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       type: "element",
       backgroundColor: "white",
       element: (row: any) => {
-        setSelectedRow(row.id.label);
-        setIsProcessItemModalOpened(true);
         const isDisabled = row?.status?.label !== "pending";
 
         return (
@@ -290,6 +292,10 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   size={30}
                   color="white"
                   className="bg-red hover:bg-red/80 duration-100 rounded-full p-[6px] self-center"
+                  onClick={() => {
+                    setSelectedRow(row.id.label);
+                    setIsCancelItemModalOpened(true);
+                  }}
                 />
               )
             }
@@ -297,16 +303,91 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           </Stack>
         );
       },
-      onClick: (row: any) => {
-        setSelectedRow(row.id.label);
-        setIsProcessItemModalOpened(true);
-      }
+      onClick: (row: any) => {}
     }
   ];
+
+  const itemDetailToProcess = (
+    <Group className="items-start">
+      <Stack className="gap-1 w-1/2">
+        <Text className="text-[16px] font-roboto text-primary-text">
+          Detail Transaksi
+        </Text>
+        <Stack className="gap-0">
+          <Text className="text-[14px] text-primary-text">
+            Kode Invoice: {activityList?.[selectedRow]?.invoice}
+          </Text>
+          <Text className="text-[14px] text-primary-text">
+            Barang: {activityList?.[selectedRow]?.itemName}
+          </Text>
+          <Text className="text-[14px] text-primary-text">
+            Pembeli: {activityList?.[selectedRow]?.buyerName}
+          </Text>
+          <Text className="text-[14px] text-primary-text">
+            Nomor WA Pembeli: {activityList?.[selectedRow]?.buyerWANumber}
+            </Text>
+        </Stack>
+      </Stack>
+      <Stack className="gap-1">
+        <Text className="text-[16px] font-roboto text-primary-text">
+          Detail Harga
+        </Text>
+        <Stack className="gap-0">
+          <Text className="text-[14px] text-primary-text">
+            Harga per satuan: {activityList?.[selectedRow]?.itemPrice}
+          </Text>
+          <Text className="text-[14px] text-primary-text">
+            Kuantitas pembelian: {activityList?.[selectedRow]?.itemQuantity}
+          </Text>
+          <Text className="text-white bg-secondary-text px-1 font-semibold text-xl w-fit mt-2">
+            Total Harga: {activityList?.[selectedRow]?.itemTotalPrice}
+          </Text>
+        </Stack>
+      </Stack>
+    </Group>
+  );
 
   return (
     <AppLayout headerBackgroundType="normal" activePage="">
       <Stack className="mx-12 mt-4">
+        <ConfirmationModal
+          setOpened={setIsProcessItemModalOpened}
+          opened={isProcessItemModalOpened}
+          title={"Selesaikan Proses Transaksi?"}
+          onClose={() => {}}
+          onSubmit={() => {
+            setIsProcessItemModalOpened(false);
+          }}
+          minWidth={700}
+          yesButtonLabel="Selesaikan"
+        >
+          <Stack>
+            <Text className="text-primary-text-500 text-[14px]">
+              Yakin untuk <span className="text-green font-bold">menyelesaikan</span>{" "}
+              proses transaksi dengan detail sebagai berikut..?
+            </Text>
+            {itemDetailToProcess}
+          </Stack>
+        </ConfirmationModal>
+        <WarningModal
+          setOpened={setIsCancelItemModalOpened}
+          opened={isCancelItemModalOpened}
+          title={"Gagalkan Transaksi?"}
+          onClose={() => {}}
+          onSubmit={() => {
+            setIsCancelItemModalOpened(false);
+          }}
+          minWidth={700}
+          yesButtonLabel="Batalkan"
+        >
+          <Stack>
+            <Text className="text-primary-text-500 text-[14px]">
+              Yakin untuk <span className="text-error font-bold">membatalkan</span>{" "}
+              proses transaksi dengan detail sebagai berikut..?
+            </Text>
+            {itemDetailToProcess}
+          </Stack>
+        </WarningModal>
         <Text className="text-[32px] font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
           Halaman Admin
         </Text>
