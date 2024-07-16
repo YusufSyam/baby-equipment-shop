@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
-import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Checkbox, Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import ActivityTableComponent, {
   IActivityTableAction,
@@ -24,6 +24,7 @@ import OrderStatusComp, {
 import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
 import WarningModal from "../../components/WarningModal.component";
+import { MySearchInput } from "../../components/FormInput.component";
 
 export interface IAdminPage {}
 
@@ -95,8 +96,10 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [query] = useDebouncedValue(searchTerm, 500);
 
+  const [defaultData, setDefaultData] = useState(dummyActivityData);
+
   const [activityList, setActivityList] =
-    useState<IActivityTableRow[]>(dummyActivityData);
+    useState<IActivityTableRow[]>(defaultData);
 
   const [selectedRow, setSelectedRow] = useState(0);
   const [isProcessItemModalOpened, setIsProcessItemModalOpened] =
@@ -307,6 +310,31 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
     }
   ];
 
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    setSearchTerm(e.target.value);
+    setActivePage(1);
+  }
+
+  const [isJustPending, setIsJustPending] = useState(false);
+
+  useEffect(() => {
+    let tempActivityList = defaultData;
+
+    if (query !== "") {
+      tempActivityList = tempActivityList?.filter((d: IActivityTableRow) =>
+        d?.invoice?.toLowerCase()?.includes(query?.toLowerCase())
+      );
+    }
+
+    if (isJustPending) {
+      tempActivityList = tempActivityList?.filter(
+        (d: IActivityTableRow) => d.status === "pending"
+      );
+    }
+
+    setActivityList(tempActivityList);
+  }, [query, isJustPending]);
+
   const itemDetailToProcess = (
     <Group className="items-start mb-4">
       <Stack className="gap-1 w-1/2">
@@ -325,7 +353,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           </Text>
           <Text className="text-[14px] text-primary-text">
             Nomor WA Pembeli: {activityList?.[selectedRow]?.buyerWANumber}
-            </Text>
+          </Text>
         </Stack>
       </Stack>
       <Stack className="gap-1">
@@ -363,8 +391,9 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
         >
           <Stack>
             <Text className="text-primary-text-500 text-[14px]">
-              Yakin untuk <span className="text-green font-bold">menyelesaikan</span>{" "}
-              proses transaksi dengan detail sebagai berikut..?
+              Yakin untuk{" "}
+              <span className="text-green font-bold">menyelesaikan</span> proses
+              transaksi dengan detail sebagai berikut..?
             </Text>
             {itemDetailToProcess}
           </Stack>
@@ -382,15 +411,41 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
         >
           <Stack>
             <Text className="text-primary-text-500 text-[14px]">
-              Yakin untuk <span className="text-error font-bold">membatalkan</span>{" "}
-              proses transaksi dengan detail sebagai berikut..?
+              Yakin untuk{" "}
+              <span className="text-error font-bold">membatalkan</span> proses
+              transaksi dengan detail sebagai berikut..?
             </Text>
             {itemDetailToProcess}
           </Stack>
         </WarningModal>
-        <Text className="text-[32px] font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
-          Halaman Admin
-        </Text>
+        <Stack className="gap-0">
+          <Text className="text-[32px] text-center font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
+            Halaman Admin
+          </Text>
+          <Text className="text-center text-secondary-text">
+            Proses atau batalkan segala transaksi / pembelian yang anda lakukan
+            pada halaman ini
+          </Text>
+        </Stack>
+
+        <Group className="bg-secondary/50 py-2 pb-4 px-4 rounded-sm mt-8 w-fit self-center items-baseline gap-8">
+          <Stack className="gap-2 w-60">
+            <Text>Cari Kode Invoice</Text>
+            <MySearchInput onChange={handleSearchChange} />
+          </Stack>
+          <Stack className="gap-2 ">
+            <Text>Filter</Text>
+            <Group
+              className="cursor-pointer gap-2"
+              onClick={() => {
+                setIsJustPending(!isJustPending);
+              }}
+            >
+              <Text>Pending</Text>
+              <Checkbox checked={isJustPending} color="" />
+            </Group>
+          </Stack>
+        </Group>
         <ActivityTableComponent
           noDataMsg=""
           isLoading={false}
