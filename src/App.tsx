@@ -8,6 +8,9 @@ import { MAINROUTES } from "./utils/const/routes";
 import Home from "./pages/home/Home.page";
 import ItemDetail from "./pages/item-detail/ItemDetail.page";
 import AdminPage from "./pages/admin-page/AdminPage.page";
+import LoginPage from "./pages/login-page/Login.page";
+import RegisterPage from "./pages/login-page/Register.page";
+import HandleBuyerAccount from "./pages/handle-buyer-account/HandleBuyerAccount.page";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -194,6 +197,9 @@ function App() {
         <Routes>
           <Route path={MAINROUTES.home} element={<Home />} />
           <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
+          <Route path={MAINROUTES.login} element={<LoginPage />} />
+          <Route path={MAINROUTES.register} element={<RegisterPage />} />
+          <Route path={MAINROUTES.handleBuyerAccount} element={<HandleBuyerAccount />} />
           <Route
             path={`${MAINROUTES.home}/item/:itemId`}
             element={<ItemDetail />}

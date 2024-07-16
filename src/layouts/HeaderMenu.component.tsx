@@ -11,7 +11,7 @@ export interface IHeaderMenu {
 
 const HeaderMenu: React.FC<IHeaderMenu> = ({ href, label, activePage }) => {
   return (
-    <Link className="cursor-pointer" to={href}>
+    <Link className={`${href===''? "" : "cursor-pointer"}`} to={href}>
       <Text className='text-white font-medium tracking-5 cursor-pointer'>  
         {label}
       </Text>

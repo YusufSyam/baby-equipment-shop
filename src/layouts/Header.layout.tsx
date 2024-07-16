@@ -39,6 +39,9 @@ const Header: React.FC<IHeader> = ({
       </Group>
       <Group>
         <HeaderMenu label="Halaman Admin" href={MAINROUTES.adminPage} />
+        <HeaderMenu label="Akun" href={MAINROUTES.handleBuyerAccount} />
+        <HeaderMenu label="|" href={""} />
+        <HeaderMenu label="Log In" href={MAINROUTES.login} />
       </Group>
     </Group>
   );
