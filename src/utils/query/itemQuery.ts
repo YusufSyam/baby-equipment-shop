@@ -39,3 +39,13 @@ export async function qfFetchAllItems() {
   }
   return response.json();
 }
+
+
+export async function qfFetchItemsById(id:string) {
+  const response = await fetch(`${endpoint}/${id}`);
+  console.log(response, "response");
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+  return response.json();
+}

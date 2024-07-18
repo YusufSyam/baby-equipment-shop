@@ -23,32 +23,62 @@ import { ICatalogCard } from "../home/Home-CatalogCard.component";
 import { toTitleCase } from "../../utils/functions/string";
 import EditCatalogModal from "../../components/EditCatalogModal.component";
 import WarningModal from "../../components/WarningModal.component";
+import { qfFetchItemsById } from "../../utils/query/itemQuery";
+import { useQuery } from "react-query";
+import LoadingModal from "../../components/LoadingModal.component";
 
 export interface IItemDetail {}
 
+function formatCatalogItem(beData: any = {}) {
+  const data: ICatalogCard = {
+    itemName: beData?.name,
+    category: beData?.category,
+    price: beData?.price,
+    description: beData?.description,
+    //  UBAH NANTI
+    isAvailable: beData?.stock > 1 ? true : false,
+    soldCount: 0
+  };
+
+  return data;
+}
+
 const ItemDetail: React.FC<IItemDetail> = ({}) => {
+  const { data, isFetching, refetch } = useQuery(
+    `fetch-items-by-id`,
+    () => qfFetchItemsById(itemId || ""),
+    {
+      onSuccess(data) {
+        setCurrentItem(formatCatalogItem(data?.data || {}));
+      }
+    }
+  );
+
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const { itemId } = useParams();
 
+  console.log('itemId',itemId)
+
   const [openedEditItemModal, setOpenedEditItemModal] = useState(false);
   const [openedDeleteItemModal, setOpenedDeleteItemModal] = useState(false);
 
-  const tempAllData = dummyCatalogData;
-  const [currentItem, setCurrentItem] = useState<ICatalogCard>({});
+  // const tempAllData = dummyCatalogData;
+  const [currentItem, setCurrentItem] = useState<ICatalogCard>(formatCatalogItem(data?.data || {}));
 
-  useEffect(() => {
-    setCurrentItem(
-      tempAllData?.find((data: ICatalogCard) => {
-        return data?.id == itemId;
-      }) || {}
-    );
-  }, []);
+  // useEffect(() => {
+  //   setCurrentItem(
+  //     tempAllData?.find((data: ICatalogCard) => {
+  //       return data?.id == itemId;
+  //     }) || {}
+  //   );
+  // }, []);
 
   const [openBuyModal, setOpenBuyModal] = useState(false);
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="mb-32">
+        <LoadingModal opened={isFetching} />
         <WarningModal
           opened={openedDeleteItemModal}
           setOpened={setOpenedDeleteItemModal}
