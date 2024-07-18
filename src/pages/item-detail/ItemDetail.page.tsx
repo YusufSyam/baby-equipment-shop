@@ -169,10 +169,9 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                 </Button>
                 <Group>
                   <Button
-                    className="bg-error hover:bg-error/75 w-32 duration-100 mt-4 rounded-sm"
+                    className="bg-white hover:bg-white/75 border border-red text-red w-32 duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
-                    disabled={currentItem?.isAvailable === false}
                     onClick={() => {
                       setOpenedDeleteItemModal(true);
                     }}
@@ -183,7 +182,6 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                     className="bg-darker-orange hover:bg-orange w-32 duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
-                    disabled={currentItem?.isAvailable === false}
                     onClick={() => {
                       setOpenedEditItemModal(true);
                     }}
