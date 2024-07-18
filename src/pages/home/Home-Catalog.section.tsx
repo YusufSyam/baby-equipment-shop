@@ -20,23 +20,62 @@ import { number } from "yup";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearchOff } from "../../assets/icon/Fluent";
 import AddNewCatalogModal from "../../components/AddNewCatalogModal.component";
-import { useMutation } from "react-query";
-import { qfAddItem } from "../../utils/query/itemQuery";
+import { useMutation, useQuery } from "react-query";
+import { qfAddItem, qfFetchAllItems } from "../../utils/query/itemQuery";
 import LoadingModal from "../../components/LoadingModal.component";
+import { categoryMap } from "../../utils/const/globalConst";
+import Loading from "../../components/Loading.component";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<any>;
 }
 
+function formatCatalogItem(beData: any[] = []) {
+  const formatted = beData?.map((d) => {
+    // const imageLinkSplit = d?.thumbnail?.split("media\\");
+    // const imageLink =
+    //   imageLinkSplit.length > 1
+    //     ? `${BASE_URL}/uploaded-file/${imageLinkSplit[1]}`
+    //     : "";
+
+    const data: ICatalogCard = {
+      id: d?.itemId,
+      itemName: d?.name,
+      category: d?.category,
+      price: d?.price,
+      description: d?.description,
+      //  UBAH NANTI
+      isAvailable: d?.stock > 1 ? true : false,
+      soldCount: 0
+    };
+
+    return data;
+  });
+
+  return formatted;
+}
+
 const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
+  const { data, isFetching, refetch } = useQuery(
+    `fetch-all-items`,
+    qfFetchAllItems,
+    {
+      onSuccess(data) {
+        setDefaultData(formatCatalogItem(data?.data || []));
+      }
+    }
+  );
+
   const postAddItemMutation = useMutation("post-add-item", qfAddItem, {
     onSuccess() {
-      setOpenedAddItemModal(false)
-      // refetch();
+      setOpenedAddItemModal(false);
+      refetch();
     }
   });
 
-  const [defaultData, setDefaultData] = useState(dummyCatalogData);
+  const [defaultData, setDefaultData] = useState(
+    formatCatalogItem(data?.data || [])
+  );
   const theme = useMantineTheme();
 
   const [openedAddItemModal, setOpenedAddItemModal] = useState(false);
@@ -51,6 +90,8 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
   const [sortBy, setSortBy] = useState<TSortBy>("no-sort");
 
   const [itemList, setItemList] = useState(defaultData);
+
+  console.log("defaultData", itemList);
   const [categoryList, setCategory] = useState<TCategoryType[]>([
     "OTHER",
     "ACCESSORIES",
@@ -64,6 +105,10 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
     setSearchTerm(e.target.value);
     setActivePage(1);
   }
+
+  useEffect(() => {
+    setItemList(defaultData);
+  }, [defaultData]);
 
   useEffect(() => {
     setPageAmt(Math.round(itemList?.length / dataPerPageAmt + 0.4));
@@ -200,35 +245,43 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           <Stack className="gap-[30px] rounded-sm">
             <CatalogSort setSortBy={setSortBy} sortBy={sortBy} />
             <Grid gutter={24} className=" bg-secondary/50">
-              {itemList?.length <= 0 ? (
-                <Stack className="w-full p-16 pb-20">
-                  <IconSearchOff
-                    size={192}
-                    color={theme.colors["secondary-text"][8]}
-                    className="self-center"
-                  />
-                  <Text className="text-primary-text-500 font-semibold text-3xl text-center">
-                    Maaf, produk yang Anda cari tidak ditemukan
-                  </Text>
-                  <Text className="text-primary-text-500 -mt-4 text-center">
-                    Coba kata kunci lain atau telusuri kategori yang lain untuk
-                    menemukan produk yang sesuai.
-                  </Text>
-                </Stack>
+              {isFetching ? (
+                <div className="w-full py-32">
+                  <Loading color="secondary-text" />
+                </div>
               ) : (
                 <>
-                  {itemList
-                    ?.slice(
-                      (activePage - 1) * dataPerPageAmt,
-                      (activePage - 1) * dataPerPageAmt + dataPerPageAmt
-                    )
-                    ?.map((item: ICatalogCard, idx: number) => {
-                      return (
-                        <Grid.Col span={3} key={idx}>
-                          <CatalogCard {...item} />
-                        </Grid.Col>
-                      );
-                    })}
+                  {itemList?.length <= 0 ? (
+                    <Stack className="w-full p-16 pb-20">
+                      <IconSearchOff
+                        size={192}
+                        color={theme.colors["secondary-text"][8]}
+                        className="self-center"
+                      />
+                      <Text className="text-primary-text-500 font-semibold text-3xl text-center">
+                        Maaf, produk yang Anda cari tidak ditemukan
+                      </Text>
+                      <Text className="text-primary-text-500 -mt-4 text-center">
+                        Coba kata kunci lain atau telusuri kategori yang lain
+                        untuk menemukan produk yang sesuai.
+                      </Text>
+                    </Stack>
+                  ) : (
+                    <>
+                      {itemList
+                        ?.slice(
+                          (activePage - 1) * dataPerPageAmt,
+                          (activePage - 1) * dataPerPageAmt + dataPerPageAmt
+                        )
+                        ?.map((item: ICatalogCard, idx: number) => {
+                          return (
+                            <Grid.Col span={3} key={idx}>
+                              <CatalogCard {...item} />
+                            </Grid.Col>
+                          );
+                        })}
+                    </>
+                  )}
                 </>
               )}
             </Grid>

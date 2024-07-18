@@ -1,10 +1,11 @@
 import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import React from "react";
-import image from "../../assets/images/dummy7.jpg";
+import emptyImage from "../../assets/images/empty-item.png";
 import { useNavigate } from "react-router-dom";
 import { IconCheckOutline, IconCloseOutline } from "../../assets/icon/Fluent";
 import { toTitleCase } from "../../utils/functions/string";
 import { TCategoryType } from "./Home-CatalogFilter.section";
+import { categoryMap } from "../../utils/const/globalConst";
 
 export interface ICatalogCard {
   id?: string;
@@ -20,7 +21,7 @@ export interface ICatalogCard {
 const CatalogCard: React.FC<ICatalogCard> = ({
   id,
   category,
-  image,
+  image=emptyImage,
   isAvailable,
   itemName,
   price,
@@ -38,13 +39,13 @@ const CatalogCard: React.FC<ICatalogCard> = ({
     >
       <Group className="absolute bg-purple/75 px-2 py-1 left-1 top-1">
         <Text className="text-md font-poppins-semibold text-white">
-          {toTitleCase(category)}
+          {toTitleCase(categoryMap?.[category || "OTHER"])}
         </Text>
       </Group>
       <div className="w-full h-[240px] overflow-hidden">
         <img
           src={image}
-          alt="Gambar Item"
+          alt="Gambar Perlengkapan Bayi"
           className="w-full h-full object-cover"
         />
       </div>

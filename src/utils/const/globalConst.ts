@@ -7,3 +7,9 @@ export const WHATSAPP_MESSAGE_TEMPLATE= `Saya ingin melakukan pembelian dengan d
 - Nama Barang: [Nama Barang]
 - Harga: [Harga Barang]
 - Jumlah: [Jumlah Barang]`
+
+export const categoryMap: { [key: string]: string } = {
+  "CLOTHES": "Pakaian",
+  "ACCESSORIES": "Aksesoris",
+  "OTHER": "Lain-lain"
+};

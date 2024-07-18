@@ -12,13 +12,15 @@ import DocumentInput from "./DocumentInput.component";
 import { MIME_TYPES } from "@mantine/dropzone";
 import * as yup from "yup";
 import { useForm, yupResolver } from "@mantine/form";
-import { UseMutationResult } from "react-query";
+import { UseMutationResult, useMutation } from "react-query";
 import LoadingModal from "./LoadingModal.component";
+import { qfUploadFile } from "../utils/query/files-query";
+import { IPostNewItem } from "../utils/query/itemQuery";
 
 export interface IAddNewCatalogModal {
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  postAddItemMutation: UseMutationResult<any, unknown, IAddNewCatalogItemInterfaces, unknown>;
+  postAddItemMutation: UseMutationResult<any, unknown, IPostNewItem, unknown>;
 }
 
 export interface IAddNewCatalogItemInterfaces {
@@ -53,18 +55,39 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
     validate: yupResolver(AddNewCatalogItemSchema)
   });
 
-  const { getInputProps, errors, values, reset } = form;
+  const { getInputProps, errors, values, reset, setValues } = form;
 
-  console.log('Ini valueaaaa', values)
+  const postFileMutation = useMutation("post-upload-file", qfUploadFile, {
+    onSuccess(data) {
+      const fileName = data?.data;
 
-  useEffect(()=>{
-    if(!opened){
-      reset()
+      // name: values?.itemName,
+      // stock: values?.isAvailable? 100 : 0,
+      // price: values?.price,
+      // category: values?.category
+
+      postAddItemMutation.mutate({
+        name: values?.itemName,
+        stock: values?.isAvailable ? 100 : 0,
+        price: values?.price,
+        category: values?.category,
+        description: values?.description || ""
+        // thumbnail: fileName,
+        // thumbnail: "",
+      });
     }
-  }, [opened])
+  });
 
-  function handleAddNewItem(){
-    postAddItemMutation.mutate(values)
+  console.log("Ini valueaaaa", values);
+
+  useEffect(() => {
+    if (!opened) {
+      reset();
+    }
+  }, [opened]);
+
+  function handleAddNewItem() {
+    postFileMutation.mutate(values?.image);
   }
 
   return (
@@ -78,7 +101,7 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
       onSubmit={handleAddNewItem}
     >
       <Stack className="mb-4">
-      <LoadingModal opened={postAddItemMutation?.isLoading} />
+        <LoadingModal opened={postAddItemMutation?.isLoading} />
         <Group grow>
           <MyTextInput
             label="Nama Perlengkapan"
@@ -120,7 +143,7 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
             {
               value: "OTHER",
               label: "Lain-lain"
-            },
+            }
           ]}
           {...getInputProps("category")}
           error={errors["category" as keyof IAddNewCatalogItemInterfaces]}
@@ -137,7 +160,11 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
         >
           <Group mt="xs">
             <Radio color="green.5" value={"tersedia"} label="Tersedia" />
-            <Radio color="red.5" value="tidak tersedia" label="Tidak Tersedia" />
+            <Radio
+              color="red.5"
+              value="tidak tersedia"
+              label="Tidak Tersedia"
+            />
           </Group>
         </Radio.Group>
 

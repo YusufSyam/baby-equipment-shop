@@ -3,7 +3,16 @@ import { BASE_URL, getTokenAuthorizationHeader } from "../const/api";
 
 const endpoint = `${BASE_URL}/items`;
 
-export async function qfAddItem(values : IAddNewCatalogItemInterfaces) {
+export interface IPostNewItem{
+  name: string;
+  stock: number;
+  price:number;
+  description: string;
+  thumbnail?: string;
+  category: string;
+}
+
+export async function qfAddItem(values : IPostNewItem) {
 
   const response = await fetch(`${endpoint}`, {
     method: "POST",
@@ -12,12 +21,7 @@ export async function qfAddItem(values : IAddNewCatalogItemInterfaces) {
     },
     mode: "cors",
     credentials: "same-origin",
-    body: JSON.stringify({
-      name: values?.itemName,
-      stock: values?.isAvailable? 100 : 0,
-      price: values?.price,
-      category: values?.category
-    })
+    body: JSON.stringify(values)
   });
 
   const data = await response.json()
