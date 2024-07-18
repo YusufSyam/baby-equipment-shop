@@ -113,17 +113,17 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
           placeholder="Pilih kategori barang"
           data={[
             {
-              // "pakaian", "makanan & minuman", "alat bayi"
+              // "CLOTHES", "ACCESSORIES", "OTHER"
               label: "Pakaian",
-              value: "pakaian"
+              value: "CLOTHES"
             },
             {
-              label: "Makanan & minuman",
-              value: "makanan & minuman"
+              label: "Aksesoris Bayi",
+              value: "ACCESSORIES"
             },
             {
-              label: "alat bayi",
-              value: "Alat bayi"
+              label: "OTHER",
+              value: "Lain-lain"
             },
           ]}
           {...getInputProps("category")}

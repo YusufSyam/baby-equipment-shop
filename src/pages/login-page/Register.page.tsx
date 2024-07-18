@@ -7,9 +7,12 @@ import {
 } from "../../components/FormInput.component";
 import { useForm } from "@mantine/form";
 import { SmallButton } from "../../components/MyButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MAINROUTES } from "../../utils/const/routes";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
+import { qfRegister } from "../../utils/query/userQuery";
+import { useMutation } from "react-query";
+import LoadingModal from "../../components/LoadingModal.component";
 
 export interface IRegisterPage {}
 
@@ -21,6 +24,7 @@ export interface IRegisterInput {
 
 const RegisterPage: React.FC<IRegisterPage> = ({}) => {
   const form = useForm<IRegisterInput>();
+  const navigate= useNavigate();
 
   const [isRegisterSuccessModalOpened, setIsRegisterSuccessModalOpened] =
     useState(false);
@@ -28,20 +32,46 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
   const { getInputProps, errors, values, reset } = form;
 
   function handleRegister() {
-    // loginMutation.mutate(values);
-    setIsRegisterSuccessModalOpened(true);
+    postRegister.mutate({
+      username: values?.username,
+      password: values?.password
+    });
   }
+
+  const postRegister = useMutation("post-register-user", qfRegister, {
+    onSuccess(data) {
+      setIsRegisterSuccessModalOpened(true);
+      console.log("dataaaaa", data);
+      //   if (data?.status === "success") {
+      //     refetch();
+      //   } else {
+      //     if (data?.error?.code === "E444") {
+      //       setErrorMessage(
+      //         "Mahasiswa belum terdaftar, silahkan daftarkan mahasiswa terlebih dahulu untuk melanjutkan peminjaman"
+      //       );
+      //     } else {
+      //       setErrorMessage(data?.error?.message || "");
+      //     }
+
+      //     setOpenedErrorAddItem(true)
+      //   }
+    }
+  });
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="gap-10 mb-4">
+        <LoadingModal opened={postRegister?.isLoading} />
         <ConfirmationModal
           opened={isRegisterSuccessModalOpened}
           setOpened={setIsRegisterSuccessModalOpened}
           title={"Register Berhasil"}
           onSubmit={() => {
+            reset();
             setIsRegisterSuccessModalOpened(false);
+            navigate(MAINROUTES.login)
           }}
           onClose={() => {}}
+          yesButtonLabel="Konfirmasi"
         >
           <Text className="text-primary-text-500">
             Register Berhasil, silahkan menuju ke halaman Log In untuk masuk
@@ -95,7 +125,8 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
             disabled={
               values?.password == null ||
               values?.username == null ||
-              values?.rewritePassword == null
+              values?.rewritePassword == null ||
+              values?.password !== values?.rewritePassword
             }
           >
             Register

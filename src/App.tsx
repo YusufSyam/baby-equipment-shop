@@ -11,6 +11,10 @@ import AdminPage from "./pages/admin-page/AdminPage.page";
 import LoginPage from "./pages/login-page/Login.page";
 import RegisterPage from "./pages/login-page/Register.page";
 import HandleBuyerAccount from "./pages/handle-buyer-account/HandleBuyerAccount.page";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "./context/AuthContext.context";
+
+const queryClient = new QueryClient();
 
 function App() {
   const [count, setCount] = useState(0);
@@ -193,19 +197,26 @@ function App() {
         }
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path={MAINROUTES.home} element={<Home />} />
-          <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
-          <Route path={MAINROUTES.login} element={<LoginPage />} />
-          <Route path={MAINROUTES.register} element={<RegisterPage />} />
-          <Route path={MAINROUTES.handleBuyerAccount} element={<HandleBuyerAccount />} />
-          <Route
-            path={`${MAINROUTES.home}/item/:itemId`}
-            element={<ItemDetail />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <Routes>
+              <Route path={MAINROUTES.home} element={<Home />} />
+              <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
+              <Route path={MAINROUTES.login} element={<LoginPage />} />
+              <Route path={MAINROUTES.register} element={<RegisterPage />} />
+              <Route
+                path={MAINROUTES.handleBuyerAccount}
+                element={<HandleBuyerAccount />}
+              />
+              <Route
+                path={`${MAINROUTES.home}/item/:itemId`}
+                element={<ItemDetail />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </AuthProvider>
     </MantineProvider>
   );
 }

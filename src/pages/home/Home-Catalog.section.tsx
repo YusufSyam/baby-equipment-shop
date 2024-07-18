@@ -20,12 +20,22 @@ import { number } from "yup";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearchOff } from "../../assets/icon/Fluent";
 import AddNewCatalogModal from "../../components/AddNewCatalogModal.component";
+import { useMutation } from "react-query";
+import { qfAddItem } from "../../utils/query/itemQuery";
+import LoadingModal from "../../components/LoadingModal.component";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<any>;
 }
 
 const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
+  const postAddItemMutation = useMutation("post-add-item", qfAddItem, {
+    onSuccess() {
+      setOpenedAddItemModal(false)
+      // refetch();
+    }
+  });
+
   const [defaultData, setDefaultData] = useState(dummyCatalogData);
   const theme = useMantineTheme();
 
@@ -42,9 +52,9 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
 
   const [itemList, setItemList] = useState(defaultData);
   const [categoryList, setCategory] = useState<TCategoryType[]>([
-    "alat bayi",
-    "makanan & minuman",
-    "pakaian"
+    "OTHER",
+    "ACCESSORIES",
+    "CLOTHES"
   ]);
   const [filterPrice, setFilterPrice] = useState<TPriceType>("0");
   const [filterAvailability, setfilterAvailability] =
@@ -146,9 +156,11 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
 
   return (
     <Stack className="gap-8 mt-8 mb-8">
+      <LoadingModal opened={postAddItemMutation?.isLoading} />
       <AddNewCatalogModal
         opened={openedAddItemModal}
         setOpened={setOpenedAddItemModal}
+        postAddItemMutation={postAddItemMutation}
       />
       <Group className="mx-8 justify-between self-center mb-4">
         <Stack className="gap-0">

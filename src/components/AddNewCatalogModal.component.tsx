@@ -12,10 +12,13 @@ import DocumentInput from "./DocumentInput.component";
 import { MIME_TYPES } from "@mantine/dropzone";
 import * as yup from "yup";
 import { useForm, yupResolver } from "@mantine/form";
+import { UseMutationResult } from "react-query";
+import LoadingModal from "./LoadingModal.component";
 
 export interface IAddNewCatalogModal {
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  postAddItemMutation: UseMutationResult<any, unknown, IAddNewCatalogItemInterfaces, unknown>;
 }
 
 export interface IAddNewCatalogItemInterfaces {
@@ -43,7 +46,8 @@ export const AddNewCatalogItemSchema = yup.object({
 
 const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
   opened,
-  setOpened
+  setOpened,
+  postAddItemMutation
 }) => {
   const form = useForm<IAddNewCatalogItemInterfaces>({
     validate: yupResolver(AddNewCatalogItemSchema)
@@ -59,6 +63,10 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
     }
   }, [opened])
 
+  function handleAddNewItem(){
+    postAddItemMutation.mutate(values)
+  }
+
   return (
     <ConfirmationModal
       opened={opened}
@@ -67,8 +75,10 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
       onClose={() => {}}
       yesButtonLabel="Tambah"
       minWidth={800}
+      onSubmit={handleAddNewItem}
     >
       <Stack className="mb-4">
+      <LoadingModal opened={postAddItemMutation?.isLoading} />
         <Group grow>
           <MyTextInput
             label="Nama Perlengkapan"
@@ -99,17 +109,17 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
           placeholder="Pilih kategori barang"
           data={[
             {
-              // "pakaian", "makanan & minuman", "alat bayi"
+              // "CLOTHES", "ACCESSORIES", "OTHER"
               label: "Pakaian",
-              value: "pakaian"
+              value: "CLOTHES"
             },
             {
-              label: "Makanan & minuman",
-              value: "makanan & minuman"
+              label: "Aksesoris Bayi",
+              value: "ACCESSORIES"
             },
             {
-              label: "alat bayi",
-              value: "Alat bayi"
+              value: "OTHER",
+              label: "Lain-lain"
             },
           ]}
           {...getInputProps("category")}

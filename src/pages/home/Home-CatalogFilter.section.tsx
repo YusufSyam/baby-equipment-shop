@@ -15,7 +15,7 @@ export interface ICatalogFilter {
   >;
 }
 
-export type TCategoryType = "pakaian" | "makanan & minuman" | "alat bayi";
+export type TCategoryType = "CLOTHES" | "ACCESSORIES" | "OTHER";
 export type TPriceType = "0" | "1" | "2" | "3" | "4" | "5";
 export type TAvailabilityType = "semua" | "tersedia" | "tidak tersedia";
 
@@ -55,18 +55,18 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
               <Group mt="xs">
                 <Checkbox
                   color="dark-purple.5"
-                  value="pakaian"
+                  value="CLOTHES"
                   label="Pakaian"
                 />
                 <Checkbox
                   color="dark-purple.5"
-                  value="makanan & minuman"
-                  label="Makanan & minuman"
+                  value="ACCESSORIES"
+                  label="Aksesoris Bayi"
                 />
                 <Checkbox
                   color="dark-purple.5"
-                  value="alat bayi"
-                  label="Alat bayi"
+                  value="OTHER"
+                  label="Lain-lain"
                 />
               </Group>
             </Checkbox.Group>

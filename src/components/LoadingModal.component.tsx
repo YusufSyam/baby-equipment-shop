@@ -31,7 +31,7 @@ const LoadingModal = ({
     >
       <Stack>
         <div className={`py-10`}>
-          <Loading color="red" />
+          <Loading color="dark-purple" />
         </div>
         <Text className="text-lg text-secondary-text-500">{description}</Text>
       </Stack>
