@@ -9,7 +9,7 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import React from "react";
-import { IconCalendarEmptyOutline } from "../../assets/icon/Fluent";
+import { IconCalendarEmptyOutline, IconSearchOff } from "../../assets/icon/Fluent";
 import Loading from "../../components/Loading.component";
 
 export interface ILFPHeaderButton {
@@ -247,7 +247,7 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
               <tr className="h-full self-center w-full bg-white/80">
                 {isEmpty ? (
                   <td colSpan={8}>
-                    <IconCalendarEmptyOutline
+                    <IconSearchOff
                       className="w-full"
                       color={theme.colors["primary-text"][5]}
                       size={235}
@@ -256,13 +256,13 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                       align="center"
                       className="text-2xl text-primary-text-500 font-poppins"
                     >
-                      Data tidak ditemukan
+                      Tidak Ada Riwayat Transaksi
                     </Text>
                     <Text
                       align="center"
                       className="text-secondary-text-500 text-[14px] font-poppins"
                     >
-                      {noDataMsg || "Masukkan Kata Kunci yang Lain"}
+                      {noDataMsg || "Data transaksi belum ada atau masukkan kata kunci yang lain"}
                     </Text>
                   </td>
                 ) : (

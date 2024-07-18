@@ -60,8 +60,8 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
         WhatsappMessageOpenInNewTab(
           SELLER_WHATSAPP_NUMBER,
           generateWhatsappTemplate(
-            "buyerName",
-            "invoiceId",
+            "[buyerName]",
+            "[invoiceId]",
             itemName,
             price,
             buyQuantity,
