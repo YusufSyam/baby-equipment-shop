@@ -23,8 +23,8 @@ import { ICatalogCard } from "../home/Home-CatalogCard.component";
 import { toTitleCase } from "../../utils/functions/string";
 import EditCatalogModal from "../../components/EditCatalogModal.component";
 import WarningModal from "../../components/WarningModal.component";
-import { qfFetchItemsById } from "../../utils/query/itemQuery";
-import { useQuery } from "react-query";
+import { qfDeleteItem, qfEditItem, qfFetchItemsById } from "../../utils/query/itemQuery";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import LoadingModal from "../../components/LoadingModal.component";
 import { AuthContext } from "../../context/AuthContext.context";
 import { categoryMap } from "../../utils/const/globalConst";
@@ -34,13 +34,11 @@ import { BASE_URL } from "../../utils/const/api";
 export interface IItemDetail {}
 
 function formatCatalogItem(beData: any = {}) {
-  
   const imageLinkRaw = beData?.thumbnail?.replace(/^media[\/\\]/, "");
   const imageLink =
-    imageLinkRaw !== ""
-      ? `${BASE_URL}/uploaded-file/${imageLinkRaw}`
-      : "";
+    imageLinkRaw !== "" ? `${BASE_URL}/uploaded-file/${imageLinkRaw}` : "";
   const data: ICatalogCard = {
+    id: beData?.itemId,
     itemName: beData?.name,
     category: beData?.category,
     price: beData?.price,
@@ -48,7 +46,7 @@ function formatCatalogItem(beData: any = {}) {
     //  UBAH NANTI
     isAvailable: beData?.stock > 1 ? true : false,
     soldCount: 0,
-    image: imageLink,
+    image: imageLink
   };
 
   return data;
@@ -71,6 +69,19 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
       }
     }
   );
+
+  const queryClient = useQueryClient();
+  const deleteItemMutation = useMutation("delete-Items", qfDeleteItem, {
+    onSuccess() {
+      navigate(MAINROUTES.home);
+    }
+  });
+  
+  const putEditItemMutation = useMutation("put-edit-item", qfEditItem, {
+    onSuccess() {
+      refetch();
+    }
+  });
 
   const theme = useMantineTheme();
   const navigate = useNavigate();
@@ -98,12 +109,16 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="mb-32">
-        <LoadingModal opened={isFetching} />
+        <LoadingModal opened={isFetching || deleteItemMutation?.isLoading || putEditItemMutation?.isLoading} />
         <WarningModal
           opened={openedDeleteItemModal}
           setOpened={setOpenedDeleteItemModal}
           title={"Hapus Barang"}
           onClose={() => {}}
+          onSubmit={() => {
+            queryClient.invalidateQueries("fetch-all-items");
+            deleteItemMutation.mutate(currentItem?.id || "");
+          }}
         />
 
         <EditCatalogModal
@@ -120,6 +135,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
               ? "tersedia"
               : "tidak tersedia" || "tersedia"
           }
+          putEditItemMutation={putEditItemMutation}
         />
         <BuyItemModal
           opened={openBuyModal}
@@ -158,7 +174,9 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                       className=""
                     />
                     <Text className="text-primary-text">
-                      {toTitleCase(categoryMap?.[currentItem?.category || "OTHER"])}
+                      {toTitleCase(
+                        categoryMap?.[currentItem?.category || "OTHER"]
+                      )}
                     </Text>
                   </Group>
                   <CircleDivider />
@@ -224,11 +242,9 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                     className="bg-purple hover:bg-light-purple duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
-                    onClick={
-                      ()=>{
-                        navigate(MAINROUTES.login)
-                      }
-                    }
+                    onClick={() => {
+                      navigate(MAINROUTES.login);
+                    }}
                   >
                     Log In untuk Membeli
                   </Button>

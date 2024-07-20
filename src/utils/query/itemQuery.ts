@@ -49,3 +49,41 @@ export async function qfFetchItemsById(id:string) {
   }
   return response.json();
 }
+
+
+
+export async function qfDeleteItem(itemId: string) {
+  const response = await fetch(`${endpoint}/${itemId}`, {
+    method: "DELETE",
+    headers: {
+      ...getTokenAuthorizationHeader()
+    }
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export interface IEditItem {
+  itemId: string;
+  values: IPostNewItem;
+}
+
+export async function qfEditItem({ itemId, values }: IEditItem) {
+  const response = await fetch(`${endpoint}/${itemId}`, {
+    method: "PUT",
+    headers: {
+      ...getTokenAuthorizationHeader()
+    },
+    mode: "cors",
+    credentials: "same-origin",
+    body: JSON.stringify(values)
+  });
+
+  const data = await response.json();
+
+  console.log("INI RESPONSE", data);
+
+  return data;
+}

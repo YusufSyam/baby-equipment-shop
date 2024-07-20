@@ -12,6 +12,9 @@ import DocumentInput from "./DocumentInput.component";
 import { MIME_TYPES } from "@mantine/dropzone";
 import * as yup from "yup";
 import { useForm, yupResolver } from "@mantine/form";
+import { UseMutationResult, useMutation } from "react-query";
+import { IEditItem } from "../utils/query/itemQuery";
+import { qfUploadFile } from "../utils/query/files-query";
 
 export interface IEditCatalogModal {
   opened: boolean;
@@ -23,13 +26,14 @@ export interface IEditCatalogModal {
   price: number;
   description: string;
   itemId: string;
+  putEditItemMutation?: UseMutationResult<any, unknown, IEditItem, unknown>;
 }
 
 export interface IEditCatalogItemInterfaces {
   itemName: string;
   price: number;
   category: string;
-  isAvailable: boolean;
+  isAvailable: string;
   description: string;
   image: File;
 }
@@ -57,7 +61,8 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
   isAvailable,
   itemId,
   itemName,
-  price
+  price,
+  putEditItemMutation
 }) => {
   const form = useForm<IEditCatalogItemInterfaces>({
     validate: yupResolver(EditCatalogItemSchema)
@@ -65,13 +70,58 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
 
   const { getInputProps, errors, values, reset } = form;
 
-  console.log('Ini valueaaaa2', values)
+  const postFileMutation = useMutation("post-upload-file", qfUploadFile, {
+    onSuccess(data) {
+      const fileName = data?.data;
 
-  useEffect(()=>{
-    if(!opened){
-      reset()
+      handleEditItem(fileName)
     }
-  }, [opened])
+  });
+
+  function handleEditItem(filename?: string) {
+    let newStock = values?.isAvailable === "tersedia" ? 100000000 : 0;
+
+    if (values?.isAvailable == null) {
+      if (isAvailable === "tersedia") {
+        newStock = 100000000;
+      }
+    }
+
+    if (filename) {
+      putEditItemMutation?.mutate({
+        itemId: itemId,
+        values: {
+          name: values?.itemName,
+          category: values?.category,
+          description: values?.description,
+          price: values?.price,
+          stock: newStock,
+          thumbnail: filename
+        }
+      });
+    } else {
+      putEditItemMutation?.mutate({
+        itemId: itemId,
+        values: {
+          name: values?.itemName,
+          category: values?.category,
+          description: values?.description,
+          price: values?.price,
+          stock: newStock
+        }
+      });
+    }
+
+    setOpened(false);
+  }
+
+  console.log("Ini value edit", values);
+
+  useEffect(() => {
+    if (!opened) {
+      reset();
+    }
+  }, [opened]);
 
   return (
     <ConfirmationModal
@@ -81,6 +131,13 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
       onClose={() => {}}
       yesButtonLabel="Edit"
       minWidth={800}
+      onSubmit={() => {
+        if(values?.image){
+          postFileMutation?.mutate(values?.image)
+        }else{
+          handleEditItem()
+        }
+      }}
     >
       <Stack className="mb-4">
         <Group grow>
@@ -124,7 +181,7 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
             {
               label: "OTHER",
               value: "Lain-lain"
-            },
+            }
           ]}
           {...getInputProps("category")}
           error={errors["category" as keyof IEditCatalogItemInterfaces]}
@@ -143,7 +200,11 @@ const EditCatalogModal: React.FC<IEditCatalogModal> = ({
         >
           <Group mt="xs">
             <Radio color="green.5" value={"tersedia"} label="Tersedia" />
-            <Radio color="red.5" value="tidak tersedia" label="Tidak Tersedia" />
+            <Radio
+              color="red.5"
+              value="tidak tersedia"
+              label="Tidak Tersedia"
+            />
           </Group>
         </Radio.Group>
 
