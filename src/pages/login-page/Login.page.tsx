@@ -22,27 +22,32 @@ export interface ILoginInput {
 }
 
 const LoginPage: React.FC<ILoginPage> = ({}) => {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const form = useForm<ILoginInput>();
 
   const { getInputProps, errors, values, reset } = form;
 
-  const [isLoggedInSuccessModalOpened, setIsLoggedInSuccessModalOpened] = useState(false)
-  
+  const [isLoggedInSuccessModalOpened, setIsLoggedInSuccessModalOpened] =
+    useState(false);
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { login: loginFunc, logout: logoutFunc, isLoggedIn } = authContext;
+  const {
+    login: loginFunc,
+    logout: logoutFunc,
+    isLoggedIn,
+    userRole
+  } = authContext;
 
   const loginMutation = useMutation("post-login", loginFunc, {
     onSuccess() {
-      setIsLoggedInSuccessModalOpened(true)
+      setIsLoggedInSuccessModalOpened(true);
     }
   });
-  
+
   console.log(localStorage, "localStorage isLogin");
 
   function handleLogin() {
@@ -51,21 +56,21 @@ const LoginPage: React.FC<ILoginPage> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="gap-10 mb-4">
-        
-      <LoadingModal opened={loginMutation?.isLoading} />
+        <LoadingModal opened={loginMutation?.isLoading} />
         <ConfirmationModal
           opened={isLoggedInSuccessModalOpened}
           setOpened={setIsLoggedInSuccessModalOpened}
           title={"Login Berhasil"}
           onSubmit={() => {
             setIsLoggedInSuccessModalOpened(false);
-            navigate(MAINROUTES.handleBuyerAccount)
+            
+            navigate(userRole=="BUYER"? MAINROUTES.handleBuyerAccount : MAINROUTES.adminPage);
           }}
           onClose={() => {}}
           yesButtonLabel="Konfirmasi"
         >
           <Text className="text-primary-text-500">
-            Berhasil masuk sebagai [BUYER/SELLER].
+            Berhasil masuk sebagai {userRole === "BUYER" ? "pembeli" : "admin"}
           </Text>
         </ConfirmationModal>
         <Stack className="gap-0">
@@ -95,7 +100,12 @@ const LoginPage: React.FC<ILoginPage> = ({}) => {
 
           <Text className="text-secondary-text">
             Belum mempunyai akun? silahkan{" "}
-            <Link className="text-dark-purple font-semibold" to={MAINROUTES.register}>register</Link>{" "}
+            <Link
+              className="text-dark-purple font-semibold"
+              to={MAINROUTES.register}
+            >
+              register
+            </Link>{" "}
             terlebih dahulu
           </Text>
 

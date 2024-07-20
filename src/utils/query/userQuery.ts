@@ -1,5 +1,5 @@
 import { ILoginInput } from "../../pages/login-page/Login.page";
-import { BASE_URL } from "../const/api";
+import { BASE_URL, getTokenAuthorizationHeader } from "../const/api";
 
 const endpoint = `${BASE_URL}/users`;
 
@@ -27,4 +27,17 @@ export async function qfRegister(values: ILoginInput) {
   } else {
     throw new Error("Login failed");
   }
+}
+
+export async function qfFetchUserCredentials() {
+  const response = await fetch(`${endpoint}`, {
+    headers: {
+      ...getTokenAuthorizationHeader()
+    }
+  });
+  console.log(response, "response");
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+  return response.json();
 }

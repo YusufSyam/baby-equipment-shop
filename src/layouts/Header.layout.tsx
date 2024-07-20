@@ -23,12 +23,19 @@ const Header: React.FC<IHeader> = ({
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { login: loginFunc, logout: logoutFunc, isLoggedIn } = authContext;
+  const {
+    login: loginFunc,
+    logout: logoutFunc,
+    isLoggedIn,
+    userId,
+    userRole,
+    username
+  } = authContext;
 
   function handleLogOut() {
     logoutFunc();
 
-    setIsLogOutModalOpened(false)
+    setIsLogOutModalOpened(false);
     navigate(MAINROUTES.home);
   }
 
@@ -70,8 +77,11 @@ const Header: React.FC<IHeader> = ({
       <Group>
         {isLoggedIn ? (
           <>
-            <HeaderMenu label="Halaman Admin" href={MAINROUTES.adminPage} />
-            <HeaderMenu label="Akun" href={MAINROUTES.handleBuyerAccount} />
+            {userRole === "BUYER" ? (
+              <HeaderMenu label="Akun" href={MAINROUTES.handleBuyerAccount} />
+            ) : (
+              <HeaderMenu label="Halaman Admin" href={MAINROUTES.adminPage} />
+            )}
             <HeaderMenu label="|" href={""} />
 
             <Text

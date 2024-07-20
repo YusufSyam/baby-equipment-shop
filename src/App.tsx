@@ -13,6 +13,8 @@ import RegisterPage from "./pages/login-page/Register.page";
 import HandleBuyerAccount from "./pages/handle-buyer-account/HandleBuyerAccount.page";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "./context/AuthContext.context";
+import WrongPage from "./pages/wrong-page/WrongPage.page";
+import ProtectedRoute from "./ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -197,26 +199,32 @@ function App() {
         }
       }}
     >
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <BrowserRouter>
             <Routes>
               <Route path={MAINROUTES.home} element={<Home />} />
-              <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
               <Route path={MAINROUTES.login} element={<LoginPage />} />
               <Route path={MAINROUTES.register} element={<RegisterPage />} />
-              <Route
-                path={MAINROUTES.handleBuyerAccount}
-                element={<HandleBuyerAccount />}
-              />
+
+              <Route element={<ProtectedRoute allowedRoles={["SELLER"]} />}>
+                <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
+              </Route>
+              <Route element={<ProtectedRoute allowedRoles={["BUYER"]} />}>
+                <Route
+                  path={MAINROUTES.handleBuyerAccount}
+                  element={<HandleBuyerAccount />}
+                />
+              </Route>
               <Route
                 path={`${MAINROUTES.home}/item/:itemId`}
                 element={<ItemDetail />}
               />
+              <Route path={"*"} element={<WrongPage />} />
             </Routes>
           </BrowserRouter>
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </MantineProvider>
   );
 }

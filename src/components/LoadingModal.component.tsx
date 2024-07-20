@@ -19,7 +19,7 @@ interface ILoadingModalProps {
 
 const LoadingModal = ({
   opened,
-  description = "Dalam proses penyelesaian, silahkan tunggu..",
+  description = "Memproses permintaan, harap tunggu sebentar...",
   setOpened=()=>{}
 }: ILoadingModalProps) => {
   return (

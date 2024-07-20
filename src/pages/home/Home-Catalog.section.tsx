@@ -25,6 +25,7 @@ import { qfAddItem, qfFetchAllItems } from "../../utils/query/itemQuery";
 import LoadingModal from "../../components/LoadingModal.component";
 import { categoryMap } from "../../utils/const/globalConst";
 import Loading from "../../components/Loading.component";
+import { qfFetchUserCredentials } from "../../utils/query/userQuery";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<any>;
@@ -45,7 +46,7 @@ function formatCatalogItem(beData: any[] = []) {
       price: d?.price,
       description: d?.description,
       //  UBAH NANTI
-      isAvailable: d?.stock > 1 ? true : false,
+      isAvailable: d?.stock > 0 ? true : false,
       soldCount: 0
     };
 

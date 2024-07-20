@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
@@ -18,6 +18,8 @@ import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function
 import ActivityTableComponent, { IFETableHeadingProps, IFETableRowColumnProps, IActivityTableAction } from "../admin-page/ActivityTable.component";
 import { IActivityTableRow } from "../admin-page/AdminPage.page";
 import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
+import { AuthContext } from "../../context/AuthContext.context";
+import WrongPage from "../wrong-page/WrongPage.page";
 
 export interface IHandleBuyerAccount {}
 
@@ -78,6 +80,20 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   const [activePage, setActivePage] = useState<number>(1);
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const {
+    username,
+    userRole
+  } = authContext;
+
+  // if(userRole==="SELLER"){
+  //   return <WrongPage />  
+  // }
 
   const [changePasswordModalOpened, setChangePasswordModalOpened] =
     useState(false);
@@ -85,7 +101,6 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   const form = useForm<IForgotPasswordInput>();
 
   const { getInputProps, errors, values, reset } = form;
-  
 
   const [defaultData, setDefaultData] = useState(dummyActivityData);
 
@@ -255,7 +270,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
         <Group className="justify-between items-end mb-4">
           <Stack className="gap-0">
             <Text className="text-[30px] font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
-              Selamat Datang! [nama user]
+              Selamat Datang! {username}
             </Text>
             <Text className="text-secondary-text">
               Kelola akun dan lihat riwayat pembelian di halaman ini
