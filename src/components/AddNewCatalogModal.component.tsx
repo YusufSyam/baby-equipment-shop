@@ -63,20 +63,16 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
 
       console.log(data,'filename')
 
-      // name: values?.itemName,
-      // stock: values?.isAvailable? 100 : 0,
-      // price: values?.price,
-      // category: values?.category
 
-      // postAddItemMutation.mutate({
-      //   name: values?.itemName,
-      //   stock: values?.isAvailable ? 100 : 0,
-      //   price: values?.price,
-      //   category: values?.category,
-      //   description: values?.description || ""
-      //   // thumbnail: fileName,
-      //   // thumbnail: "",
-      // });
+      postAddItemMutation.mutate({
+        name: values?.itemName,
+        stock: values?.isAvailable ? 100000000 : 0,
+        price: values?.price,
+        category: values?.category,
+        description: values?.description || "",
+        thumbnail: fileName,
+        // thumbnail: "",
+      });
     }
   });
 

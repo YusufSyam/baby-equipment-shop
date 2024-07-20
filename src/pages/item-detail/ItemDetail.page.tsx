@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import {
   Button,
@@ -26,10 +26,20 @@ import WarningModal from "../../components/WarningModal.component";
 import { qfFetchItemsById } from "../../utils/query/itemQuery";
 import { useQuery } from "react-query";
 import LoadingModal from "../../components/LoadingModal.component";
+import { AuthContext } from "../../context/AuthContext.context";
+import { categoryMap } from "../../utils/const/globalConst";
+import { MAINROUTES } from "../../utils/const/routes";
+import { BASE_URL } from "../../utils/const/api";
 
 export interface IItemDetail {}
 
 function formatCatalogItem(beData: any = {}) {
+  
+  const imageLinkRaw = beData?.thumbnail?.replace(/^media[\/\\]/, "");
+  const imageLink =
+    imageLinkRaw !== ""
+      ? `${BASE_URL}/uploaded-file/${imageLinkRaw}`
+      : "";
   const data: ICatalogCard = {
     itemName: beData?.name,
     category: beData?.category,
@@ -37,13 +47,21 @@ function formatCatalogItem(beData: any = {}) {
     description: beData?.description,
     //  UBAH NANTI
     isAvailable: beData?.stock > 1 ? true : false,
-    soldCount: 0
+    soldCount: 0,
+    image: imageLink,
   };
 
   return data;
 }
 
 const ItemDetail: React.FC<IItemDetail> = ({}) => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const { userRole } = authContext;
+
   const { data, isFetching, refetch } = useQuery(
     `fetch-items-by-id`,
     () => qfFetchItemsById(itemId || ""),
@@ -58,13 +76,15 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   const navigate = useNavigate();
   const { itemId } = useParams();
 
-  console.log('itemId',itemId)
+  console.log("itemId", itemId);
 
   const [openedEditItemModal, setOpenedEditItemModal] = useState(false);
   const [openedDeleteItemModal, setOpenedDeleteItemModal] = useState(false);
 
   // const tempAllData = dummyCatalogData;
-  const [currentItem, setCurrentItem] = useState<ICatalogCard>(formatCatalogItem(data?.data || {}));
+  const [currentItem, setCurrentItem] = useState<ICatalogCard>(
+    formatCatalogItem(data?.data || {})
+  );
 
   // useEffect(() => {
   //   setCurrentItem(
@@ -138,7 +158,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                       className=""
                     />
                     <Text className="text-primary-text">
-                      {toTitleCase(currentItem?.category)}
+                      {toTitleCase(categoryMap?.[currentItem?.category || "OTHER"])}
                     </Text>
                   </Group>
                   <CircleDivider />
@@ -185,40 +205,58 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                   {currentItem?.description}
                 </Text>
               </Stack>
-              <Group className="justify-between">
-                <Button
-                  className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
-                  // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
-                  size="md"
-                  disabled={currentItem?.isAvailable === false}
-                  onClick={() => {
-                    setOpenBuyModal(true);
-                  }}
-                >
-                  Beli
-                </Button>
-                <Group>
+              <Group>
+                {userRole == "BUYER" && (
                   <Button
-                    className="bg-white hover:bg-white/75 border border-red text-red w-32 duration-100 mt-4 rounded-sm"
+                    className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
+                    disabled={currentItem?.isAvailable === false}
                     onClick={() => {
-                      setOpenedDeleteItemModal(true);
+                      setOpenBuyModal(true);
                     }}
                   >
-                    Hapus
+                    Beli
                   </Button>
+                )}
+                {userRole == null && (
                   <Button
-                    className="bg-darker-orange hover:bg-orange w-32 duration-100 mt-4 rounded-sm"
+                    className="bg-purple hover:bg-light-purple duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
-                    onClick={() => {
-                      setOpenedEditItemModal(true);
-                    }}
+                    onClick={
+                      ()=>{
+                        navigate(MAINROUTES.login)
+                      }
+                    }
                   >
-                    Edit
+                    Log In untuk Membeli
                   </Button>
-                </Group>
+                )}
+                {userRole == "SELLER" && (
+                  <Group>
+                    <Button
+                      className="bg-white hover:bg-white/75 border border-red text-red w-32 duration-100 mt-4 rounded-sm"
+                      // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+                      size="md"
+                      onClick={() => {
+                        setOpenedDeleteItemModal(true);
+                      }}
+                    >
+                      Hapus
+                    </Button>
+                    <Button
+                      className="bg-darker-orange hover:bg-orange w-32 duration-100 mt-4 rounded-sm"
+                      // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+                      size="md"
+                      onClick={() => {
+                        setOpenedEditItemModal(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </Group>
+                )}
               </Group>
             </Stack>
           </Grid.Col>

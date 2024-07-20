@@ -44,7 +44,7 @@ const CatalogCard: React.FC<ICatalogCard> = ({
       </Group>
       <div className="w-full h-[240px] overflow-hidden">
         <img
-          src={image}
+          src={image==""? emptyImage : image}
           alt="Gambar Perlengkapan Bayi"
           className="w-full h-full object-cover"
         />

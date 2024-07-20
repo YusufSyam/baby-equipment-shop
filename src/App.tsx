@@ -211,10 +211,7 @@ function App() {
                 <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
               </Route>
               <Route element={<ProtectedRoute allowedRoles={["BUYER"]} />}>
-                <Route
-                  path={MAINROUTES.handleBuyerAccount}
-                  element={<HandleBuyerAccount />}
-                />
+                <Route path={MAINROUTES.handleBuyerAccount} element={<HandleBuyerAccount />} />
               </Route>
               <Route
                 path={`${MAINROUTES.home}/item/:itemId`}

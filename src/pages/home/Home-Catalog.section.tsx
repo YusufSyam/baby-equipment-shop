@@ -7,7 +7,7 @@ import {
   Text,
   useMantineTheme
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter, {
   TAvailabilityType,
@@ -26,6 +26,8 @@ import LoadingModal from "../../components/LoadingModal.component";
 import { categoryMap } from "../../utils/const/globalConst";
 import Loading from "../../components/Loading.component";
 import { qfFetchUserCredentials } from "../../utils/query/userQuery";
+import { AuthContext } from "../../context/AuthContext.context";
+import { BASE_URL } from "../../utils/const/api";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<any>;
@@ -33,11 +35,13 @@ export interface IHomeCatalog {
 
 function formatCatalogItem(beData: any[] = []) {
   const formatted = beData?.map((d) => {
-    // const imageLinkSplit = d?.thumbnail?.split("media\\");
-    // const imageLink =
-    //   imageLinkSplit.length > 1
-    //     ? `${BASE_URL}/uploaded-file/${imageLinkSplit[1]}`
-    //     : "";
+    // const imageLinkSplit = d?.thumbnail?.split("/media[\/\\]/");
+    const imageLinkRaw = d?.thumbnail?.replace(/^media[\/\\]/, "");
+    const imageLink =
+      imageLinkRaw !== ""
+        ? `${BASE_URL}/uploaded-file/${imageLinkRaw}`
+        : "";
+    console.log("imageLink", imageLink);
 
     const data: ICatalogCard = {
       id: d?.itemId,
@@ -47,7 +51,8 @@ function formatCatalogItem(beData: any[] = []) {
       description: d?.description,
       //  UBAH NANTI
       isAvailable: d?.stock > 0 ? true : false,
-      soldCount: 0
+      soldCount: 0,
+      image: imageLink
     };
 
     return data;
@@ -57,6 +62,13 @@ function formatCatalogItem(beData: any[] = []) {
 }
 
 const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const { userRole } = authContext;
+
   const { data, isFetching, refetch } = useQuery(
     `fetch-all-items`,
     qfFetchAllItems,
@@ -218,18 +230,19 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           </Text>
         </Stack>
       </Group>
-
-      <Button
-        onClick={() => {
-          setOpenedAddItemModal(true);
-        }}
-        ref={targetRef}
-        className="self-end mx-12 bg-dark-purple hover:bg-dark-purple text-white tracking-5 duration-100 -mt-4 rounded-sm"
-        // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
-        size="md"
-      >
-        Tambah Barang Baru
-      </Button>
+      {userRole == "SELLER" && (
+        <Button
+          onClick={() => {
+            setOpenedAddItemModal(true);
+          }}
+          ref={targetRef}
+          className="self-end mx-12 bg-dark-purple hover:bg-dark-purple text-white tracking-5 duration-100 -mt-4 rounded-sm"
+          // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+          size="md"
+        >
+          Tambah Barang Baru
+        </Button>
+      )}
       <Grid className="mx-8" gutter={32} columns={24}>
         <Grid.Col span={5} className="">
           <CatalogFilter
