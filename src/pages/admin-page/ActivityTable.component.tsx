@@ -9,7 +9,10 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import React from "react";
-import { IconCalendarEmptyOutline, IconSearchOff } from "../../assets/icon/Fluent";
+import {
+  IconCalendarEmptyOutline,
+  IconSearchOff
+} from "../../assets/icon/Fluent";
 import Loading from "../../components/Loading.component";
 
 export interface ILFPHeaderButton {
@@ -46,24 +49,21 @@ export interface IFETableHeadingProps {
 
 type TableRowCellKey = string;
 interface IActivityTableComponentProps {
-  tableTitle: string;
   tableHeadings: IActivityTableHeadingProps[];
   tableRows: IActivityTableRowColumnProps[];
   noDataMsg: string;
   dataPerPageAmt: number;
   isLoading: boolean;
   actions?: IActivityTableAction[];
-  onSearch?: (value: string) => void;
   activePage: number;
   onPageChange?: (page: number) => void;
   actionOrientation?: "vertical" | "horizontal";
   actionColumnWidth?: string;
   actionColumnRounded?: boolean;
-  onProgressData?: number;
-  tableHeaderAction?: Array<ILFPHeaderButton>;
-  withSearch?: boolean;
   onEachRowHovered?: (idx: number) => void;
   showTableHeader?: boolean;
+  showPagination?: boolean;
+  noDataMsgHeader?: string;
 }
 
 export interface IActivityTableHeadingProps {
@@ -129,7 +129,9 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
   actionColumnWidth = "fit-content",
   actionColumnRounded = true,
   onEachRowHovered,
-  showTableHeader = false
+  showTableHeader = false,
+  showPagination = true,
+  noDataMsgHeader,
 }) => {
   const headKeys = tableHeadings.map((th) => ({
     key: th.cellKey,
@@ -256,13 +258,15 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                       align="center"
                       className="text-2xl text-primary-text-500 font-poppins"
                     >
-                      Tidak Ada Riwayat Transaksi
+                      {noDataMsgHeader || "Tidak Ada Riwayat Transaksi"}
+                      
                     </Text>
                     <Text
                       align="center"
                       className="text-secondary-text-500 text-[14px] font-poppins"
                     >
-                      {noDataMsg || "Data transaksi belum ada atau masukkan kata kunci yang lain"}
+                      {noDataMsg ||
+                        "Data transaksi belum ada atau masukkan kata kunci yang lain"}
                     </Text>
                   </td>
                 ) : (
@@ -285,7 +289,7 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                   (activePage - 1) * dataPerPageAmt + dataPerPageAmt
                 )
                 .map((row: IActivityTableRowColumnProps, idx: number) => {
-                  console.log('row?.id',row?.id)
+                  console.log("row?.id", row?.id);
                   return (
                     <tr
                       key={idx + "row-"}
@@ -294,7 +298,9 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                           onEachRowHovered(idx);
                         }
                       }}
-                      className={`${idx%2==0? "bg-white" : "bg-secondary/30"}`}
+                      className={`${
+                        idx % 2 == 0 ? "bg-white" : "bg-secondary/30"
+                      }`}
                     >
                       {headKeys.map((th, e) => {
                         const col = row[th.key];
@@ -409,14 +415,16 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
           </tbody>
         </Table>
       </div>
-      <footer className="mt-5">
-        <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
-          <Group position="apart">{paginationComp}</Group>
-        </MediaQuery>
-        <MediaQuery largerThan={"md"} styles={{ display: "none" }}>
-          <Stack align={"center"}>{paginationComp}</Stack>
-        </MediaQuery>
-      </footer>
+      {showPagination && (
+        <footer className="mt-5">
+          <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+            <Group position="apart">{paginationComp}</Group>
+          </MediaQuery>
+          <MediaQuery largerThan={"md"} styles={{ display: "none" }}>
+            <Stack align={"center"}>{paginationComp}</Stack>
+          </MediaQuery>
+        </footer>
+      )}
     </div>
   );
 };

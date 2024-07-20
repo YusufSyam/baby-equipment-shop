@@ -7,7 +7,16 @@ import {
   Text,
   useMantineTheme
 } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import React, { useContext, useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { IconSearchOff } from "../../assets/icon/Fluent";
+import AddNewCatalogModal from "../../components/AddNewCatalogModal.component";
+import Loading from "../../components/Loading.component";
+import LoadingModal from "../../components/LoadingModal.component";
+import { AuthContext } from "../../context/AuthContext.context";
+import { BASE_URL } from "../../utils/const/api";
+import { qfAddItem, qfFetchAllItems } from "../../utils/query/itemQuery";
 import CatalogCard, { ICatalogCard } from "./Home-CatalogCard.component";
 import CatalogFilter, {
   TAvailabilityType,
@@ -15,19 +24,6 @@ import CatalogFilter, {
   TPriceType
 } from "./Home-CatalogFilter.section";
 import CatalogSort, { TSortBy } from "./Home-CatalogSort.section";
-import { dummyCatalogData } from "../../utils/const/dummy";
-import { number } from "yup";
-import { useDebouncedValue } from "@mantine/hooks";
-import { IconSearchOff } from "../../assets/icon/Fluent";
-import AddNewCatalogModal from "../../components/AddNewCatalogModal.component";
-import { useMutation, useQuery } from "react-query";
-import { qfAddItem, qfFetchAllItems } from "../../utils/query/itemQuery";
-import LoadingModal from "../../components/LoadingModal.component";
-import { categoryMap } from "../../utils/const/globalConst";
-import Loading from "../../components/Loading.component";
-import { qfFetchUserCredentials } from "../../utils/query/userQuery";
-import { AuthContext } from "../../context/AuthContext.context";
-import { BASE_URL } from "../../utils/const/api";
 
 export interface IHomeCatalog {
   targetRef: React.MutableRefObject<any>;
@@ -38,9 +34,7 @@ function formatCatalogItem(beData: any[] = []) {
     // const imageLinkSplit = d?.thumbnail?.split("/media[\/\\]/");
     const imageLinkRaw = d?.thumbnail?.replace(/^media[\/\\]/, "");
     const imageLink =
-      imageLinkRaw !== ""
-        ? `${BASE_URL}/uploaded-file/${imageLinkRaw}`
-        : "";
+      imageLinkRaw !== "" ? `${BASE_URL}/uploaded-file/${imageLinkRaw}` : "";
     console.log("imageLink", imageLink);
 
     const data: ICatalogCard = {
@@ -235,7 +229,6 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           onClick={() => {
             setOpenedAddItemModal(true);
           }}
-          ref={targetRef}
           className="self-end mx-12 bg-dark-purple hover:bg-dark-purple text-white tracking-5 duration-100 -mt-4 rounded-sm"
           // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
           size="md"
@@ -243,7 +236,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
           Tambah Barang Baru
         </Button>
       )}
-      <Grid className="mx-8" gutter={32} columns={24}>
+      <Grid className="mx-8" gutter={32} columns={24} ref={targetRef}>
         <Grid.Col span={5} className="">
           <CatalogFilter
             onSearch={handleSearchChange}

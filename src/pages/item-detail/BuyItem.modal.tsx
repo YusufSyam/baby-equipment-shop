@@ -17,6 +17,8 @@ import {
 import { generateWhatsappTemplate } from "../../utils/functions/string";
 import { IconInformationCircleOutline } from "../../assets/icon/Fluent";
 import InfoNotification from "../../components/InfoNotification.component";
+import { IPostNewCart } from "../../utils/query/cartsQuery";
+import { UseMutationResult, useQueryClient } from "react-query";
 
 export interface IBuyItemModal {
   opened: boolean;
@@ -24,6 +26,8 @@ export interface IBuyItemModal {
   itemName?: string;
   category?: string;
   price: number;
+  postCartMutation: UseMutationResult<any, unknown, IPostNewCart, unknown>;
+  itemId: string;
 }
 
 const BuyItemModal: React.FC<IBuyItemModal> = ({
@@ -31,10 +35,14 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
   setOpened,
   itemName = "Nama Item",
   category,
-  price
+  price,
+  postCartMutation,
+  itemId
 }) => {
   const [totalPrice, setTotalPrice] = useState(price);
   const [buyQuantity, setBuyQuantity] = useState(1);
+  
+  const queryClient = useQueryClient();
 
   const theme = useMantineTheme();
 
@@ -47,6 +55,23 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
       setBuyQuantity(1);
     }
   }, [opened]);
+
+  function handleOrder() {
+    postCartMutation.mutate({ itemId: itemId, quantity: buyQuantity });
+    
+    // WhatsappMessageOpenInNewTab(
+    //   SELLER_WHATSAPP_NUMBER,
+    //   generateWhatsappTemplate(
+    //     "[buyerName]",
+    //     "[invoiceId]",
+    //     itemName,
+    //     price,
+    //     buyQuantity,
+    //     totalPrice
+    //   )
+    // );
+    setOpened(false)
+  }
   return (
     <ConfirmationModal
       opened={opened}
@@ -56,19 +81,7 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
       onClose={() => {}}
       minWidth={700}
       yesButtonLabel="Beli"
-      onSubmit={() => {
-        WhatsappMessageOpenInNewTab(
-          SELLER_WHATSAPP_NUMBER,
-          generateWhatsappTemplate(
-            "[buyerName]",
-            "[invoiceId]",
-            itemName,
-            price,
-            buyQuantity,
-            totalPrice
-          )
-        );
-      }}
+      onSubmit={handleOrder}
     >
       <Stack className="gap-2 my-4">
         <Group>

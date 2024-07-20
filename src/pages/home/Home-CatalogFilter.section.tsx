@@ -1,10 +1,23 @@
-import { Checkbox, Divider, Group, Radio, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Group,
+  Radio,
+  Stack,
+  Text,
+  useMantineTheme
+} from "@mantine/core";
 import React, { useState } from "react";
-import { IconFilterFilled, IconFilterOutlined } from "../../assets/icon/Fluent";
+import {
+  IconCloseOutline,
+  IconFilterFilled,
+  IconFilterOutlined
+} from "../../assets/icon/Fluent";
 import { MySearchInput } from "../../components/FormInput.component";
 
 export interface ICatalogFilter {
-  onSearch: (e: React.ChangeEvent<HTMLInputElement>)=>void;
+  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
   category: TCategoryType[];
   setCategory: React.Dispatch<React.SetStateAction<TCategoryType[]>>;
   filterPrice: TPriceType;
@@ -28,12 +41,14 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
   filterAvailability,
   setFilterAvailability
 }) => {
-  const theme= useMantineTheme();
+  const theme = useMantineTheme();
   return (
     <Stack className="gap-8">
       <Group className="gap-2">
-        <IconFilterOutlined color={theme.colors['primary-text'][5]} />
-        <Text className="text-primary-text-500 font-roboto-semibold">Filter</Text>
+        <IconFilterOutlined color={theme.colors["primary-text"][5]} />
+        <Text className="text-primary-text-500 font-roboto-semibold">
+          Filter
+        </Text>
       </Group>
       <Stack className="gap-8">
         <Stack className="gap-2 bg-secondary/50 py-2 pb-4 px-4 rounded-sm">
@@ -131,6 +146,20 @@ const CatalogFilter: React.FC<ICatalogFilter> = ({
             </Radio.Group>
           </Stack>
         </Stack>
+
+        <Button
+          onClick={() => {
+            setCategory(["OTHER", "ACCESSORIES", "CLOTHES"]);
+            setFilterPrice("0");
+            setFilterAvailability("semua");
+          }}
+          className="w-full bg-purple hover:bg-dark-purple text-white tracking-5 duration-100 -mt-4 rounded-sm"
+          // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
+          size="sm"
+          leftIcon={<IconCloseOutline size={16} color="white" />}
+        >
+          Bersihkan Filter
+        </Button>
       </Stack>
     </Stack>
   );

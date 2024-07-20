@@ -214,7 +214,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
               color="#25D366"
               className="self-center"
             />
-            <Text className="text-sm text-primary-text">Chat</Text>
+            <Text className="text-sm text-secondary-text">Chat</Text>
           </Stack>
         );
       },
@@ -257,7 +257,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
               )
             }
 
-            <Text className="text-sm text-primary-text">Complete</Text>
+            <Text className="text-sm text-secondary-text">Complete</Text>
           </Stack>
         );
       },
@@ -293,8 +293,8 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
               ) : (
                 <IconCloseOutline
                   size={30}
-                  color="white"
-                  className="bg-red hover:bg-red/80 duration-100 rounded-full p-[6px] self-center"
+                  color={theme?.colors["red"][5]}
+                  className="bg-error/25 hover:bg-error/40 duration-100 rounded-full p-[6px] self-center"
                   onClick={() => {
                     setSelectedRow(row.id.label);
                     setIsCancelItemModalOpened(true);
@@ -302,7 +302,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                 />
               )
             }
-            <Text className="text-sm text-primary-text">Cancel</Text>
+            <Text className="text-sm text-secondary-text">Cancel</Text>
           </Stack>
         );
       },
@@ -450,18 +450,12 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           noDataMsg=""
           isLoading={false}
           dataPerPageAmt={amtDataPerPage}
-          onSearch={() => {
-            // console.log("Searching for: ", value);
-          }}
           onPageChange={setActivePage}
           activePage={activePage}
           actions={actions}
-          tableTitle="Deteksi Terbaru"
           tableRows={tableRows}
           tableHeadings={tableHeadings}
-          withSearch={false}
           actionOrientation="horizontal"
-          onProgressData={0}
           showTableHeader
           actionColumnWidth="240px"
           actionColumnRounded={false}

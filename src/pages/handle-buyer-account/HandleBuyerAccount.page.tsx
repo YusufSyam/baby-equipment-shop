@@ -185,20 +185,6 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   );
 
   const actions: IActivityTableAction[] = [
-    // {
-    //   label: "1",
-    //   eachButtonRounded: false,
-
-    //   backgroundColor: "purple",
-    //   // isDisabled: (row: any) => {
-    //   //   return row.activity.label == "return";
-    //   // },
-    //   // Row disini itu row yang ada di table rows
-    //   onClick: (row: any) => {
-    //     setSelectedRow(row.id.label);
-    //     setIsProcessItemModalOpened(true);
-    //   }
-    // },
     {
       label: "",
       type: "element",
@@ -216,7 +202,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
               color="#25D366"
               className="self-center"
             />
-            <Text className="text-sm text-primary-text">Chat</Text>
+            <Text className="text-sm text-secondary-text">Chat</Text>
           </Stack>
         );
       },
@@ -296,18 +282,12 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
           noDataMsg=""
           isLoading={false}
           dataPerPageAmt={amtDataPerPage}
-          onSearch={() => {
-            // console.log("Searching for: ", value);
-          }}
           onPageChange={setActivePage}
           activePage={activePage}
           actions={actions}
-          tableTitle="Deteksi Terbaru"
           tableRows={tableRows}
           tableHeadings={tableHeadings}
-          withSearch={false}
           actionOrientation="horizontal"
-          onProgressData={0}
           showTableHeader
           actionColumnWidth="150px"
           actionColumnRounded={false}

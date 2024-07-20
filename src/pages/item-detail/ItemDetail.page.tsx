@@ -23,13 +23,18 @@ import { ICatalogCard } from "../home/Home-CatalogCard.component";
 import { toTitleCase } from "../../utils/functions/string";
 import EditCatalogModal from "../../components/EditCatalogModal.component";
 import WarningModal from "../../components/WarningModal.component";
-import { qfDeleteItem, qfEditItem, qfFetchItemsById } from "../../utils/query/itemQuery";
+import {
+  qfDeleteItem,
+  qfEditItem,
+  qfFetchItemsById
+} from "../../utils/query/itemQuery";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import LoadingModal from "../../components/LoadingModal.component";
 import { AuthContext } from "../../context/AuthContext.context";
 import { categoryMap } from "../../utils/const/globalConst";
 import { MAINROUTES } from "../../utils/const/routes";
 import { BASE_URL } from "../../utils/const/api";
+import { qfAddCart } from "../../utils/query/cartsQuery";
 
 export interface IItemDetail {}
 
@@ -71,15 +76,25 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   );
 
   const queryClient = useQueryClient();
+
   const deleteItemMutation = useMutation("delete-Items", qfDeleteItem, {
     onSuccess() {
+      queryClient.invalidateQueries("fetch-all-items");
       navigate(MAINROUTES.home);
     }
   });
-  
+
   const putEditItemMutation = useMutation("put-edit-item", qfEditItem, {
     onSuccess() {
       refetch();
+    }
+  });
+
+  const postCartMutation = useMutation("post-cart", qfAddCart, {
+    onSuccess() {
+      refetch();
+
+      queryClient.invalidateQueries("fetch-all-carts");
     }
   });
 
@@ -109,14 +124,20 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
       <Stack className="mb-32">
-        <LoadingModal opened={isFetching || deleteItemMutation?.isLoading || putEditItemMutation?.isLoading} />
+        <LoadingModal
+          opened={
+            isFetching ||
+            deleteItemMutation?.isLoading ||
+            putEditItemMutation?.isLoading ||
+            postCartMutation?.isLoading
+          }
+        />
         <WarningModal
           opened={openedDeleteItemModal}
           setOpened={setOpenedDeleteItemModal}
           title={"Hapus Barang"}
           onClose={() => {}}
           onSubmit={() => {
-            queryClient.invalidateQueries("fetch-all-items");
             deleteItemMutation.mutate(currentItem?.id || "");
           }}
         />
@@ -143,6 +164,8 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
           price={currentItem?.price || 0}
           category={currentItem?.category}
           itemName={currentItem?.itemName}
+          postCartMutation={postCartMutation}
+          itemId={currentItem?.id || ""}
         />
         <Grid className=" mx-12 mt-4" columns={24}>
           <Grid.Col span={15}>
