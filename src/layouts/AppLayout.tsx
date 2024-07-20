@@ -1,10 +1,13 @@
 import { AppShell, Button, Stack, Text } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "./Header.layout";
 import Footer from "./Footer.layout";
 import { IconShoppingTroll } from "../assets/icon/Fluent";
 import ConfirmationModal from "../components/ConfirmationModal.component";
 import OrderCartModal from "../components/OrderCartModal.component";
+import { useQuery } from "react-query";
+import { qfFetchBuyerCarts, qfFetchSellerCarts } from "../utils/query/cartsQuery";
+import { AuthContext } from "../context/AuthContext.context";
 // import Header from "./headers/Header.layout";
 
 export type TPageName = "Beranda" | "";
@@ -20,24 +23,75 @@ const AppLayout: React.FC<IAppLayout> = ({
   activePage,
   headerBackgroundType = "transparent"
 }) => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const { userRole } = authContext;
+
   const [isOrderModalOpened, setIsOrderModalOpened] = useState(false);
+
+  const [cartList, setCartList] = useState<any[]>([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
+
+  const { data, isFetching, refetch } = useQuery(
+    `fetch-buyer-carts`,
+    qfFetchBuyerCarts,
+    {
+      enabled: shouldFetch,
+      onSuccess(data) {
+        console.log("TERFETCH");
+        setCartList(data?.data);
+      }
+    }
+  );
+
+  const { data:dataSellerCarts, isFetching:isFetchingSellerCarts, refetch:refetchSellerCarts, } = useQuery(
+    `fetch-seller-carts`,
+    qfFetchSellerCarts,
+    // {
+    //   enabled: shouldFetch,
+    //   onSuccess(data) {
+    //     console.log("TERFETCH");
+    //     setCartList(data?.data);
+    //   }
+    // }
+  );
+
+  console.log('dataSellerCarts',dataSellerCarts)
+
+  useEffect(() => {
+    if (userRole === "BUYER") {
+      setShouldFetch(true);
+    }
+  }, [userRole]);
+
   return (
     <Stack className="">
-      <OrderCartModal
-        setOpened={setIsOrderModalOpened}
-        opened={isOrderModalOpened}
-      ></OrderCartModal>
-
-      <Button
-        className="z-50 fixed bottom-5 right-8 w-fit bg-dark-purple/75 hover:bg-dark-purple text-white tracking-5 duration-100 rounded-sm"
-        size="lg"
-        leftIcon={<IconShoppingTroll size={24} color="white" />}
-        onClick={() => {
-          setIsOrderModalOpened(true);
-        }}
-      >
-        Order Sekarang
-      </Button>
+      {userRole === "BUYER" && (
+        <>
+          <OrderCartModal
+            setOpened={setIsOrderModalOpened}
+            opened={isOrderModalOpened}
+            cartList={cartList}
+            setCartList={setCartList}
+            refetch={refetch}
+          />
+          {cartList?.length > 0 && (
+            <Button
+              className="z-50 fixed bottom-5 right-8 w-fit bg-dark-purple/75 hover:bg-dark-purple text-white tracking-5 duration-100 rounded-sm"
+              size="lg"
+              leftIcon={<IconShoppingTroll size={24} color="white" />}
+              onClick={() => {
+                setIsOrderModalOpened(true);
+              }}
+            >
+              Order Sekarang ({cartList?.length})
+            </Button>
+          )}
+        </>
+      )}
 
       {/* Header */}
       <Header headerBackgroundType={headerBackgroundType} />

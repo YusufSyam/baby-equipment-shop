@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ConfirmationModal from "./ConfirmationModal.component";
 import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import { useMutation, useQuery } from "react-query";
-import { qfDeleteCart, qfFetchAllCarts } from "../utils/query/cartsQuery";
+import { qfDeleteCart, qfFetchBuyerCarts } from "../utils/query/cartsQuery";
 import { IconCloseOutline, IconOutward } from "../assets/icon/Fluent";
 import ActivityTableComponent, {
   IActivityTableAction,
@@ -13,10 +13,14 @@ import { formatDateNormal } from "../utils/functions/date.function";
 import OrderStatusComp from "./OrderStatus.component";
 import { useNavigate } from "react-router-dom";
 import { categoryMap } from "../utils/const/globalConst";
+import { qfPostOrder } from "../utils/query/orderQuery";
 
 export interface IOrderCartModal {
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  cartList: any[];
+  setCartList: React.Dispatch<React.SetStateAction<any[]>>;
+  refetch: any;
 }
 
 const tableHeadings: IFETableHeadingProps[] = [
@@ -52,19 +56,25 @@ const tableHeadings: IFETableHeadingProps[] = [
   }
 ];
 
-const OrderCartModal: React.FC<IOrderCartModal> = ({ opened, setOpened }) => {
+const OrderCartModal: React.FC<IOrderCartModal> = ({
+  opened,
+  setOpened,
+  cartList,
+  refetch,
+  setCartList
+}) => {
   const amtDataPerPage = 1000000000;
   const [activePage, setActivePage] = useState<number>(1);
 
-  const { data, isFetching, refetch } = useQuery(
-    `fetch-all-carts`,
-    qfFetchAllCarts,
-    {
-      onSuccess(data) {
-        setCartList(data?.data);
-      }
+  const [isOrderSuccessModalOpened, setIsOrderSuccessModalOpened] =
+    useState(false);
+
+  const postOrderMutation = useMutation("post-order", qfPostOrder, {
+    onSuccess() {
+      console.log("sukses");
+      setIsOrderSuccessModalOpened(true);
     }
-  );
+  });
 
   const deleteCartMutation = useMutation("delete-cart", qfDeleteCart, {
     onSuccess() {
@@ -75,10 +85,9 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({ opened, setOpened }) => {
   const navigate = useNavigate();
   const theme = useMantineTheme();
 
-  const [cartList, setCartList] = useState<any[]>([]);
-
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const cartIdList = cartList.map((cartItem) => cartItem.cartId);
+  console.log("cartIdList", cartIdList);
   useEffect(() => {
     setTotalPrice(
       cartList.reduce((total, cartItem) => {
@@ -172,8 +181,27 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({ opened, setOpened }) => {
       yesButtonLabel="Order"
       minWidth={800}
       disableYesButton={cartList?.length <= 0}
+      onSubmit={() => {
+        postOrderMutation.mutate(cartIdList);
+      }}
     >
       <Stack>
+        <ConfirmationModal
+          title={"Order Berhasil"}
+          opened={isOrderSuccessModalOpened}
+          setOpened={setIsOrderSuccessModalOpened}
+          onSubmit={() => {
+            setOpened(false);
+            setIsOrderSuccessModalOpened(false)
+          }}
+          yesButtonLabel="Konfirmasi"
+          onClose={() => {}}
+        >
+          <Text className="text-secondary-text-500">
+            Order berhasil dibuat, silahkan tunggu konfirmasi dari admin untuk
+            memproses orderan lebih lanjut
+          </Text>
+        </ConfirmationModal>
         <Text className="text-secondary-text-500">
           Daftar barang yang dimasukkan dalam keranjang. Klik tombol "order"
           untuk melakukan pembelian.

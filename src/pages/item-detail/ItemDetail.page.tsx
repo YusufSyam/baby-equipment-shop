@@ -94,7 +94,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
     onSuccess() {
       refetch();
 
-      queryClient.invalidateQueries("fetch-all-carts");
+      queryClient.invalidateQueries("fetch-buyer-carts");
     }
   });
 

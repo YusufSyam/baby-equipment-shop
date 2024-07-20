@@ -24,8 +24,21 @@ export async function qfAddCart(values: IPostNewCart) {
   return data;
 }
 
-export async function qfFetchAllCarts() {
+export async function qfFetchBuyerCarts() {
   const response = await fetch(`${BASE_URL}/buyers/carts`, {
+    headers: {
+      ...getTokenAuthorizationHeader()
+    }
+  });
+  console.log(response, "response");
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+  return response.json();
+}
+
+export async function qfFetchSellerCarts() {
+  const response = await fetch(`${BASE_URL}/sellers/carts`, {
     headers: {
       ...getTokenAuthorizationHeader()
     }
