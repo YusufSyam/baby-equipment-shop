@@ -16,6 +16,8 @@ import { UseMutationResult, useMutation } from "react-query";
 import LoadingModal from "./LoadingModal.component";
 import { qfUploadFile } from "../utils/query/files-query";
 import { IPostNewItem } from "../utils/query/itemQuery";
+import ConfirmationModalForm from "./ConfirmationModalForm.component";
+import InfoNotification from "./InfoNotification.component";
 
 export interface IAddNewCatalogModal {
   opened: boolean;
@@ -27,7 +29,7 @@ export interface IAddNewCatalogItemInterfaces {
   itemName: string;
   price: number;
   category: string;
-  isAvailable: boolean;
+  isAvailable: string;
   description: string;
   image: File;
 }
@@ -35,15 +37,17 @@ export interface IAddNewCatalogItemInterfaces {
 export const AddNewCatalogItemSchema = yup.object({
   itemName: yup.string().required("Input nama barang terlebih dahulu"),
   category: yup.string().required("Input kategori terlebih dahulu"),
+  description: yup.string().required("Input deskripsi terlebih dahulu"),
   isAvailable: yup
     .string()
     .required("Input ketersediaan barang terlebih dahulu"),
   price: yup.number().required("Input harga terlebih dahulu"),
   image: yup
-    .object({
-      name: yup.string().required("Input file gambar  terlebih dahulu")
+    .mixed()
+    .required("Input file gambar terlebih dahulu")
+    .test("fileRequired", "Input file gambar terlebih dahulu", (value) => {
+      return value && value instanceof File;
     })
-    .nullable()
 });
 
 const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
@@ -55,14 +59,13 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
     validate: yupResolver(AddNewCatalogItemSchema)
   });
 
-  const { getInputProps, errors, values, reset, setValues } = form;
+  const { getInputProps, errors, values, reset, setValues, validate } = form;
 
   const postFileMutation = useMutation("post-upload-file", qfUploadFile, {
     onSuccess(data) {
       const fileName = data?.data;
 
-      console.log(data,'filename')
-
+      console.log(data, "filename");
 
       postAddItemMutation.mutate({
         name: values?.itemName,
@@ -70,7 +73,7 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
         price: values?.price,
         category: values?.category,
         description: values?.description || "",
-        thumbnail: fileName,
+        thumbnail: fileName
         // thumbnail: "",
       });
     }
@@ -84,12 +87,21 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
     }
   }, [opened]);
 
-  function handleAddNewItem() {
-    postFileMutation.mutate(values?.image);
-  }
+  const handleAddNewItem = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const validationResults  = validate();
+    if (!validationResults.hasErrors) {
+      console.log("FORMFORMFORM SUKSES Form values:", form.values);
+
+      postFileMutation.mutate(values?.image);
+    } else {
+      console.log("FORMFORMFORM ERROR Validation errors:", validationResults );
+    }
+  };
 
   return (
-    <ConfirmationModal
+    <ConfirmationModalForm
       opened={opened}
       setOpened={setOpened}
       title={"Tambahkan Perlengkapan Baru"}
@@ -155,6 +167,12 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
           {...getInputProps("isAvailable")}
           error={errors["isAvailable" as keyof IAddNewCatalogItemInterfaces]}
           withAsterisk
+          styles={{
+            error: {
+              fontSize: "14px",
+              marginTop: "4px"
+            }
+          }}
         >
           <Group mt="xs">
             <Radio color="green.5" value={"tersedia"} label="Tersedia" />
@@ -173,15 +191,16 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
           {...getInputProps("description")}
           error={errors["description" as keyof IAddNewCatalogItemInterfaces]}
           defaultValue={""}
+          required
         />
 
         <DocumentInput
           withDelete
           // {...getInputProps("image")}
           required
-          accept={[MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.mp4]}
+          accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
           label="Gambar"
-          placeholder="Upload File"
+          placeholder="Upload File (png atau jpg)"
           description="Ekstensi file png, jpeg atau mp4. Ukuran file maksimal 100 MB."
           // error={
           //   errors[`${"image" as keyof IAddNewCatalogItemInterfaces}.name`]
@@ -191,8 +210,15 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
           error={errors["image" as keyof IAddNewCatalogItemInterfaces]}
           maxSize={100_000_000}
         />
+        <div className="px-2 mt-4 mb-1">
+
+        <InfoNotification
+          information="Field dengan tanda (*) wajib diisi"
+          iconSize="small"
+        />
+        </div>
       </Stack>
-    </ConfirmationModal>
+    </ConfirmationModalForm>
   );
 };
 export default AddNewCatalogModal;

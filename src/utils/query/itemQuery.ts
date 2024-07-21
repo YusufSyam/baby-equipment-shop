@@ -1,4 +1,3 @@
-import { IAddNewCatalogItemInterfaces } from "../../components/AddNewCatalogModal.component";
 import { BASE_URL, getTokenAuthorizationHeader } from "../const/api";
 
 const endpoint = `${BASE_URL}/items`;

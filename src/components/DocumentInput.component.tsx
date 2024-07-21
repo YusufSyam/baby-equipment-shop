@@ -50,7 +50,8 @@ const DocumentInput: React.FC<IDocumentInputProps> = ({
   accept,
   maxSize,
   defaultUrl,
-  defaultName
+  defaultName,
+  error
 }) => {
   if (value?.name === "undefined" || value?.size === 0) {
     value = undefined;
@@ -70,23 +71,11 @@ const DocumentInput: React.FC<IDocumentInputProps> = ({
     setAlert("");
   }
 
-  function onDelete() {
-    setDBFile({ defaultName: "", defaultUrl: "" });
-    onChange(undefined);
-  }
-
-  function onPreviewClick() {
-    if (!value && !!dbFile.defaultUrl) {
-      window.open(dbFile.defaultUrl, "_blank");
-    }
-    if (!value) return;
-    const url = URL.createObjectURL(value);
-    window.open(url || defaultUrl, "_blank");
-  }
-
   function handleReject(val: any[]) {
     setAlert(val[0]?.errors?.[0].message);
   }
+
+  console.log("errpr", error);
 
   return (
     <>
@@ -107,8 +96,13 @@ const DocumentInput: React.FC<IDocumentInputProps> = ({
         <Dropzone
           onDrop={handleDrop}
           className={
-            `items-center gap-[1px] border border-secondary-text/50 py-8 mt-1 rounded-sm border-solid bg-secondary/50` +
-            (disabled == true ? `cursor-context-menu` : ``)
+            `items-center gap-[1px] border py-8 mt-1 rounded-sm border-solid bg-secondary/50
+            ${
+              error == null || error == ""
+                ? "border-secondary-text/50"
+                : "border-error"
+            }
+            ` + (disabled == true ? `cursor-context-menu` : ``)
           }
           disabled={disabled}
           accept={accept}
@@ -130,6 +124,7 @@ const DocumentInput: React.FC<IDocumentInputProps> = ({
             </Text>
           </Group>
         </Dropzone>
+        {error && <Text className="text-red text-md mt-1">{error}</Text>}
         {/* {((!!value && value?.name !== "undefined") || !!dbFile.defaultName) && (
           <Group grow spacing={"md"} className="mt-4">
             <Button
