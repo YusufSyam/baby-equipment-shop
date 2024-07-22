@@ -12,12 +12,17 @@ export interface IOrderStatusComp {
   orderStatus: TOrderStatus;
 }
 
-export type TOrderStatus = "PAID" | "UNPAID" | "INPROCESS" | "CANCELLED";
+export type TOrderStatus =
+  | "PAID"
+  | "UNPAID"
+  | "INPROCESS"
+  | "CANCELLED"
+  | "COMPLETED";
 
 const OrderStatusComp: React.FC<IOrderStatusComp> = ({
   orderStatus = "INPROCESS"
 }) => {
-  if (orderStatus === "PAID") {
+  if (orderStatus === "PAID" || orderStatus === "COMPLETED") {
     return (
       <Stack className="gap-1 w-28">
         <IconCheckOutline

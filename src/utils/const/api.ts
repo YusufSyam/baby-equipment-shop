@@ -1,3 +1,4 @@
+
 const SERVER_NAME = "http://localhost:7892";
 export const BASE_URL = `${SERVER_NAME}/api`;
 
@@ -16,11 +17,10 @@ export function getTokenAuthorizationHeader() {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json"
     };
-  }else{
+  } else {
     return {
       Authorization: ``,
       "Content-Type": "application/json"
     };
-
   }
 }

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
-import { Checkbox, Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  Checkbox,
+  Divider,
+  Group,
+  Stack,
+  Text,
+  useMantineTheme
+} from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import ActivityTableComponent, {
   IActivityTableAction,
@@ -8,7 +15,7 @@ import ActivityTableComponent, {
   IFETableRowColumnProps
 } from "./ActivityTable.component";
 import { formatDateNormal } from "../../utils/functions/date.function";
-import { dummyActivityData } from "../../utils/const/dummy";
+import { dummyActivityData, dummySellerCarts } from "../../utils/const/dummy";
 import {
   IconCheckOutline,
   IconCloseOutline,
@@ -25,8 +32,16 @@ import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function
 import ConfirmationModal from "../../components/ConfirmationModal.component";
 import WarningModal from "../../components/WarningModal.component";
 import { MySearchInput } from "../../components/FormInput.component";
+import CircleDivider from "../../components/CircleDivider.component";
 
 export interface IAdminPage {}
+
+export interface IOrder {
+  orderId: string;
+  orderStatus: "INPROCESS" | "COMPLETED" | "CANCELLED";
+  totalPrice: number;
+  cartList: any[];
+}
 
 export interface IActivityTableRow {
   invoice?: string;
@@ -50,22 +65,22 @@ const tableHeadings: IFETableHeadingProps[] = [
     cellKey: "no"
   },
   {
+    label: "Pembeli",
+    sortable: true,
+    textAlign: "left",
+    cellKey: "buyer"
+  },
+  {
     label: "Barang",
     sortable: true,
     textAlign: "left",
     cellKey: "item"
   },
   {
-    label: "Detail Pembelian",
+    label: "Total Harga",
     sortable: true,
     textAlign: "left",
-    cellKey: "buyer"
-  },
-  {
-    label: "Harga",
-    sortable: true,
-    textAlign: "left",
-    cellKey: "priceDetail"
+    cellKey: "totalPrice"
   },
   {
     label: "Status",
@@ -96,10 +111,9 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [query] = useDebouncedValue(searchTerm, 500);
 
-  const [defaultData, setDefaultData] = useState(dummyActivityData);
+  const [defaultData, setDefaultData] = useState(dummySellerCarts);
 
-  const [activityList, setActivityList] =
-    useState<IActivityTableRow[]>(defaultData);
+  const [activityList, setActivityList] = useState<IOrder[]>(defaultData);
 
   const [selectedRow, setSelectedRow] = useState(0);
   const [isProcessItemModalOpened, setIsProcessItemModalOpened] =
@@ -117,66 +131,89 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           label: idx + 1
         },
         item: {
-          label: data?.itemName,
+          label: data?.orderId,
           element: (
-            <Group
-              className="gap-1 cursor-pointer hover:text-dark-purple duration-100 w-fit"
-              onClick={() => {
-                navigate(`../item/${data?.itemId}`);
-              }}
-            >
-              <Text className="text-[14px] font-roboto text-primary-text">
-                {data?.itemName}
-              </Text>
-              <IconOutward color={theme.colors["dark-purple"][5]} size={18} />
-            </Group>
+            <Stack>
+              {data?.cartList?.map((cart: any, idx: number) => {
+                return (
+                  <Stack>
+                    <Group className="gap-8">
+                      <Group
+                        className="gap-1 cursor-pointer hover:text-dark-purple duration-100 w-fit"
+                        onClick={() => {
+                          navigate(`../item/${cart?.item?.id}`);
+                        }}
+                      >
+                        <Text className="text-[14px] font-roboto text-primary-text">
+                          {idx + 1}. {cart?.item?.name}
+                        </Text>
+                        <IconOutward
+                          color={theme.colors["dark-purple"][5]}
+                          size={16}
+                        />
+                      </Group>
+                      <CircleDivider />
+                      <Text className="text-[16px] font-roboto text-primary-text">
+                        Rp. {cart?.item?.price * cart?.quantity}{" "}
+                        <span className="text-sm text-secondary-text font-normal">
+                          ({cart?.item?.price} x {cart?.quantity})
+                        </span>
+                      </Text>
+                    </Group>
+                    {idx !== data?.cartList?.length - 1 && <Divider />}
+                  </Stack>
+                );
+              })}
+            </Stack>
           )
         },
         buyer: {
-          label: data?.buyerWANumber,
+          label: data?.cartList?.[0]?.buyerWANumber || "087715883436",
           element: (
-            <Stack className="gap-1">
-              <Text className="text-[14px] font-roboto text-primary-text">
-                Pembeli: {data?.buyerName}
-              </Text>
+            <Stack className="gap-4">
               <Stack className="gap-0">
-                <Text className="text-sm text-secondary-text-500">
-                  Invoice: {data?.invoice}
+                <Text className="text-lg font-roboto text-primary-text">
+                  Nama:
                 </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  User Id: {data?.buyerId}
-                </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
+                <Text className="text-lg text-secondary-text font-semibold">
+                  {data?.cartList?.[0]?.buyerName}
                 </Text>
               </Stack>
+              <Stack className="gap-0">
+                <Text className="text-lg font-roboto text-primary-text">
+                  Nomor WA:
+                </Text>
+                <Text className="text-lg text-secondary-text font-semibold">
+                  {data?.cartList?.[0]?.buyerWANumber || "087715883436"}
+                </Text>
+              </Stack>
+              <Stack className="gap-0">
+                <Text className="text-lg font-roboto text-primary-text">
+                  Invoice:
+                </Text>
+                <Text className="text-[14px] text-secondary-text">
+                  {/* {data?.orderId} */}
+                  071ab0aa-a8e8-47f4-b617-cafd34e63ed3
+                </Text>
+                {/* <Text className="text-sm text-secondary-text-500">
+                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
+                </Text> */}
+              </Stack>
             </Stack>
+          )
+        },
+        totalPrice: {
+          label: data?.totalPrice,
+          element: (
+            <Text className="font-roboto text-xl">Rp. {data?.totalPrice}</Text>
           )
         },
         status: {
-          label: data?.status,
+          label: data?.orderStatus,
           element: (
             <>
-              <OrderStatusComp orderStatus={data?.status} />
+              <OrderStatusComp orderStatus={data?.orderStatus} />
             </>
-          )
-        },
-        priceDetail: {
-          label: data?.itemTotalPrice,
-          element: (
-            <Stack className="gap-1">
-              <Text className="text-[16px] font-roboto text-primary-text">
-                {data?.itemTotalPrice}
-              </Text>
-              <Stack className="gap-0">
-                <Text className="text-sm text-secondary-text-500">
-                  Kuantitas barang dibeli: {data?.itemQuantity}
-                </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  Harga barang per satuan: {data?.itemPrice}
-                </Text>
-              </Stack>
-            </Stack>
           )
         }
       } as IFETableRowColumnProps)
@@ -228,7 +265,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       type: "element",
       backgroundColor: "white",
       element: (row: any) => {
-        const isDisabled = row?.status?.label !== "pending";
+        const isDisabled = row?.status?.label !== "INPROCESS";
 
         return (
           <Stack
@@ -274,7 +311,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       type: "element",
       backgroundColor: "white",
       element: (row: any) => {
-        const isDisabled = row?.status?.label !== "pending";
+        const isDisabled = row?.status?.label !== "INPROCESS";
 
         return (
           <Stack
@@ -321,14 +358,14 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
     let tempActivityList = defaultData;
 
     if (query !== "") {
-      tempActivityList = tempActivityList?.filter((d: IActivityTableRow) =>
-        d?.invoice?.toLowerCase()?.includes(query?.toLowerCase())
+      tempActivityList = tempActivityList?.filter((d: IOrder) =>
+        d?.orderId?.toLowerCase()?.includes(query?.toLowerCase())
       );
     }
 
     if (isJustPending) {
       tempActivityList = tempActivityList?.filter(
-        (d: IActivityTableRow) => d.status === "pending"
+        (d: IOrder) => d.orderStatus === "INPROCESS"
       );
     }
 
@@ -343,20 +380,19 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
         </Text>
         <Stack className="gap-0">
           <Text className="text-[14px] text-primary-text">
-            Kode Invoice: {activityList?.[selectedRow]?.invoice}
+            Kode Invoice: {activityList?.[selectedRow]?.orderId}
           </Text>
           <Text className="text-[14px] text-primary-text">
-            Barang: {activityList?.[selectedRow]?.itemName}
+            Pembeli: {activityList?.[selectedRow]?.cartList?.[0]?.buyerName}
           </Text>
           <Text className="text-[14px] text-primary-text">
-            Pembeli: {activityList?.[selectedRow]?.buyerName}
-          </Text>
-          <Text className="text-[14px] text-primary-text">
-            Nomor WA Pembeli: {activityList?.[selectedRow]?.buyerWANumber}
+            Nomor WA Pembeli:{" "}
+            {activityList?.[selectedRow]?.cartList?.[0]?.buyerName ||
+              "087715883436"}
           </Text>
         </Stack>
       </Stack>
-      <Stack className="gap-1">
+      {/* <Stack className="gap-1">
         <Text className="text-[16px] font-roboto text-primary-text">
           Detail Harga
         </Text>
@@ -371,7 +407,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
             Total Harga: {activityList?.[selectedRow]?.itemTotalPrice}
           </Text>
         </Stack>
-      </Stack>
+      </Stack> */}
     </Group>
   );
 

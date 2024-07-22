@@ -1,14 +1,12 @@
-import { ICatalogCard } from "../../pages/home/Home-CatalogCard.component";
 import dummy1 from "../../assets/images/dummy1.png";
-import dummy2 from "../../assets/images/dummy2.jpeg";
-import dummy3 from "../../assets/images/dummy3.jpeg";
+import { default as dummy2, default as dummy8 } from "../../assets/images/dummy2.jpeg";
+import { default as dummy3, default as dummy9 } from "../../assets/images/dummy3.jpeg";
 import dummy4 from "../../assets/images/dummy4.png";
 import dummy5 from "../../assets/images/dummy5.jpg";
 import dummy6 from "../../assets/images/dummy6.jpg";
 import dummy7 from "../../assets/images/dummy7.jpg";
-import dummy8 from "../../assets/images/dummy2.jpeg";
-import dummy9 from "../../assets/images/dummy3.jpeg";
-import { IActivityTableRow } from "../../pages/admin-page/AdminPage.page";
+import { IActivityTableRow, IOrder } from "../../pages/admin-page/AdminPage.page";
+import { ICatalogCard } from "../../pages/home/Home-CatalogCard.component";
 
 export const dummyCatalogData: ICatalogCard[] = [
   { id: "1", description:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id culpa, incidunt praesentium quasi voluptatem dicta eos! Cumque sequi delectus qui?", itemName: 'Baju Bayi Lengan Panjang', price: 75000, image: dummy1, isAvailable: true, category: 'CLOTHES', soldCount: 150 },
@@ -114,4 +112,113 @@ export const dummyActivityData: IActivityTableRow[]= [
   { itemName: 'Romper Bayi', itemId: '48', buyerName: 'James Cox', buyerId: 'B048', status: 'pending', buyingTime: new Date('2023-03-03T09:15:00') },
   { itemName: 'Sereal Buah Bayi', itemId: '49', buyerName: 'Sarah Howard', buyerId: 'B049', status: 'completed', buyingTime: new Date('2023-03-04T14:45:00') },
   { itemName: 'Botol Susu Anti Kolik', itemId: '50', buyerName: 'Daniel Ward', buyerId: 'B050', status: 'cancelled', buyingTime: new Date('2023-03-05T11:20:00') }
-]
+];
+
+
+export const dummySellerCarts : IOrder[] = [
+  {
+    orderId: "AAAA",
+    orderStatus: "INPROCESS",
+    totalPrice: 9000,
+    cartList: [
+      {
+        buyerName: "buyer6",
+        cartId: "071ab0aa-a8e8-47f4-b617-cafd34e63ed3",
+        item: {
+          category: "CLOTHES",
+          id: "f33827e5-113f-4cf6-8b55-114725d57a58",
+          name: "SAMUSL",
+          price: 9990,
+          thumbnail: "media\\1721558812890.png"
+        },
+        status: "UNPAID",
+        quantity: 1
+      },
+      {
+        buyerName: "buyer6",
+        cartId: "a0e77214-c14f-4344-af1f-2b4271a55635",
+        item: {
+          category: "CLOTHES",
+          id: "a1a0421f-7d84-41e2-bede-f06d83659649",
+          name: "Ikhsan",
+          price: 50000,
+          thumbnail: "media\\1721490809635.jpeg"
+        },
+        status: "INPROCESS",
+        quantity: 2
+      },
+      {
+        buyerName: "buyer6",
+        cartId: "d9786c91-9812-49d1-bbaf-8f90e0f4968a",
+        item: {
+          category: "CLOTHES",
+          id: "750bbfc0-24e5-4819-95ae-c9514b31ea53",
+          name: "asd",
+          price: 1000,
+          thumbnail: "media\\1721469856530.png"
+        },
+        status: "INPROCESS",
+        quantity: 1
+      },
+      {
+        buyerName: "buyer6",
+        cartId: "dc21d7af-4913-415d-97dc-13b89b097c3f",
+        item: {
+          category: "ACCESSORIES",
+          id: "1ba09aaa-cabf-48c5-8b4a-67ab0116d164",
+          name: "ikhsan",
+          price: 120000,
+          thumbnail: ""
+        },
+        status: "INPROCESS",
+        quantity: 2
+      }
+    ]
+  },
+  {
+    orderId: "BBBB",
+    orderStatus: "COMPLETED",
+    totalPrice: 9000,
+    cartList: [
+      {
+        buyerName: "ucup",
+        cartId: "a0e77214-c14f-4344-af1f-2b4271a55635",
+        item: {
+          category: "CLOTHES",
+          id: "a1a0421f-7d84-41e2-bede-f06d83659649",
+          name: "Ikhsan",
+          price: 50000,
+          thumbnail: "media\\1721490809635.jpeg"
+        },
+        status: "COMPLETED",
+        quantity: 2
+      },
+      {
+        buyerName: "ucup",
+        cartId: "d9786c91-9812-49d1-bbaf-8f90e0f4968a",
+        item: {
+          category: "CLOTHES",
+          id: "750bbfc0-24e5-4819-95ae-c9514b31ea53",
+          name: "asd",
+          price: 1000,
+          thumbnail: "media\\1721469856530.png"
+        },
+        status: "COMPLETED",
+        quantity: 1
+      },
+      {
+        buyerName: "ucup",
+        cartId: "dc21d7af-4913-415d-97dc-13b89b097c3f",
+        item: {
+          category: "ACCESSORIES",
+          id: "1ba09aaa-cabf-48c5-8b4a-67ab0116d164",
+          name: "ikhsan",
+          price: 120000,
+          thumbnail: ""
+        },
+        status: "COMPLETED",
+        quantity: 2
+      }
+    ]
+  },
+];

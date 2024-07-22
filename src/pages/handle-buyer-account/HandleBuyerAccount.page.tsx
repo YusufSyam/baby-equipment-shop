@@ -300,7 +300,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
             </Text>
           </Stack>
 
-          <SmallButton
+          {/* <SmallButton
             className="!bg-dark-purple !rounded-sm !border-transparent !text-white !hover:bg-darker-500 w-fit"
             // disabled={value == null}
             onClick={() => {
@@ -308,7 +308,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
             }}
           >
             Ganti Password
-          </SmallButton>
+          </SmallButton> */}
         </Group>
 
         <Text className="text-[24px] font-roboto-semibold text-primary-text tracking-5 text-start">
