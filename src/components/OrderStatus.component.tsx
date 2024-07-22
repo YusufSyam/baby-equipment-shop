@@ -12,12 +12,12 @@ export interface IOrderStatusComp {
   orderStatus: TOrderStatus;
 }
 
-export type TOrderStatus = "completed" | "pending" | "shipped" | "cancelled";
+export type TOrderStatus = "PAID" | "UNPAID" | "INPROCESS" | "CANCELLED";
 
 const OrderStatusComp: React.FC<IOrderStatusComp> = ({
-  orderStatus = "shipped"
+  orderStatus = "INPROCESS"
 }) => {
-  if (orderStatus === "completed") {
+  if (orderStatus === "PAID") {
     return (
       <Stack className="gap-1 w-28">
         <IconCheckOutline
@@ -30,7 +30,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
         </Text>
       </Stack>
     );
-  } else if (orderStatus === "cancelled") {
+  } else if (orderStatus === "CANCELLED") {
     return (
       <Stack className="gap-1 w-28">
         <IconCloseOutline
@@ -43,7 +43,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
         </Text>
       </Stack>
     );
-  } else if (orderStatus === "pending") {
+  } else if (orderStatus === "INPROCESS") {
     return (
       <Stack className="gap-1 w-28">
         <IconStopFilledRounded
@@ -53,7 +53,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
         />
         <Text className="text-sm text-secondary-text-500 text-center">
           {/* {toTitleCase(orderStatus)} */}
-          Menunggu diproses
+          Belum diorder
         </Text>
       </Stack>
     );
@@ -66,7 +66,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
           className="p-1 bg-darker-orange self-center"
         />
         <Text className="text-sm text-secondary-text-500 text-center">
-          {toTitleCase(orderStatus)}
+          Dalam Proses
         </Text>
       </Stack>
     );

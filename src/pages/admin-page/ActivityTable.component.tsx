@@ -344,7 +344,7 @@ const ActivityTableComponent: React.FC<IActivityTableComponentProps> = ({
                             className={`flex justify-center items-center ${
                               actionOrientation === "vertical"
                                 ? "flex-col gap-2"
-                                : "flex-row gap-5"
+                                : "flex-row gap-6"
                             } ${
                               actionColumnRounded == true ? "rounded-full" : ""
                             } `}

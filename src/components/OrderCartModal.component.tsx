@@ -87,7 +87,8 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
 
   const [totalPrice, setTotalPrice] = useState(0);
   const cartIdList = cartList.map((cartItem) => cartItem.cartId);
-  console.log("cartIdList", cartIdList);
+  
+  console.log("cartList", cartList);
   useEffect(() => {
     setTotalPrice(
       cartList.reduce((total, cartItem) => {

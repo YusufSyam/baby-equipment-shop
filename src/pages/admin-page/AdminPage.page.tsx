@@ -32,11 +32,11 @@ export interface IActivityTableRow {
   invoice?: string;
   itemName: string;
   itemId: string;
-  buyerName: string;
-  buyerId: string;
+  buyerName?: string;
+  buyerId?: string;
   buyerWANumber?: string;
   status: TOrderStatus;
-  buyingTime: Date;
+  buyingTime?: Date;
   itemQuantity?: number;
   itemPrice?: number;
   itemTotalPrice?: number;
@@ -147,7 +147,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   User Id: {data?.buyerId}
                 </Text>
                 <Text className="text-sm text-secondary-text-500">
-                  Waktu Pembelian: {formatDateNormal(data?.buyingTime)}
+                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
                 </Text>
               </Stack>
             </Stack>
@@ -257,7 +257,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
               )
             }
 
-            <Text className="text-sm text-secondary-text">Complete</Text>
+            <Text className="text-sm text-secondary-text">Selesai</Text>
           </Stack>
         );
       },
@@ -302,7 +302,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                 />
               )
             }
-            <Text className="text-sm text-secondary-text">Cancel</Text>
+            <Text className="text-sm text-secondary-text">Batalkan</Text>
           </Stack>
         );
       },

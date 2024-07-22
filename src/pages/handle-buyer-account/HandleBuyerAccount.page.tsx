@@ -10,16 +10,28 @@ import {
 } from "../../components/FormInput.component";
 import { SmallButton } from "../../components/MyButton";
 import { MAINROUTES } from "../../utils/const/routes";
-import { IconOutward, IconWhatsappOutline, IconCheckOutline, IconCloseOutline } from "../../assets/icon/Fluent";
+import {
+  IconOutward,
+  IconWhatsappOutline,
+  IconCheckOutline,
+  IconCloseOutline
+} from "../../assets/icon/Fluent";
 import OrderStatusComp from "../../components/OrderStatus.component";
 import { dummyActivityData } from "../../utils/const/dummy";
 import { formatDateNormal } from "../../utils/functions/date.function";
 import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
-import ActivityTableComponent, { IFETableHeadingProps, IFETableRowColumnProps, IActivityTableAction } from "../admin-page/ActivityTable.component";
+import ActivityTableComponent, {
+  IFETableHeadingProps,
+  IFETableRowColumnProps,
+  IActivityTableAction
+} from "../admin-page/ActivityTable.component";
 import { IActivityTableRow } from "../admin-page/AdminPage.page";
 import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
 import { AuthContext } from "../../context/AuthContext.context";
 import WrongPage from "../wrong-page/WrongPage.page";
+import { useQuery } from "react-query";
+import { qfFetchBuyerCarts } from "../../utils/query/cartsQuery";
+import { BASE_URL } from "../../utils/const/api";
 
 export interface IHandleBuyerAccount {}
 
@@ -28,7 +40,6 @@ export interface IForgotPasswordInput {
   newPassword: string;
   rewriteNewPassword: string;
 }
-
 
 const tableHeadings: IFETableHeadingProps[] = [
   {
@@ -47,7 +58,8 @@ const tableHeadings: IFETableHeadingProps[] = [
     label: "Detail Pembelian",
     sortable: true,
     textAlign: "left",
-    cellKey: "buyer"
+    cellKey: "buyer",
+    width: "350px"
   },
   {
     label: "Harga",
@@ -75,24 +87,51 @@ const tableHeadings: IFETableHeadingProps[] = [
   // }
 ];
 
+function formatCartItem(beData: any[] = []) {
+  const formatted = beData?.map((d) => {
+    const data: IActivityTableRow = {
+      itemName: d?.item?.name,
+      itemId: d?.item?.id,
+      status: d?.status,
+      invoice: d?.cartId,
+      itemPrice: d?.item?.price,
+      itemQuantity: d?.quantity,
+      itemTotalPrice: d?.item?.price * d?.quantity
+    };
+
+    return data;
+  });
+
+  return formatted;
+}
+
 const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   const amtDataPerPage = 10;
   const [activePage, setActivePage] = useState<number>(1);
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  
+
+  const { data, isFetching, refetch } = useQuery(
+    `fetch-buyer-carts`,
+    qfFetchBuyerCarts,
+    {
+      onSuccess(data) {
+        setDefaultData(formatCartItem(data?.data));
+      }
+    }
+  );
+
+  console.log("data", data);
+
   const authContext = useContext(AuthContext);
   if (!authContext) {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const {
-    username,
-    userRole
-  } = authContext;
+  const { username, userRole } = authContext;
 
   // if(userRole==="SELLER"){
-  //   return <WrongPage />  
+  //   return <WrongPage />
   // }
 
   const [changePasswordModalOpened, setChangePasswordModalOpened] =
@@ -102,14 +141,15 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
   const { getInputProps, errors, values, reset } = form;
 
-  const [defaultData, setDefaultData] = useState(dummyActivityData);
+  const [defaultData, setDefaultData] = useState(formatCartItem(data?.data));
 
   const [activityList, setActivityList] =
     useState<IActivityTableRow[]>(defaultData);
-    
+
   const [selectedRow, setSelectedRow] = useState(0);
 
-  function handleChangePassword() {} const tableRows = activityList?.map(
+  function handleChangePassword() {}
+  const tableRows = activityList?.map(
     (data, idx) =>
       ({
         id: {
@@ -138,20 +178,14 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
           label: data?.buyerWANumber,
           element: (
             <Stack className="gap-1">
+              <Text className="text-sm text-secondary-text">Invoice:</Text>
               <Text className="text-[14px] font-roboto text-primary-text">
-                Pembeli: {data?.buyerName}
+                {data?.invoice}
               </Text>
-              <Stack className="gap-0">
-                <Text className="text-sm text-secondary-text-500">
-                  Invoice: {data?.invoice}
-                </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  User Id: {data?.buyerId}
-                </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  Waktu Pembelian: {formatDateNormal(data?.buyingTime)}
-                </Text>
-              </Stack>
+
+              <Text className="text-sm text-secondary-text-500">
+                Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
+              </Text>
             </Stack>
           )
         },
@@ -194,7 +228,10 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
           <Stack
             className="gap-0 cursor-pointer"
             onClick={() => {
-              WhatsappMessageOpenInNewTab(SELLER_WHATSAPP_NUMBER, "Cek status pembelian. Invoice: [kode invoice]");
+              WhatsappMessageOpenInNewTab(
+                SELLER_WHATSAPP_NUMBER,
+                "Cek status pembelian. Invoice: [kode invoice]"
+              );
             }}
           >
             <IconWhatsappOutline
@@ -273,11 +310,11 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
             Ganti Password
           </SmallButton>
         </Group>
-        
+
         <Text className="text-[24px] font-roboto-semibold text-primary-text tracking-5 text-start">
-              Riwayat Pembelian
-            </Text>
-        
+          Riwayat Pembelian
+        </Text>
+
         <ActivityTableComponent
           noDataMsg=""
           isLoading={false}

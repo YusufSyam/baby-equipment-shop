@@ -33,16 +33,17 @@ const AppLayout: React.FC<IAppLayout> = ({
   const [isOrderModalOpened, setIsOrderModalOpened] = useState(false);
 
   const [cartList, setCartList] = useState<any[]>([]);
-  const [shouldFetch, setShouldFetch] = useState(false);
+  const [shouldFetchBuyerCarts, setShouldFetchBuyerCarts] = useState(false);
+  const [shouldFetchSellerCarts, setShouldFetchSellerCarts] = useState(false);
 
   const { data, isFetching, refetch } = useQuery(
     `fetch-buyer-carts`,
     qfFetchBuyerCarts,
     {
-      enabled: shouldFetch,
+      enabled: shouldFetchBuyerCarts,
       onSuccess(data) {
         console.log("TERFETCH");
-        setCartList(data?.data);
+        setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
       }
     }
   );
@@ -50,21 +51,22 @@ const AppLayout: React.FC<IAppLayout> = ({
   const { data:dataSellerCarts, isFetching:isFetchingSellerCarts, refetch:refetchSellerCarts, } = useQuery(
     `fetch-seller-carts`,
     qfFetchSellerCarts,
-    // {
-    //   enabled: shouldFetch,
-    //   onSuccess(data) {
-    //     console.log("TERFETCH");
-    //     setCartList(data?.data);
-    //   }
-    // }
+    {
+      enabled: shouldFetchSellerCarts,
+      onSuccess(data) {
+        console.log(data)
+      }
+    }
   );
 
   console.log('dataSellerCarts',dataSellerCarts)
 
   useEffect(() => {
     if (userRole === "BUYER") {
-      setShouldFetch(true);
-    }
+      setShouldFetchBuyerCarts(true);
+    }else if(userRole === "SELLER")(
+      setShouldFetchSellerCarts(true)
+    )
   }, [userRole]);
 
   return (
