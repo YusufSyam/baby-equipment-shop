@@ -64,7 +64,8 @@ const LoginPage: React.FC<ILoginPage> = ({}) => {
           onSubmit={() => {
             setIsLoggedInSuccessModalOpened(false);
             
-            navigate(userRole=="BUYER"? MAINROUTES.handleBuyerAccount : MAINROUTES.adminPage);
+            // navigate(userRole=="BUYER"? MAINROUTES.handleBuyerAccount : MAINROUTES.adminPage);
+            navigate(MAINROUTES.home)
           }}
           onClose={() => {}}
           yesButtonLabel="Konfirmasi"

@@ -13,6 +13,7 @@ import ConfirmationModal from "../../components/ConfirmationModal.component";
 import { qfRegister } from "../../utils/query/userQuery";
 import { useMutation } from "react-query";
 import LoadingModal from "../../components/LoadingModal.component";
+import InfoNotification from "../../components/InfoNotification.component";
 
 export interface IRegisterPage {}
 
@@ -20,11 +21,12 @@ export interface IRegisterInput {
   username: string;
   password: string;
   rewritePassword: string;
+  phoneNumber: string;
 }
 
 const RegisterPage: React.FC<IRegisterPage> = ({}) => {
   const form = useForm<IRegisterInput>();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const [isRegisterSuccessModalOpened, setIsRegisterSuccessModalOpened] =
     useState(false);
@@ -34,7 +36,8 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
   function handleRegister() {
     postRegister.mutate({
       username: values?.username,
-      password: values?.password
+      password: values?.password,
+      phoneNumber: values?.phoneNumber
     });
   }
 
@@ -68,7 +71,7 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
           onSubmit={() => {
             reset();
             setIsRegisterSuccessModalOpened(false);
-            navigate(MAINROUTES.login)
+            navigate(MAINROUTES.login);
           }}
           onClose={() => {}}
           yesButtonLabel="Konfirmasi"
@@ -108,6 +111,17 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
             {...getInputProps("rewritePassword")}
             error={errors["rewritePassword" as keyof IRegisterInput]}
           />
+          <MyTextInput
+            label="Nomor Whatsapp"
+            size="md"
+            placeholder="Masukkan Nomor Whatsapp"
+            {...getInputProps("phoneNumber")}
+            error={errors["phoneNumber" as keyof IRegisterInput]}
+          />
+          <div className="m-2">
+
+          <InfoNotification information="Masukkan no whatsapp yang diawali dengan kode negara (62). Contoh: 6287712345678" />
+          </div>
 
           <Text className="text-secondary-text">
             Telah mempunyai akun? silahkan{" "}
@@ -126,7 +140,8 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
               values?.password == null ||
               values?.username == null ||
               values?.rewritePassword == null ||
-              values?.password !== values?.rewritePassword
+              values?.password !== values?.rewritePassword ||
+              values?.phoneNumber == null
             }
           >
             Register

@@ -92,7 +92,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
 
   const [activePage, setActivePage] = useState<number>(1);
   const [pageAmt, setPageAmt] = useState(0);
-  const dataPerPageAmt = 20;
+  const dataPerPageAmt = 16;
 
   const [sortBy, setSortBy] = useState<TSortBy>("no-sort");
 

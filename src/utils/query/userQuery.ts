@@ -1,9 +1,14 @@
-import { ILoginInput } from "../../pages/login-page/Login.page";
 import { BASE_URL, getTokenAuthorizationHeader } from "../const/api";
 
 const endpoint = `${BASE_URL}/users`;
 
-export async function qfRegister(values: ILoginInput) {
+export interface IRegisterInput {
+  username: string;
+  password: string;
+  phoneNumber: string
+}
+
+export async function qfRegister(values: IRegisterInput) {
   const response = await fetch(`${endpoint}`, {
     method: "POST",
     headers: {
@@ -16,7 +21,8 @@ export async function qfRegister(values: ILoginInput) {
     body: JSON.stringify({
       username: values.username,
       password: values.password,
-      role: "BUYER"
+      role: "BUYER",
+      phoneNumber: values.phoneNumber
     })
   });
   if (response.ok) {

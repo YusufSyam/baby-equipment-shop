@@ -128,7 +128,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { username, userRole } = authContext;
+  const { username, userRole, userPhoneNumber } = authContext;
 
   // if(userRole==="SELLER"){
   //   return <WrongPage />
@@ -297,6 +297,9 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
             </Text>
             <Text className="text-secondary-text">
               Kelola akun dan lihat riwayat pembelian di halaman ini
+            </Text>
+            <Text className="text-secondary-text">
+              Nomor Whatsapp Terdaftar: {userPhoneNumber}
             </Text>
           </Stack>
 

@@ -11,6 +11,7 @@ interface AuthContextType {
   userId: string | null;
   userRole: TUserType;
   username: string | null;
+  userPhoneNumber: string | null;
 }
 
 export type TUserType = null | "SELLER" | "BUYER";
@@ -27,9 +28,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     qfFetchUserCredentials,
     {
       onSuccess(data) {
+        console.log('TERSUKSES REFETCH')
         setUserId(data?.data?.userId);
         setUserRole(data?.data?.role);
         setUsername(data?.data?.username);
+        setUserPhoneNumber(data?.data?.phoneNumber)
       }
     }
   );
@@ -37,6 +40,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<TUserType>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(null)
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -65,8 +69,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const data = await response.json();
       console.log("LLLLLLLLLLLLLLLLLL", data);
       localStorage.setItem("accessToken", data?.data?.accessToken);
-      setIsLoggedIn(true);
       refetch()
+      setIsLoggedIn(true);
       return data.accessToken;
     } else {
       throw new Error("Login failed");
@@ -78,12 +82,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUserId(null);
     setUserRole(null);
     setUsername(null);
+    setUserPhoneNumber(null)
     setIsLoggedIn(false);
   };
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, login, logout, userId, userRole, username }}
+      value={{ isLoggedIn, login, logout, userId, userRole, username, userPhoneNumber }}
     >
       {children}
     </AuthContext.Provider>

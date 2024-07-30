@@ -68,6 +68,8 @@ const AppLayout: React.FC<IAppLayout> = ({
       setShouldFetchSellerCarts(true)
     )
   }, [userRole]);
+  
+  console.log('userRole',userRole)
 
   return (
     <Stack className="">
