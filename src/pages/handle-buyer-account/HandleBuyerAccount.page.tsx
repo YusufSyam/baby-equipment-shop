@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
-import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Divider, Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,19 +19,20 @@ import {
 import OrderStatusComp from "../../components/OrderStatus.component";
 import { dummyActivityData } from "../../utils/const/dummy";
 import { formatDateNormal } from "../../utils/functions/date.function";
-import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
+import { WhatsappMessageOpenInNewTab, calculateOrderTotalPrices } from "../../utils/functions/misc.function";
 import ActivityTableComponent, {
   IFETableHeadingProps,
   IFETableRowColumnProps,
   IActivityTableAction
 } from "../admin-page/ActivityTable.component";
-import { IActivityTableRow } from "../admin-page/AdminPage.page";
+import { IActivityTableRow, IOrder } from "../admin-page/AdminPage.page";
 import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
 import { AuthContext } from "../../context/AuthContext.context";
 import WrongPage from "../wrong-page/WrongPage.page";
 import { useQuery } from "react-query";
-import { qfFetchBuyerCarts } from "../../utils/query/cartsQuery";
+import { qfFetchBuyerCarts, qfFetchBuyerOrders } from "../../utils/query/cartsQuery";
 import { BASE_URL } from "../../utils/const/api";
+import CircleDivider from "../../components/CircleDivider.component";
 
 export interface IHandleBuyerAccount {}
 
@@ -49,23 +50,22 @@ const tableHeadings: IFETableHeadingProps[] = [
     cellKey: "no"
   },
   {
+    label: "Pembeli",
+    sortable: true,
+    textAlign: "left",
+    cellKey: "buyer"
+  },
+  {
     label: "Barang",
     sortable: true,
     textAlign: "left",
     cellKey: "item"
   },
   {
-    label: "Detail Pembelian",
+    label: "Total Harga",
     sortable: true,
     textAlign: "left",
-    cellKey: "buyer",
-    width: "350px"
-  },
-  {
-    label: "Harga",
-    sortable: true,
-    textAlign: "left",
-    cellKey: "priceDetail"
+    cellKey: "totalPrice"
   },
   {
     label: "Status",
@@ -105,23 +105,42 @@ function formatCartItem(beData: any[] = []) {
   return formatted;
 }
 
+function formatOrders(beData: any[] = []) {
+  const formatted = beData?.map((d) => {
+    const data: IOrder = {
+      orderId: d.id,
+      orderStatus: d.status,
+      totalPrice: calculateOrderTotalPrices(d?.carts),
+      cartList: d?.carts,
+      cartIdList: d?.carts?.map((c: any) => {
+        return c?.id;
+      }),
+      buyer: d?.buyer
+    };
+
+    return data;
+  });
+
+  return formatted;
+}
+
 const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   const amtDataPerPage = 10;
   const [activePage, setActivePage] = useState<number>(1);
   const theme = useMantineTheme();
   const navigate = useNavigate();
-
-  const { data, isFetching, refetch } = useQuery(
-    `fetch-buyer-carts`,
-    qfFetchBuyerCarts,
+  
+  const { data:dataOrder, isFetching:isFetchingOrder, refetch:refetchOrder, } = useQuery(
+    `fetch-buyer-orders`,
+    qfFetchBuyerOrders,
     {
       onSuccess(data) {
-        setDefaultData(formatCartItem(data?.data));
+      formatOrders(data?.data);
       }
     }
   );
 
-  console.log("data", data);
+  console.log("dataOrder", dataOrder);
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -141,14 +160,16 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
   const { getInputProps, errors, values, reset } = form;
 
-  const [defaultData, setDefaultData] = useState(formatCartItem(data?.data));
+  const [defaultData, setDefaultData] = useState(formatOrders(dataOrder?.data));
 
   const [activityList, setActivityList] =
-    useState<IActivityTableRow[]>(defaultData);
+    useState<IOrder[]>(defaultData);
 
   const [selectedRow, setSelectedRow] = useState(0);
 
   function handleChangePassword() {}
+
+  
   const tableRows = activityList?.map(
     (data, idx) =>
       ({
@@ -159,60 +180,72 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
           label: idx + 1
         },
         item: {
-          label: data?.itemName,
+          label: data?.orderId,
           element: (
-            <Group
-              className="gap-1 cursor-pointer hover:text-dark-purple duration-100 w-fit"
-              onClick={() => {
-                navigate(`../item/${data?.itemId}`);
-              }}
-            >
-              <Text className="text-[14px] font-roboto text-primary-text">
-                {data?.itemName}
-              </Text>
-              <IconOutward color={theme.colors["dark-purple"][5]} size={18} />
-            </Group>
+            <Stack>
+              {data?.cartList?.map((cart: any, idx: number) => {
+                return (
+                  <Stack>
+                    <Group className="gap-4 flex-nowrap">
+                      <Group
+                        className="gap-1 cursor-pointer hover:text-dark-purple duration-100 w-fit"
+                        onClick={() => {
+                          navigate(`../item/${cart?.item?.id}`);
+                        }}
+                      >
+                        <Text className="text-[14px] font-roboto text-primary-text">
+                          {idx + 1}. {cart?.item?.name}
+                        </Text>
+                        <IconOutward
+                          color={theme.colors["dark-purple"][5]}
+                          size={16}
+                        />
+                      </Group>
+                      <CircleDivider />
+                      <Text className="text-[16px] font-roboto text-primary-text">
+                        Rp. {cart?.item?.price * cart?.quantity}{" "}
+                        <span className="text-sm text-secondary-text font-normal">
+                          ({cart?.item?.price} x {cart?.quantity})
+                        </span>
+                      </Text>
+                    </Group>
+                    {idx !== (data?.cartList?.length || 0) - 1 && <Divider />}
+                  </Stack>
+                );
+              })}
+            </Stack>
           )
         },
         buyer: {
-          label: data?.buyerWANumber,
+          label: data?.buyer?.phoneNumber,
           element: (
-            <Stack className="gap-1">
-              <Text className="text-sm text-secondary-text">Invoice:</Text>
-              <Text className="text-[14px] font-roboto text-primary-text">
-                {data?.invoice}
-              </Text>
-
-              <Text className="text-sm text-secondary-text-500">
-                Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
-              </Text>
+            <Stack className="gap-4">
+              <Stack className="gap-0">
+                <Text className="text-lg font-roboto text-primary-text">
+                  Invoice:
+                </Text>
+                <Text className="text-[14px] text-secondary-text">
+                  {data?.orderId}
+                </Text>
+                {/* <Text className="text-sm text-secondary-text-500">
+                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
+                </Text> */}
+              </Stack>
             </Stack>
+          )
+        },
+        totalPrice: {
+          label: data?.totalPrice,
+          element: (
+            <Text className="font-roboto text-xl">Rp. {data?.totalPrice}</Text>
           )
         },
         status: {
-          label: data?.status,
+          label: data?.orderStatus,
           element: (
             <>
-              <OrderStatusComp orderStatus={data?.status} />
+              <OrderStatusComp orderStatus={data?.orderStatus} />
             </>
-          )
-        },
-        priceDetail: {
-          label: data?.itemTotalPrice,
-          element: (
-            <Stack className="gap-1">
-              <Text className="text-[16px] font-roboto text-primary-text">
-                {data?.itemTotalPrice}
-              </Text>
-              <Stack className="gap-0">
-                <Text className="text-sm text-secondary-text-500">
-                  Kuantitas barang dibeli: {data?.itemQuantity}
-                </Text>
-                <Text className="text-sm text-secondary-text-500">
-                  Harga barang per satuan: {data?.itemPrice}
-                </Text>
-              </Stack>
-            </Stack>
           )
         }
       } as IFETableRowColumnProps)

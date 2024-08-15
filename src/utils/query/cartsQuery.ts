@@ -63,6 +63,19 @@ export async function qfFetchSellerOrders() {
   return response.json();
 }
 
+export async function qfFetchBuyerOrders() {
+  const response = await fetch(`${BASE_URL}/buyers/orders`, {
+    headers: {
+      ...getTokenAuthorizationHeader()
+    }
+  });
+  console.log(response, "response");
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+  return response.json();
+}
+
 export async function qfDeleteCart(cartId:string) {
   const response = await fetch(`${endpoint}/${cartId}`, {
     method: "DELETE",
