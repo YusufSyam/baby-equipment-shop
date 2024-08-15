@@ -20,3 +20,22 @@ export async function qfPostOrder(cartIdList: string[]) {
 
   return data;
 }
+
+export async function qfCompleteOrder(orderId:string) {
+  const response = await fetch(`${endpoint}/${orderId}`, {
+    method: "PUT",
+    headers: {
+      ...getTokenAuthorizationHeader()
+    },
+    mode: "cors",
+    credentials: "same-origin",
+    body: JSON.stringify({
+      isValid:true
+    })
+  });
+
+  const data = await response.json();
+  console.log("INI RESPONSE", data);
+
+  return data;
+}

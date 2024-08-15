@@ -14,6 +14,7 @@ import OrderStatusComp from "./OrderStatus.component";
 import { useNavigate } from "react-router-dom";
 import { categoryMap } from "../utils/const/globalConst";
 import { qfPostOrder } from "../utils/query/orderQuery";
+import InfoNotification from "./InfoNotification.component";
 
 export interface IOrderCartModal {
   opened: boolean;
@@ -87,7 +88,7 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
 
   const [totalPrice, setTotalPrice] = useState(0);
   const cartIdList = cartList.map((cartItem) => cartItem.cartId);
-  
+
   console.log("cartList", cartList);
   useEffect(() => {
     setTotalPrice(
@@ -193,7 +194,7 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
           setOpened={setIsOrderSuccessModalOpened}
           onSubmit={() => {
             setOpened(false);
-            setIsOrderSuccessModalOpened(false)
+            setIsOrderSuccessModalOpened(false);
           }}
           yesButtonLabel="Konfirmasi"
           onClose={() => {}}
@@ -229,6 +230,14 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
             Rp. {totalPrice}
           </Text>
         </Group>
+        <div className="m-2">
+          <InfoNotification
+            information="Saat menekan tombol 'Order', maka anda akan diarahkan untuk ke whatsapp
+          untuk transaksi lebih lanjut dengan admin. Pastikan nomor whatsapp
+          yang anda gunakan pada device sama dengan yang anda daftarkan pada
+          akun anda."
+          />
+        </div>
         {/* <Group className="px-4 justify-between bg-dark-purple">
           <Text className="font-semibold text-3xl text-white">
             Total Harga

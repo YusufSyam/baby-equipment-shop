@@ -249,7 +249,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
               <Group>
                 {userRole == "BUYER" && (
                   <Button
-                    className="bg-purple hover:bg-light-purple w-32 duration-100 mt-4 rounded-sm"
+                    className="bg-purple hover:bg-light-purple duration-100 mt-4 rounded-sm"
                     // className="bg-darker-orange hover:bg-orange w-1/4 duration-100 mt-4"
                     size="md"
                     disabled={currentItem?.isAvailable === false}
@@ -257,7 +257,7 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                       setOpenBuyModal(true);
                     }}
                   >
-                    Beli
+                    Masukkan ke Keranjang
                   </Button>
                 )}
                 {userRole == null && (

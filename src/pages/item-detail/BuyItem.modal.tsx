@@ -76,11 +76,11 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
     <ConfirmationModal
       opened={opened}
       setOpened={setOpened}
-      title={"Beli Barang"}
+      title={"Tambahkan ke Keranjang"}
       subTitle={`Membeli ${itemName}, tentukan kuantitas pembelian dan harga sebelum membeli`}
       onClose={() => {}}
       minWidth={700}
-      yesButtonLabel="Beli"
+      yesButtonLabel="Konfirmasi"
       onSubmit={handleOrder}
     >
       <Stack className="gap-2 my-4">
@@ -116,12 +116,7 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
             Rp. {totalPrice}
           </Text>
         </Stack>
-        <InfoNotification
-          information="Saat menekan tombol 'Beli', maka anda akan diarahkan untuk ke whatsapp
-          untuk transaksi lebih lanjut dengan admin. Pastikan nomor whatsapp
-          yang anda gunakan pada device sama dengan yang anda daftarkan pada
-          akun anda."
-        />
+        
       </Stack>
     </ConfirmationModal>
   );

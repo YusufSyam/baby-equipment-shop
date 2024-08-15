@@ -28,11 +28,18 @@ import { useNavigate } from "react-router-dom";
 import OrderStatusComp, {
   TOrderStatus
 } from "../../components/OrderStatus.component";
-import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
+import {
+  WhatsappMessageOpenInNewTab,
+  calculateOrderTotalPrices
+} from "../../utils/functions/misc.function";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
 import WarningModal from "../../components/WarningModal.component";
 import { MySearchInput } from "../../components/FormInput.component";
 import CircleDivider from "../../components/CircleDivider.component";
+import { qfFetchSellerOrders } from "../../utils/query/cartsQuery";
+import { useMutation, useQuery } from "react-query";
+import { WHATSAPP_MESSAGE_TEMPLATE } from "../../utils/const/globalConst";
+import { qfCompleteOrder } from "../../utils/query/orderQuery";
 
 export interface IAdminPage {}
 
@@ -40,7 +47,28 @@ export interface IOrder {
   orderId: string;
   orderStatus: "INPROCESS" | "COMPLETED" | "CANCELLED";
   totalPrice: number;
-  cartList: any[];
+  cartList?: any[];
+  cartIdList?: string[];
+  buyer?: any;
+}
+
+function formatOrders(beData: any[] = []) {
+  const formatted = beData?.map((d) => {
+    const data: IOrder = {
+      orderId: d.id,
+      orderStatus: d.status,
+      totalPrice: calculateOrderTotalPrices(d?.carts),
+      cartList: d?.carts,
+      cartIdList: d?.carts?.map((c: any) => {
+        return c?.id;
+      }),
+      buyer: d?.buyer
+    };
+
+    return data;
+  });
+
+  return formatted;
 }
 
 export interface IActivityTableRow {
@@ -108,12 +136,39 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
+  const {
+    data: dataSellerOrders,
+    isFetching: isFetchingSellerOrders,
+    refetch: refetchSellerOrders
+  } = useQuery(`fetch-seller-orders`, qfFetchSellerOrders, {
+    onSuccess(data) {
+      formatOrders(data?.data);
+    }
+  });
+
+  const putCompleteOrderMutation = useMutation(
+    "put-complete-order",
+    qfCompleteOrder,
+    {
+      onSuccess() {
+        console.log("sukses");
+      }
+    }
+  );
+
+  console.log("dataSellerOrders", dataSellerOrders);
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [query] = useDebouncedValue(searchTerm, 500);
 
-  const [defaultData, setDefaultData] = useState(dummySellerCarts);
+  const [defaultData, setDefaultData] = useState(
+    formatOrders(dataSellerOrders?.data)
+  );
+  // const [defaultData, setDefaultData] = useState(dummySellerCarts);
 
   const [activityList, setActivityList] = useState<IOrder[]>(defaultData);
+
+  console.log("activityList", activityList);
 
   const [selectedRow, setSelectedRow] = useState(0);
   const [isProcessItemModalOpened, setIsProcessItemModalOpened] =
@@ -137,7 +192,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
               {data?.cartList?.map((cart: any, idx: number) => {
                 return (
                   <Stack>
-                    <Group className="gap-8">
+                    <Group className="gap-4 flex-nowrap">
                       <Group
                         className="gap-1 cursor-pointer hover:text-dark-purple duration-100 w-fit"
                         onClick={() => {
@@ -160,7 +215,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                         </span>
                       </Text>
                     </Group>
-                    {idx !== data?.cartList?.length - 1 && <Divider />}
+                    {idx !== (data?.cartList?.length || 0) - 1 && <Divider />}
                   </Stack>
                 );
               })}
@@ -168,7 +223,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           )
         },
         buyer: {
-          label: data?.cartList?.[0]?.buyerWANumber || "087715883436",
+          label: data?.buyer?.phoneNumber,
           element: (
             <Stack className="gap-4">
               <Stack className="gap-0">
@@ -176,7 +231,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   Nama:
                 </Text>
                 <Text className="text-lg text-secondary-text font-semibold">
-                  {data?.cartList?.[0]?.buyerName}
+                  {data?.buyer?.name}
                 </Text>
               </Stack>
               <Stack className="gap-0">
@@ -184,7 +239,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   Nomor WA:
                 </Text>
                 <Text className="text-lg text-secondary-text font-semibold">
-                  {data?.cartList?.[0]?.buyerWANumber || "087715883436"}
+                  {data?.buyer?.phoneNumber || "-"}
                 </Text>
               </Stack>
               <Stack className="gap-0">
@@ -192,8 +247,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                   Invoice:
                 </Text>
                 <Text className="text-[14px] text-secondary-text">
-                  {/* {data?.orderId} */}
-                  071ab0aa-a8e8-47f4-b617-cafd34e63ed3
+                  {data?.orderId}
                 </Text>
                 {/* <Text className="text-sm text-secondary-text-500">
                   Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
@@ -374,21 +428,28 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
 
   const itemDetailToProcess = (
     <Group className="items-start mb-4">
-      <Stack className="gap-1 w-1/2">
+      <Stack className="gap-1">
         <Text className="text-[16px] font-roboto text-primary-text">
           Detail Transaksi
         </Text>
         <Stack className="gap-0">
-          <Text className="text-[14px] text-primary-text">
-            Kode Invoice: {activityList?.[selectedRow]?.orderId}
+          <Text className="text-[14px] text-primary-text font-semibold">
+            Kode Invoice:{" "}
+            <span className="font-normal">
+              {activityList?.[selectedRow]?.orderId}{" "}
+            </span>
           </Text>
-          <Text className="text-[14px] text-primary-text">
-            Pembeli: {activityList?.[selectedRow]?.cartList?.[0]?.buyerName}
+          <Text className="text-[14px] text-primary-text font-semibold">
+            Pembeli:{" "}
+            <span className="font-normal">
+              {activityList?.[selectedRow]?.buyer?.name}{" "}
+            </span>
           </Text>
-          <Text className="text-[14px] text-primary-text">
+          <Text className="text-[14px] text-primary-text font-semibold">
             Nomor WA Pembeli:{" "}
-            {activityList?.[selectedRow]?.cartList?.[0]?.buyerName ||
-              "087715883436"}
+            <span className="font-normal">
+              {activityList?.[selectedRow]?.buyer?.phoneNumber || "-"}{" "}
+            </span>
           </Text>
         </Stack>
       </Stack>
@@ -420,7 +481,10 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           title={"Selesaikan Proses Transaksi?"}
           onClose={() => {}}
           onSubmit={() => {
-            setIsProcessItemModalOpened(false);
+            putCompleteOrderMutation.mutate(
+              activityList?.[selectedRow]?.orderId || ""
+            );
+            // console.log('orderId',activityList?.[selectedRow]?.orderId)
           }}
           minWidth={700}
           yesButtonLabel="Selesaikan"

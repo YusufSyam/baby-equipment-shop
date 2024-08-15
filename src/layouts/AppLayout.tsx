@@ -6,7 +6,7 @@ import { IconShoppingTroll } from "../assets/icon/Fluent";
 import ConfirmationModal from "../components/ConfirmationModal.component";
 import OrderCartModal from "../components/OrderCartModal.component";
 import { useQuery } from "react-query";
-import { qfFetchBuyerCarts, qfFetchSellerCarts } from "../utils/query/cartsQuery";
+import { qfFetchBuyerCarts, qfFetchSellerOrders } from "../utils/query/cartsQuery";
 import { AuthContext } from "../context/AuthContext.context";
 // import Header from "./headers/Header.layout";
 
@@ -34,7 +34,6 @@ const AppLayout: React.FC<IAppLayout> = ({
 
   const [cartList, setCartList] = useState<any[]>([]);
   const [shouldFetchBuyerCarts, setShouldFetchBuyerCarts] = useState(false);
-  const [shouldFetchSellerCarts, setShouldFetchSellerCarts] = useState(false);
 
   const { data, isFetching, refetch } = useQuery(
     `fetch-buyer-carts`,
@@ -43,30 +42,17 @@ const AppLayout: React.FC<IAppLayout> = ({
       enabled: shouldFetchBuyerCarts,
       onSuccess(data) {
         console.log("TERFETCH");
-        setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
+        // setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
+        setCartList(data?.data)
       }
     }
   );
 
-  const { data:dataSellerCarts, isFetching:isFetchingSellerCarts, refetch:refetchSellerCarts, } = useQuery(
-    `fetch-seller-carts`,
-    qfFetchSellerCarts,
-    {
-      enabled: shouldFetchSellerCarts,
-      onSuccess(data) {
-        console.log(data)
-      }
-    }
-  );
-
-  console.log('dataSellerCarts',dataSellerCarts)
 
   useEffect(() => {
     if (userRole === "BUYER") {
       setShouldFetchBuyerCarts(true);
-    }else if(userRole === "SELLER")(
-      setShouldFetchSellerCarts(true)
-    )
+    }
   }, [userRole]);
   
   console.log('userRole',userRole)
