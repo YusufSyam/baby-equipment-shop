@@ -76,9 +76,9 @@ const CatalogCard: React.FC<ICatalogCard> = ({
         </Stack>
         <Stack className="gap-0 ">
           <Text className="font-roboto text-dark-purple">Rp. {price}</Text>
-          <Text className="text-md text-secondary-text">
+          {/* <Text className="text-md text-secondary-text">
             {soldCount} Terjual
-          </Text>
+          </Text> */}
         </Stack>
       </Stack>
     </Stack>

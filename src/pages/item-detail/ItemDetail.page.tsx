@@ -203,13 +203,13 @@ const ItemDetail: React.FC<IItemDetail> = ({}) => {
                     </Text>
                   </Group>
                   <CircleDivider />
-                  <Text className="text-primary-text">
+                  {/* <Text className="text-primary-text">
                     <span className="font-semibold">
                       {currentItem?.soldCount}{" "}
                     </span>
                     Terjual
-                  </Text>
-                  <CircleDivider />
+                  </Text> 
+                  <CircleDivider />*/}
                   {currentItem?.isAvailable ? (
                     <Group className="gap-2">
                       <Text className="text-md font-roboto text-green">
