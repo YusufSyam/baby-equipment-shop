@@ -35,7 +35,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
         </Text>
       </Stack>
     );
-  } else if (orderStatus === "CANCELLED") {
+  } else if (orderStatus === "CANCELLED" || orderStatus === "UNPAID") {
     return (
       <Stack className="gap-1 w-28">
         <IconCloseOutline
@@ -58,7 +58,7 @@ const OrderStatusComp: React.FC<IOrderStatusComp> = ({
         />
         <Text className="text-sm text-secondary-text-500 text-center">
           {/* {toTitleCase(orderStatus)} */}
-          Belum diorder
+          Dalam Proses
         </Text>
       </Stack>
     );

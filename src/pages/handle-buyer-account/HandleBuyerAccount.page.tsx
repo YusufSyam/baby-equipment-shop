@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import { Divider, Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
@@ -19,7 +19,10 @@ import {
 import OrderStatusComp from "../../components/OrderStatus.component";
 import { dummyActivityData } from "../../utils/const/dummy";
 import { formatDateNormal } from "../../utils/functions/date.function";
-import { WhatsappMessageOpenInNewTab, calculateOrderTotalPrices } from "../../utils/functions/misc.function";
+import {
+  WhatsappMessageOpenInNewTab,
+  calculateOrderTotalPrices
+} from "../../utils/functions/misc.function";
 import ActivityTableComponent, {
   IFETableHeadingProps,
   IFETableRowColumnProps,
@@ -30,7 +33,10 @@ import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
 import { AuthContext } from "../../context/AuthContext.context";
 import WrongPage from "../wrong-page/WrongPage.page";
 import { useQuery } from "react-query";
-import { qfFetchBuyerCarts, qfFetchBuyerOrders } from "../../utils/query/cartsQuery";
+import {
+  qfFetchBuyerCarts,
+  qfFetchBuyerOrders
+} from "../../utils/query/cartsQuery";
 import { BASE_URL } from "../../utils/const/api";
 import CircleDivider from "../../components/CircleDivider.component";
 
@@ -115,7 +121,9 @@ function formatOrders(beData: any[] = []) {
       cartIdList: d?.carts?.map((c: any) => {
         return c?.id;
       }),
-      buyer: d?.buyer
+      buyer: d?.buyer,
+      orderDate: new Date((d?.orderStatusUpdateAt || 0) * 1000),
+      orderStatusUpdateAt: d?.orderStatusUpdateAt || 0
     };
 
     return data;
@@ -129,16 +137,17 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
   const [activePage, setActivePage] = useState<number>(1);
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  
-  const { data:dataOrder, isFetching:isFetchingOrder, refetch:refetchOrder, } = useQuery(
-    `fetch-buyer-orders`,
-    qfFetchBuyerOrders,
-    {
-      onSuccess(data) {
-      formatOrders(data?.data);
-      }
+
+  const {
+    data: dataOrder,
+    isFetching: isFetchingOrder,
+    refetch: refetchOrder,
+    isLoading: isLoadingOrder
+  } = useQuery(`fetch-buyer-orders`, qfFetchBuyerOrders, {
+    onSuccess(data) {
+      setDefaultData(formatOrders(data?.data));
     }
-  );
+  });
 
   console.log("dataOrder", dataOrder);
 
@@ -162,14 +171,20 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
   const [defaultData, setDefaultData] = useState(formatOrders(dataOrder?.data));
 
-  const [activityList, setActivityList] =
-    useState<IOrder[]>(defaultData);
+  const [activityList, setActivityList] = useState<IOrder[]>(defaultData);
+
+  useEffect(() => {
+    setActivityList(
+      defaultData?.sort(
+        (a, b) => b.orderStatusUpdateAt! - a.orderStatusUpdateAt!
+      )
+    );
+  }, [defaultData]);
 
   const [selectedRow, setSelectedRow] = useState(0);
 
   function handleChangePassword() {}
 
-  
   const tableRows = activityList?.map(
     (data, idx) =>
       ({
@@ -227,9 +242,10 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
                 <Text className="text-[14px] text-secondary-text">
                   {data?.orderId}
                 </Text>
-                {/* <Text className="text-sm text-secondary-text-500">
-                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
-                </Text> */}
+                <Text className="text-sm text-secondary-text-500">
+                  Waktu Pembelian:
+                  {formatDateNormal(data?.orderDate || new Date())}
+                </Text>
               </Stack>
             </Stack>
           )
@@ -263,7 +279,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
             onClick={() => {
               WhatsappMessageOpenInNewTab(
                 SELLER_WHATSAPP_NUMBER,
-                "Cek status pembelian. Invoice: [kode invoice]"
+                `Cek status pembelian. Invoice: ${activityList?.[selectedRow]?.orderId}`
               );
             }}
           >
@@ -353,7 +369,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
         <ActivityTableComponent
           noDataMsg=""
-          isLoading={false}
+          isLoading={isLoadingOrder}
           dataPerPageAmt={amtDataPerPage}
           onPageChange={setActivePage}
           activePage={activePage}

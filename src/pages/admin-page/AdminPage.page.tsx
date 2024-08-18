@@ -20,8 +20,10 @@ import {
   IconCheckOutline,
   IconCloseOutline,
   IconExpandOutlinedRounded,
+  IconFilterFilled,
   IconInfoOutline,
   IconOutward,
+  IconSearchFilledRounded,
   IconWhatsappOutline
 } from "../../assets/icon/Fluent";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +41,8 @@ import CircleDivider from "../../components/CircleDivider.component";
 import { qfFetchSellerOrders } from "../../utils/query/cartsQuery";
 import { useMutation, useQuery } from "react-query";
 import { WHATSAPP_MESSAGE_TEMPLATE } from "../../utils/const/globalConst";
-import { qfCompleteOrder } from "../../utils/query/orderQuery";
+import { qfCancelOrder, qfCompleteOrder } from "../../utils/query/orderQuery";
+import LoadingModal from "../../components/LoadingModal.component";
 
 export interface IAdminPage {}
 
@@ -50,6 +53,8 @@ export interface IOrder {
   cartList?: any[];
   cartIdList?: string[];
   buyer?: any;
+  orderStatusUpdateAt?: number;
+  orderDate?: Date;
 }
 
 function formatOrders(beData: any[] = []) {
@@ -62,7 +67,9 @@ function formatOrders(beData: any[] = []) {
       cartIdList: d?.carts?.map((c: any) => {
         return c?.id;
       }),
-      buyer: d?.buyer
+      buyer: d?.buyer,
+      orderDate: new Date((d?.orderStatusUpdateAt || 0) * 1000),
+      orderStatusUpdateAt: d?.orderStatusUpdateAt || 0
     };
 
     return data;
@@ -139,10 +146,11 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
   const {
     data: dataSellerOrders,
     isFetching: isFetchingSellerOrders,
-    refetch: refetchSellerOrders
+    refetch: refetchSellerOrders,
+    isLoading: isLoadingOrder
   } = useQuery(`fetch-seller-orders`, qfFetchSellerOrders, {
     onSuccess(data) {
-      formatOrders(data?.data);
+      setDefaultData(formatOrders(data?.data));
     }
   });
 
@@ -152,6 +160,20 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
     {
       onSuccess() {
         console.log("sukses");
+        refetchSellerOrders();
+        setIsProcessItemModalOpened(false);
+      }
+    }
+  );
+
+  const putCancelOrderMutation = useMutation(
+    "put-cancel-order",
+    qfCancelOrder,
+    {
+      onSuccess() {
+        console.log("sukses");
+        refetchSellerOrders();
+        setIsCancelItemModalOpened(false);
       }
     }
   );
@@ -249,9 +271,10 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
                 <Text className="text-[14px] text-secondary-text">
                   {data?.orderId}
                 </Text>
-                {/* <Text className="text-sm text-secondary-text-500">
-                  Waktu Pembelian: {formatDateNormal(data?.buyingTime || new Date())}
-                </Text> */}
+                <Text className="text-sm text-secondary-text-500">
+                  Waktu Pembelian:{" "}
+                  {formatDateNormal(data?.orderDate || new Date())}
+                </Text>
               </Stack>
             </Stack>
           )
@@ -423,8 +446,13 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
       );
     }
 
+    tempActivityList.sort(
+      (a, b) => b.orderStatusUpdateAt! - a.orderStatusUpdateAt!
+    );
+
     setActivityList(tempActivityList);
-  }, [query, isJustPending]);
+    setActivePage(1)
+  }, [query, isJustPending, defaultData]);
 
   const itemDetailToProcess = (
     <Group className="items-start mb-4">
@@ -474,7 +502,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
 
   return (
     <AppLayout headerBackgroundType="normal" activePage="">
-      <Stack className="mx-12 mt-4">
+      <Stack className="mx-12 mt-4 gap-0">
         <ConfirmationModal
           setOpened={setIsProcessItemModalOpened}
           opened={isProcessItemModalOpened}
@@ -504,7 +532,9 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           title={"Gagalkan Transaksi?"}
           onClose={() => {}}
           onSubmit={() => {
-            setIsCancelItemModalOpened(false);
+            putCancelOrderMutation.mutate(
+              activityList?.[selectedRow]?.orderId || ""
+            );
           }}
           minWidth={700}
           yesButtonLabel="Batalkan"
@@ -518,6 +548,13 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
             {itemDetailToProcess}
           </Stack>
         </WarningModal>
+
+        <LoadingModal
+          opened={
+            putCompleteOrderMutation.isLoading ||
+            putCancelOrderMutation.isLoading
+          }
+        />
         <Stack className="gap-0">
           <Text className="text-[32px] text-center font-roboto-semibold text-primary-text tracking-5 [text-shadow:_0_2px_18px_rgb(0_0_0_/_30%)]">
             Halaman Admin
@@ -528,27 +565,43 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           </Text>
         </Stack>
 
-        <Group className="bg-secondary/50 py-2 pb-4 px-4 rounded-sm mt-8 w-fit self-center items-baseline gap-8">
-          <Stack className="gap-2 w-60">
-            <Text>Cari Kode Invoice</Text>
-            <MySearchInput onChange={handleSearchChange} />
-          </Stack>
-          <Stack className="gap-2 ">
-            <Text>Filter</Text>
-            <Group
-              className="cursor-pointer gap-2"
-              onClick={() => {
-                setIsJustPending(!isJustPending);
-              }}
-            >
-              <Text>Pending</Text>
-              <Checkbox checked={isJustPending} color="" />
+        <Group className="border-2 border-b-0 border-secondary bg-secondary/50 py-4 px-6 rounded-sm mt-8 w-full self-center justify-between">
+          <Text className="text-[26px] text-center font-roboto-semibold text-primary-text tracking-5 self-center">
+            Daftar Order
+          </Text>
+          <Group className="self-center">
+            <Group className="gap-8 items-center">
+              {/* <IconFilterFilled
+                color={theme.colors["secondary"][9]}
+                className="mt-[2px]"
+              /> */}
+              <Group
+                className="cursor-pointer gap-2"
+                onClick={() => {
+                  setIsJustPending(!isJustPending);
+                }}
+              >
+                <Checkbox checked={isJustPending} color="purple.5" />
+                <Text className="text-secondary-text-500 font-semibold -mt-[2px]">Dalam Proses</Text>
+              </Group>
+              <CircleDivider />
+              <Group className="gap-2">
+                <IconSearchFilledRounded
+                  color={theme.colors["secondary"][9]}
+                  className="mt-[2px]"
+                />
+                <MySearchInput
+                  onChange={handleSearchChange}
+                  placeholder="Cari Kode Invoice"
+                  w={320}
+                />
+              </Group>
             </Group>
-          </Stack>
+          </Group>
         </Group>
         <ActivityTableComponent
           noDataMsg=""
-          isLoading={false}
+          isLoading={isLoadingOrder}
           dataPerPageAmt={amtDataPerPage}
           onPageChange={setActivePage}
           activePage={activePage}

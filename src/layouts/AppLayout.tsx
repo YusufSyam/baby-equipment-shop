@@ -35,18 +35,24 @@ const AppLayout: React.FC<IAppLayout> = ({
   const [cartList, setCartList] = useState<any[]>([]);
   const [shouldFetchBuyerCarts, setShouldFetchBuyerCarts] = useState(false);
 
-  const { data, isFetching, refetch } = useQuery(
+  const { data, isFetching, refetch, isRefetching, isSuccess } = useQuery(
     `fetch-buyer-carts`,
     qfFetchBuyerCarts,
     {
       enabled: shouldFetchBuyerCarts,
       onSuccess(data) {
         console.log("TERFETCH");
-        // setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
-        setCartList(data?.data)
+        setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
+        // setCartList(data?.data)
       }
     }
   );
+
+  useEffect(()=>{
+    if(isSuccess){
+      setCartList(data?.data?.filter((cart:any)=> cart.status==='INPROCESS'));
+    }
+  }, [isSuccess])
 
 
   useEffect(() => {

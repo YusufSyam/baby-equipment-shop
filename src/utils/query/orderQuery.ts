@@ -39,3 +39,22 @@ export async function qfCompleteOrder(orderId:string) {
 
   return data;
 }
+
+export async function qfCancelOrder(orderId:string) {
+  const response = await fetch(`${endpoint}/${orderId}`, {
+    method: "PUT",
+    headers: {
+      ...getTokenAuthorizationHeader()
+    },
+    mode: "cors",
+    credentials: "same-origin",
+    body: JSON.stringify({
+      isValid:false
+    })
+  });
+
+  const data = await response.json();
+  console.log("INI RESPONSE", data);
+
+  return data;
+}

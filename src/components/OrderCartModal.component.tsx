@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ConfirmationModal from "./ConfirmationModal.component";
 import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import { useMutation, useQuery } from "react-query";
-import { qfDeleteCart, qfFetchBuyerCarts } from "../utils/query/cartsQuery";
+import { qfDeleteCart, qfFetchBuyerCarts, qfUpdateCartStatus } from "../utils/query/cartsQuery";
 import { IconCloseOutline, IconOutward } from "../assets/icon/Fluent";
 import ActivityTableComponent, {
   IActivityTableAction,
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { categoryMap } from "../utils/const/globalConst";
 import { qfPostOrder } from "../utils/query/orderQuery";
 import InfoNotification from "./InfoNotification.component";
+import LoadingModal from "./LoadingModal.component";
 
 export interface IOrderCartModal {
   opened: boolean;
@@ -74,6 +75,17 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
     onSuccess() {
       console.log("sukses");
       setIsOrderSuccessModalOpened(true);
+      cartIdList?.map((id:string)=>{
+        putCartStatusMutation?.mutate(id)
+      })
+      refetch()
+    }
+  });
+  
+
+  const putCartStatusMutation = useMutation("put-cart-status", qfUpdateCartStatus, {
+    onSuccess() {
+      console.log("sukses");
     }
   });
 
@@ -188,6 +200,7 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
       }}
     >
       <Stack>
+        <LoadingModal opened={postOrderMutation?.isLoading || putCartStatusMutation?.isLoading} />
         <ConfirmationModal
           title={"Order Berhasil"}
           opened={isOrderSuccessModalOpened}
