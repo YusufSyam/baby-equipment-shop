@@ -89,7 +89,7 @@ const RegisterPage: React.FC<IRegisterPage> = ({}) => {
             untuk melanjutkan
           </Text>
         </Stack>
-        <Stack className="w-1/2 self-center bg-secondary/50 px-8 py-6 rounded-sm">
+        <Stack className="lg:w-1/2 sm:w-3/4 self-center bg-secondary/50 px-8 py-6 rounded-sm">
           <MyTextInput
             label="Username"
             size="md"

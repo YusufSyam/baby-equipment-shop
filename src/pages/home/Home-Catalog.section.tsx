@@ -237,7 +237,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
         </Button>
       )}
       <Grid className="mx-8" gutter={32} columns={24} ref={targetRef}>
-        <Grid.Col span={5} className="">
+        <Grid.Col sm={24} lg={5} className="">
           <CatalogFilter
             onSearch={handleSearchChange}
             category={categoryList}
@@ -248,7 +248,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
             setFilterAvailability={setfilterAvailability}
           />
         </Grid.Col>
-        <Grid.Col span={19}>
+        <Grid.Col sm={24} lg={19}>
           <Stack className="gap-[30px] rounded-sm">
             <CatalogSort setSortBy={setSortBy} sortBy={sortBy} />
             <Grid gutter={24} className=" bg-secondary/50">
@@ -282,7 +282,7 @@ const HomeCatalog: React.FC<IHomeCatalog> = ({ targetRef }) => {
                         )
                         ?.map((item: ICatalogCard, idx: number) => {
                           return (
-                            <Grid.Col span={3} key={idx}>
+                            <Grid.Col lg={3} sm={4} key={idx}>
                               <CatalogCard {...item} />
                             </Grid.Col>
                           );
