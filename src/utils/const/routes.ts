@@ -4,4 +4,5 @@ export const MAINROUTES = {
   login: "/login",
   register: "/register",
   handleBuyerAccount: "/kelola-akun",
+  about: "/tentang"
 }

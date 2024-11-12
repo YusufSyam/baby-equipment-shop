@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext, TUserType } from './context/AuthContext.context';
-import { MAINROUTES } from './utils/const/routes';
 
 interface ProtectedRouteProps {
   allowedRoles: TUserType[];

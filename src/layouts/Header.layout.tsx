@@ -71,8 +71,8 @@ const Header: React.FC<IHeader> = ({
         </Group>
         <div className="bg-white h-6 border-l border-white"> </div>
         <HeaderMenu label="Beranda" href={MAINROUTES.home} />
-        <HeaderMenu label="Galeri" href="" />
-        <HeaderMenu label="Tentang Kami" href="" />
+        {/* <HeaderMenu label="Galeri" href="" /> */}
+        <HeaderMenu label="Tentang Kami" href={MAINROUTES.about} />
       </Group>
       <Group>
         {isLoggedIn ? (

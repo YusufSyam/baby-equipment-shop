@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "./context/AuthContext.context";
 import WrongPage from "./pages/wrong-page/WrongPage.page";
 import ProtectedRoute from "./ProtectedRoute";
+import AboutPage from "./pages/about/About.page";
 
 const queryClient = new QueryClient();
 
@@ -206,6 +207,7 @@ function App() {
               <Route path={MAINROUTES.home} element={<Home />} />
               <Route path={MAINROUTES.login} element={<LoginPage />} />
               <Route path={MAINROUTES.register} element={<RegisterPage />} />
+              <Route path={MAINROUTES.about} element={<AboutPage />} />
 
               <Route element={<ProtectedRoute allowedRoles={["SELLER"]} />}>
                 <Route path={MAINROUTES.adminPage} element={<AdminPage />} />
