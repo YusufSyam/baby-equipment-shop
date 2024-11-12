@@ -1,21 +1,19 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 import { MantineProvider } from "@mantine/core";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { MAINROUTES } from "./utils/const/routes";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import ProtectedRoute from "./ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext.context";
+import AboutPage from "./pages/about/About.page";
+import AdminPage from "./pages/admin-page/AdminPage.page";
+import HandleBuyerAccount from "./pages/handle-buyer-account/HandleBuyerAccount.page";
 import Home from "./pages/home/Home.page";
 import ItemDetail from "./pages/item-detail/ItemDetail.page";
-import AdminPage from "./pages/admin-page/AdminPage.page";
 import LoginPage from "./pages/login-page/Login.page";
 import RegisterPage from "./pages/login-page/Register.page";
-import HandleBuyerAccount from "./pages/handle-buyer-account/HandleBuyerAccount.page";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { AuthProvider } from "./context/AuthContext.context";
 import WrongPage from "./pages/wrong-page/WrongPage.page";
-import ProtectedRoute from "./ProtectedRoute";
-import AboutPage from "./pages/about/About.page";
+import { MAINROUTES } from "./utils/const/routes";
 
 const queryClient = new QueryClient();
 

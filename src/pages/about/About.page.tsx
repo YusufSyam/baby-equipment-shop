@@ -3,7 +3,6 @@ import AppLayout from "../../layouts/AppLayout";
 import { Grid, Stack, Text } from "@mantine/core";
 
 import aboutImage1 from "../../assets/images/about1.jpg";
-import aboutImage2 from "../../assets/images/about2.jpg";
 import aboutImage3 from "../../assets/images/about3.jpg";
 
 export interface IAboutPage {}
@@ -11,7 +10,7 @@ export interface IAboutPage {}
 const AboutPage: React.FC<IAboutPage> = ({}) => {
   return (
     <AppLayout headerBackgroundType="normal">
-      <Stack className="mx-24 my-8">
+      <Stack className="mx-12 sm:mx-16 md:mx-24 my-8">
         <Text className="text-primary-text-500 font-poppins-semibold text-3xl">
           Tentang Kami
         </Text>
@@ -25,7 +24,7 @@ const AboutPage: React.FC<IAboutPage> = ({}) => {
             menguras kantong.
           </Text>
           <Grid columns={24} gutter={"xl"}>
-            <Grid.Col span={14}>
+            <Grid.Col span={24} sm={14}>
               <Stack className="gap-8 mr-4">
                 <Stack className="gap-2">
                   <Text className="font-poppins-semibold text-primary-text ">
@@ -57,7 +56,7 @@ const AboutPage: React.FC<IAboutPage> = ({}) => {
                 </Stack>
               </Stack>
             </Grid.Col>
-            <Grid.Col span={10} className="relative overflow-hidden">
+            <Grid.Col span={0} sm={10} className="relative overflow-hidden">
               <img
                 src={aboutImage3}
                 className="w-full h-full object-cover absolute top-10 left-0"
@@ -65,13 +64,13 @@ const AboutPage: React.FC<IAboutPage> = ({}) => {
             </Grid.Col>
           </Grid>
           <Grid columns={24} gutter={"xl"} className="mt-4">
-            <Grid.Col span={8} className="relative overflow-hidden">
+            <Grid.Col span={0} sm={8} className="relative overflow-hidden">
               <img
                 src={aboutImage1}
-                className="w-full h-full object-cover absolute top-4 left-0"
+                className="w-full h-full object-cover absolute top-4 left-0 hidden md:block"
               />
             </Grid.Col>
-            <Grid.Col span={16}>
+            <Grid.Col span={24} sm={16}>
               <Stack className="gap-8 ml-4">
                 <Stack className="gap-2">
                   <Text className="font-poppins-semibold text-primary-text ">
