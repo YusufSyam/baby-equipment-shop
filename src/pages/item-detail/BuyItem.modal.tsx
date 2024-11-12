@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
-import ConfirmationModal from "../../components/ConfirmationModal.component";
 import {
   Divider,
-  Grid,
   Group,
   Stack,
-  Text,
-  useMantineTheme
+  Text
 } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import { UseMutationResult } from "react-query";
+import ConfirmationModal from "../../components/ConfirmationModal.component";
 import { MyNumberInput } from "../../components/FormInput.component";
-import { WhatsappMessageOpenInNewTab } from "../../utils/functions/misc.function";
-import {
-  SELLER_WHATSAPP_NUMBER,
-  WHATSAPP_MESSAGE_TEMPLATE
-} from "../../utils/const/globalConst";
-import { generateWhatsappTemplate } from "../../utils/functions/string";
-import { IconInformationCircleOutline } from "../../assets/icon/Fluent";
-import InfoNotification from "../../components/InfoNotification.component";
 import { IPostNewCart } from "../../utils/query/cartsQuery";
-import { UseMutationResult, useQueryClient } from "react-query";
 
 export interface IBuyItemModal {
   opened: boolean;
@@ -41,10 +31,6 @@ const BuyItemModal: React.FC<IBuyItemModal> = ({
 }) => {
   const [totalPrice, setTotalPrice] = useState(price);
   const [buyQuantity, setBuyQuantity] = useState(1);
-  
-  const queryClient = useQueryClient();
-
-  const theme = useMantineTheme();
 
   useEffect(() => {
     setTotalPrice(price * buyQuantity);

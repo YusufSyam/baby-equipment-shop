@@ -1,13 +1,12 @@
-import { AppShell, Button, Stack, Text } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import React, { useContext, useEffect, useState } from "react";
-import Header from "./Header.layout";
-import Footer from "./Footer.layout";
-import { IconShoppingTroll } from "../assets/icon/Fluent";
-import ConfirmationModal from "../components/ConfirmationModal.component";
-import OrderCartModal from "../components/OrderCartModal.component";
 import { useQuery } from "react-query";
-import { qfFetchBuyerCarts, qfFetchSellerOrders } from "../utils/query/cartsQuery";
+import { IconShoppingTroll } from "../assets/icon/Fluent";
+import OrderCartModal from "../components/OrderCartModal.component";
 import { AuthContext } from "../context/AuthContext.context";
+import { qfFetchBuyerCarts } from "../utils/query/cartsQuery";
+import Footer from "./Footer.layout";
+import Header from "./Header.layout";
 // import Header from "./headers/Header.layout";
 
 export type TPageName = "Beranda" | "";
@@ -20,7 +19,6 @@ export interface IAppLayout {
 
 const AppLayout: React.FC<IAppLayout> = ({
   children,
-  activePage,
   headerBackgroundType = "transparent"
 }) => {
   const authContext = useContext(AuthContext);
@@ -35,7 +33,7 @@ const AppLayout: React.FC<IAppLayout> = ({
   const [cartList, setCartList] = useState<any[]>([]);
   const [shouldFetchBuyerCarts, setShouldFetchBuyerCarts] = useState(false);
 
-  const { data, isFetching, refetch, isRefetching, isSuccess } = useQuery(
+  const { data, refetch, isSuccess } = useQuery(
     `fetch-buyer-carts`,
     qfFetchBuyerCarts,
     {

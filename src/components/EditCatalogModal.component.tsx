@@ -1,20 +1,19 @@
+import { Group, Radio, Stack } from "@mantine/core";
+import { MIME_TYPES } from "@mantine/dropzone";
+import { useForm, yupResolver } from "@mantine/form";
 import React, { useEffect } from "react";
-import MyModal from "./MyModal.component";
-import { Group, Radio, Select, Stack, Textarea } from "@mantine/core";
+import { UseMutationResult, useMutation } from "react-query";
+import * as yup from "yup";
+import { qfUploadFile } from "../utils/query/files-query";
+import { IEditItem } from "../utils/query/itemQuery";
+import ConfirmationModal from "./ConfirmationModal.component";
+import DocumentInput from "./DocumentInput.component";
 import {
   MyNumberInput,
   MySelectInput,
   MyTextAreaInput,
   MyTextInput
 } from "./FormInput.component";
-import ConfirmationModal from "./ConfirmationModal.component";
-import DocumentInput from "./DocumentInput.component";
-import { MIME_TYPES } from "@mantine/dropzone";
-import * as yup from "yup";
-import { useForm, yupResolver } from "@mantine/form";
-import { UseMutationResult, useMutation } from "react-query";
-import { IEditItem } from "../utils/query/itemQuery";
-import { qfUploadFile } from "../utils/query/files-query";
 
 export interface IEditCatalogModal {
   opened: boolean;

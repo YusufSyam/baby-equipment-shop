@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { BASE_URL } from "../utils/const/api";
-import { ILoginInput } from "../pages/login-page/Login.page";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { ILoginInput } from "../pages/login-page/Login.page";
+import { BASE_URL } from "../utils/const/api";
 import { qfFetchUserCredentials } from "../utils/query/userQuery";
 
 interface AuthContextType {
@@ -23,7 +23,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { data: userInfo, refetch } = useQuery(
+  const { refetch } = useQuery(
     `fetch-user-info`,
     qfFetchUserCredentials,
     {

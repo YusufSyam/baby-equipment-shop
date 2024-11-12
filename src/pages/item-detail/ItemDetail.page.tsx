@@ -1,5 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
-import AppLayout from "../../layouts/AppLayout";
 import {
   Button,
   Grid,
@@ -8,33 +6,33 @@ import {
   Text,
   useMantineTheme
 } from "@mantine/core";
+import React, { useContext, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   IconCategory,
   IconCheckOutline,
   IconCloseOutline,
   IconLeftArrowRounded
 } from "../../assets/icon/Fluent";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import CircleDivider from "../../components/CircleDivider.component";
-import image from "../../assets/images/dummy7.jpg";
-import BuyItemModal from "./BuyItem.modal";
-import { dummyCatalogData } from "../../utils/const/dummy";
-import { ICatalogCard } from "../home/Home-CatalogCard.component";
-import { toTitleCase } from "../../utils/functions/string";
 import EditCatalogModal from "../../components/EditCatalogModal.component";
+import LoadingModal from "../../components/LoadingModal.component";
 import WarningModal from "../../components/WarningModal.component";
+import { AuthContext } from "../../context/AuthContext.context";
+import AppLayout from "../../layouts/AppLayout";
+import { BASE_URL } from "../../utils/const/api";
+import { categoryMap } from "../../utils/const/globalConst";
+import { MAINROUTES } from "../../utils/const/routes";
+import { toTitleCase } from "../../utils/functions/string";
+import { qfAddCart } from "../../utils/query/cartsQuery";
 import {
   qfDeleteItem,
   qfEditItem,
   qfFetchItemsById
 } from "../../utils/query/itemQuery";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import LoadingModal from "../../components/LoadingModal.component";
-import { AuthContext } from "../../context/AuthContext.context";
-import { categoryMap } from "../../utils/const/globalConst";
-import { MAINROUTES } from "../../utils/const/routes";
-import { BASE_URL } from "../../utils/const/api";
-import { qfAddCart } from "../../utils/query/cartsQuery";
+import { ICatalogCard } from "../home/Home-CatalogCard.component";
+import BuyItemModal from "./BuyItem.modal";
 
 export interface IItemDetail {}
 

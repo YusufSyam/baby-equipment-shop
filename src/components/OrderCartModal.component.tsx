@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
-import ConfirmationModal from "./ConfirmationModal.component";
 import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
-import { useMutation, useQuery } from "react-query";
-import { qfDeleteCart, qfFetchBuyerCarts, qfUpdateCartStatus } from "../utils/query/cartsQuery";
+import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { IconCloseOutline, IconOutward } from "../assets/icon/Fluent";
 import ActivityTableComponent, {
   IActivityTableAction,
   IFETableHeadingProps,
   IFETableRowColumnProps
 } from "../pages/admin-page/ActivityTable.component";
-import { formatDateNormal } from "../utils/functions/date.function";
-import OrderStatusComp from "./OrderStatus.component";
-import { useNavigate } from "react-router-dom";
 import { categoryMap } from "../utils/const/globalConst";
+import { qfDeleteCart, qfUpdateCartStatus } from "../utils/query/cartsQuery";
 import { qfPostOrder } from "../utils/query/orderQuery";
+import ConfirmationModal from "./ConfirmationModal.component";
 import InfoNotification from "./InfoNotification.component";
 import LoadingModal from "./LoadingModal.component";
 
@@ -63,7 +61,6 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
   setOpened,
   cartList,
   refetch,
-  setCartList
 }) => {
   const amtDataPerPage = 1000000000;
   const [activePage, setActivePage] = useState<number>(1);
@@ -182,7 +179,7 @@ const OrderCartModal: React.FC<IOrderCartModal> = ({
           </Stack>
         );
       },
-      onClick: (row: any) => {}
+      onClick: () => {}
     }
   ];
 

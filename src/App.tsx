@@ -1,5 +1,4 @@
 import { MantineProvider } from "@mantine/core";
-import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -18,8 +17,6 @@ import { MAINROUTES } from "./utils/const/routes";
 const queryClient = new QueryClient();
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <MantineProvider
       withCSSVariables

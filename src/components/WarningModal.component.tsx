@@ -1,15 +1,12 @@
 import {
-  Button,
   Group,
   ModalProps,
   Stack,
-  Text,
-  useMantineTheme
+  Text
 } from "@mantine/core";
 import React from "react";
-import { IconReportFilled } from "../assets/icon/Fluent";
-import Modal from "./MyModal.component";
 import { SmallButton } from "./MyButton";
+import Modal from "./MyModal.component";
 
 interface IWarningModal {
   opened: boolean;
@@ -41,7 +38,6 @@ const WarningModal = ({
   leftTitleIcon,
   ...props
 }: IWarningModal & ModalProps) => {
-  const theme = useMantineTheme();
 
   return (
     <Modal

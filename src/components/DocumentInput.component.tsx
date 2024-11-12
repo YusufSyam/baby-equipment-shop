@@ -1,21 +1,15 @@
 import {
-  Button,
   Group,
   Input,
   MantineColor,
   MantineSize,
-  Stack,
   Text,
   useMantineTheme
 } from "@mantine/core";
 import { Dropzone, DropzoneProps } from "@mantine/dropzone";
 import { useEffect, useState } from "react";
 import {
-  CloudUploadIcon,
-  DeleteOutline,
-  IconFileOutline,
-  IconUpArrowNoTailOutline,
-  PreviewIcon
+  IconFileOutline
 } from "../assets/icon/Fluent";
 
 interface IDocumentInputProps
@@ -41,9 +35,7 @@ const DocumentInput: React.FC<IDocumentInputProps> = ({
   size = "lg",
   onChange,
   label,
-  withDelete = true,
   placeholder,
-  description = "",
   value,
   required,
   disabled = false,

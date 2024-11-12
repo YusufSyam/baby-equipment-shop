@@ -1,23 +1,21 @@
+import { Group, Radio, Stack } from "@mantine/core";
+import { MIME_TYPES } from "@mantine/dropzone";
+import { useForm, yupResolver } from "@mantine/form";
 import React, { useEffect } from "react";
-import MyModal from "./MyModal.component";
-import { Group, Radio, Select, Stack, Textarea } from "@mantine/core";
+import { UseMutationResult, useMutation } from "react-query";
+import * as yup from "yup";
+import { qfUploadFile } from "../utils/query/files-query";
+import { IPostNewItem } from "../utils/query/itemQuery";
+import ConfirmationModalForm from "./ConfirmationModalForm.component";
+import DocumentInput from "./DocumentInput.component";
 import {
   MyNumberInput,
   MySelectInput,
   MyTextAreaInput,
   MyTextInput
 } from "./FormInput.component";
-import ConfirmationModal from "./ConfirmationModal.component";
-import DocumentInput from "./DocumentInput.component";
-import { MIME_TYPES } from "@mantine/dropzone";
-import * as yup from "yup";
-import { useForm, yupResolver } from "@mantine/form";
-import { UseMutationResult, useMutation } from "react-query";
-import LoadingModal from "./LoadingModal.component";
-import { qfUploadFile } from "../utils/query/files-query";
-import { IPostNewItem } from "../utils/query/itemQuery";
-import ConfirmationModalForm from "./ConfirmationModalForm.component";
 import InfoNotification from "./InfoNotification.component";
+import LoadingModal from "./LoadingModal.component";
 
 export interface IAddNewCatalogModal {
   opened: boolean;
@@ -59,7 +57,7 @@ const AddNewCatalogModal: React.FC<IAddNewCatalogModal> = ({
     validate: yupResolver(AddNewCatalogItemSchema)
   });
 
-  const { getInputProps, errors, values, reset, setValues, validate } = form;
+  const { getInputProps, errors, values, reset, validate } = form;
 
   const postFileMutation = useMutation("post-upload-file", qfUploadFile, {
     onSuccess(data) {

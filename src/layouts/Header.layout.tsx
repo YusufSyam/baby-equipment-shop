@@ -1,12 +1,11 @@
 import { Group, Text } from "@mantine/core";
 import React, { useContext, useState } from "react";
-import HeaderMenu from "./HeaderMenu.component";
-import { MAINROUTES } from "../utils/const/routes";
-import { StickerBabyGear2, StickerBabyGear3 } from "../assets/icon/Sticker";
-import { IconShoppingTroll } from "../assets/icon/Fluent";
-import { AuthContext } from "../context/AuthContext.context";
 import { useNavigate } from "react-router-dom";
+import { IconShoppingTroll } from "../assets/icon/Fluent";
 import WarningModal from "../components/WarningModal.component";
+import { AuthContext } from "../context/AuthContext.context";
+import { MAINROUTES } from "../utils/const/routes";
+import HeaderMenu from "./HeaderMenu.component";
 
 export interface IHeader {
   headerBackgroundType?: "normal" | "transparent";
@@ -24,12 +23,9 @@ const Header: React.FC<IHeader> = ({
   }
 
   const {
-    login: loginFunc,
     logout: logoutFunc,
     isLoggedIn,
-    userId,
     userRole,
-    username
   } = authContext;
 
   function handleLogOut() {

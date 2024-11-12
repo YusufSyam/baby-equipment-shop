@@ -6,7 +6,6 @@ import {
   IconShippingOutline,
   IconStopFilledRounded
 } from "../assets/icon/Fluent";
-import { toTitleCase } from "../utils/functions/string";
 
 export interface IOrderStatusComp {
   orderStatus: TOrderStatus;

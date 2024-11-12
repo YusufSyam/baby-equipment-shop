@@ -22,7 +22,7 @@ import {
   DateTimePickerProps
 } from "@mantine/dates";
 import { useState } from "react";
-import { IconCalendarLtrOutline, SearchFilled } from "../assets/icon/Fluent";
+import { IconCalendarLtrOutline } from "../assets/icon/Fluent";
 
 export const getDefaultStyle = (
   isFocus: boolean,
@@ -424,7 +424,6 @@ export const MySearchInput = ({
   ...props
 }: TextInputProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const theme = useMantineTheme();
 
   return (
     <>

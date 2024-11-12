@@ -1,4 +1,4 @@
-import { Loader, LoaderProps, MantineSize, useMantineTheme } from "@mantine/core";
+import { Loader, MantineSize, useMantineTheme } from "@mantine/core";
 import React from 'react';
 
 export interface ILoading {

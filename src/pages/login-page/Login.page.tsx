@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import AppLayout from "../../layouts/AppLayout";
-import { Button, Stack, Text } from "@mantine/core";
-import {
-  MyTextInput,
-  MyPasswordInput
-} from "../../components/FormInput.component";
+import { Stack, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { SmallButton } from "../../components/MyButton";
-import { Link, useNavigate } from "react-router-dom";
-import { MAINROUTES } from "../../utils/const/routes";
+import React, { useContext, useState } from "react";
 import { useMutation } from "react-query";
-import { AuthContext } from "../../context/AuthContext.context";
+import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../components/ConfirmationModal.component";
+import {
+  MyPasswordInput,
+  MyTextInput
+} from "../../components/FormInput.component";
 import LoadingModal from "../../components/LoadingModal.component";
+import { SmallButton } from "../../components/MyButton";
+import { AuthContext } from "../../context/AuthContext.context";
+import AppLayout from "../../layouts/AppLayout";
+import { MAINROUTES } from "../../utils/const/routes";
 
 export interface ILoginPage {}
 
@@ -25,7 +25,7 @@ const LoginPage: React.FC<ILoginPage> = ({}) => {
   const navigate = useNavigate();
   const form = useForm<ILoginInput>();
 
-  const { getInputProps, errors, values, reset } = form;
+  const { getInputProps, errors, values } = form;
 
   const [isLoggedInSuccessModalOpened, setIsLoggedInSuccessModalOpened] =
     useState(false);
@@ -37,8 +37,6 @@ const LoginPage: React.FC<ILoginPage> = ({}) => {
 
   const {
     login: loginFunc,
-    logout: logoutFunc,
-    isLoggedIn,
     userRole
   } = authContext;
 

@@ -1,17 +1,15 @@
 import {
   Button,
   Checkbox,
-  Divider,
   Group,
   Radio,
   Stack,
   Text,
   useMantineTheme
 } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import {
   IconCloseOutline,
-  IconFilterFilled,
   IconFilterOutlined
 } from "../../assets/icon/Fluent";
 import { MySearchInput } from "../../components/FormInput.component";

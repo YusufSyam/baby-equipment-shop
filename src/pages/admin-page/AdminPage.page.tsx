@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import AppLayout from "../../layouts/AppLayout";
 import {
   Checkbox,
   Divider,
@@ -9,40 +7,37 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import {
+  IconCheckOutline,
+  IconCloseOutline,
+  IconOutward,
+  IconSearchFilledRounded,
+  IconWhatsappOutline
+} from "../../assets/icon/Fluent";
+import CircleDivider from "../../components/CircleDivider.component";
+import ConfirmationModal from "../../components/ConfirmationModal.component";
+import { MySearchInput } from "../../components/FormInput.component";
+import LoadingModal from "../../components/LoadingModal.component";
+import OrderStatusComp, {
+  TOrderStatus
+} from "../../components/OrderStatus.component";
+import WarningModal from "../../components/WarningModal.component";
+import AppLayout from "../../layouts/AppLayout";
+import { formatDateNormal } from "../../utils/functions/date.function";
+import {
+  WhatsappMessageOpenInNewTab,
+  calculateOrderTotalPrices
+} from "../../utils/functions/misc.function";
+import { qfFetchSellerOrders } from "../../utils/query/cartsQuery";
+import { qfCancelOrder, qfCompleteOrder } from "../../utils/query/orderQuery";
 import ActivityTableComponent, {
   IActivityTableAction,
   IFETableHeadingProps,
   IFETableRowColumnProps
 } from "./ActivityTable.component";
-import { formatDateNormal } from "../../utils/functions/date.function";
-import { dummyActivityData, dummySellerCarts } from "../../utils/const/dummy";
-import {
-  IconCheckOutline,
-  IconCloseOutline,
-  IconExpandOutlinedRounded,
-  IconFilterFilled,
-  IconInfoOutline,
-  IconOutward,
-  IconSearchFilledRounded,
-  IconWhatsappOutline
-} from "../../assets/icon/Fluent";
-import { useNavigate } from "react-router-dom";
-import OrderStatusComp, {
-  TOrderStatus
-} from "../../components/OrderStatus.component";
-import {
-  WhatsappMessageOpenInNewTab,
-  calculateOrderTotalPrices
-} from "../../utils/functions/misc.function";
-import ConfirmationModal from "../../components/ConfirmationModal.component";
-import WarningModal from "../../components/WarningModal.component";
-import { MySearchInput } from "../../components/FormInput.component";
-import CircleDivider from "../../components/CircleDivider.component";
-import { qfFetchSellerOrders } from "../../utils/query/cartsQuery";
-import { useMutation, useQuery } from "react-query";
-import { WHATSAPP_MESSAGE_TEMPLATE } from "../../utils/const/globalConst";
-import { qfCancelOrder, qfCompleteOrder } from "../../utils/query/orderQuery";
-import LoadingModal from "../../components/LoadingModal.component";
 
 export interface IAdminPage {}
 
@@ -145,7 +140,6 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
 
   const {
     data: dataSellerOrders,
-    isFetching: isFetchingSellerOrders,
     refetch: refetchSellerOrders,
     isLoading: isLoadingOrder
   } = useQuery(`fetch-seller-orders`, qfFetchSellerOrders, {
@@ -420,7 +414,7 @@ const AdminPage: React.FC<IAdminPage> = ({}) => {
           </Stack>
         );
       },
-      onClick: (row: any) => {}
+      onClick: () => {}
     }
   ];
 

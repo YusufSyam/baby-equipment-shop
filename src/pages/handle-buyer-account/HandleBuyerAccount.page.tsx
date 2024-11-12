@@ -1,44 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
-import AppLayout from "../../layouts/AppLayout";
 import { Divider, Group, Stack, Text, useMantineTheme } from "@mantine/core";
-import ConfirmationModal from "../../components/ConfirmationModal.component";
 import { useForm } from "@mantine/form";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  MyTextInput,
-  MyPasswordInput
-} from "../../components/FormInput.component";
-import { SmallButton } from "../../components/MyButton";
-import { MAINROUTES } from "../../utils/const/routes";
+import React, { useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import {
   IconOutward,
-  IconWhatsappOutline,
-  IconCheckOutline,
-  IconCloseOutline
+  IconWhatsappOutline
 } from "../../assets/icon/Fluent";
+import CircleDivider from "../../components/CircleDivider.component";
+import ConfirmationModal from "../../components/ConfirmationModal.component";
+import {
+  MyPasswordInput,
+  MyTextInput
+} from "../../components/FormInput.component";
 import OrderStatusComp from "../../components/OrderStatus.component";
-import { dummyActivityData } from "../../utils/const/dummy";
+import { AuthContext } from "../../context/AuthContext.context";
+import AppLayout from "../../layouts/AppLayout";
+import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
 import { formatDateNormal } from "../../utils/functions/date.function";
 import {
   WhatsappMessageOpenInNewTab,
   calculateOrderTotalPrices
 } from "../../utils/functions/misc.function";
-import ActivityTableComponent, {
-  IFETableHeadingProps,
-  IFETableRowColumnProps,
-  IActivityTableAction
-} from "../admin-page/ActivityTable.component";
-import { IActivityTableRow, IOrder } from "../admin-page/AdminPage.page";
-import { SELLER_WHATSAPP_NUMBER } from "../../utils/const/globalConst";
-import { AuthContext } from "../../context/AuthContext.context";
-import WrongPage from "../wrong-page/WrongPage.page";
-import { useQuery } from "react-query";
 import {
-  qfFetchBuyerCarts,
   qfFetchBuyerOrders
 } from "../../utils/query/cartsQuery";
-import { BASE_URL } from "../../utils/const/api";
-import CircleDivider from "../../components/CircleDivider.component";
+import ActivityTableComponent, {
+  IActivityTableAction,
+  IFETableHeadingProps,
+  IFETableRowColumnProps
+} from "../admin-page/ActivityTable.component";
+import { IOrder } from "../admin-page/AdminPage.page";
 
 export interface IHandleBuyerAccount {}
 
@@ -93,23 +85,6 @@ const tableHeadings: IFETableHeadingProps[] = [
   // }
 ];
 
-function formatCartItem(beData: any[] = []) {
-  const formatted = beData?.map((d) => {
-    const data: IActivityTableRow = {
-      itemName: d?.item?.name,
-      itemId: d?.item?.id,
-      status: d?.status,
-      invoice: d?.cartId,
-      itemPrice: d?.item?.price,
-      itemQuantity: d?.quantity,
-      itemTotalPrice: d?.item?.price * d?.quantity
-    };
-
-    return data;
-  });
-
-  return formatted;
-}
 
 function formatOrders(beData: any[] = []) {
   const formatted = beData?.map((d) => {
@@ -140,8 +115,6 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
   const {
     data: dataOrder,
-    isFetching: isFetchingOrder,
-    refetch: refetchOrder,
     isLoading: isLoadingOrder
   } = useQuery(`fetch-buyer-orders`, qfFetchBuyerOrders, {
     onSuccess(data) {
@@ -156,7 +129,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { username, userRole, userPhoneNumber } = authContext;
+  const { username, userPhoneNumber } = authContext;
 
   // if(userRole==="SELLER"){
   //   return <WrongPage />
@@ -167,7 +140,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
 
   const form = useForm<IForgotPasswordInput>();
 
-  const { getInputProps, errors, values, reset } = form;
+  const { getInputProps, errors, values } = form;
 
   const [defaultData, setDefaultData] = useState(formatOrders(dataOrder?.data));
 
@@ -272,7 +245,7 @@ const HandleBuyerAccount: React.FC<IHandleBuyerAccount> = ({}) => {
       label: "",
       type: "element",
       backgroundColor: "white",
-      element: (row: any) => {
+      element: () => {
         return (
           <Stack
             className="gap-0 cursor-pointer"

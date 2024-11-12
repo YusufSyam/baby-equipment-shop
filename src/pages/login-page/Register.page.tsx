@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import AppLayout from "../../layouts/AppLayout";
-import { Button, Stack, Text } from "@mantine/core";
-import {
-  MyTextInput,
-  MyPasswordInput
-} from "../../components/FormInput.component";
+import { Stack, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { SmallButton } from "../../components/MyButton";
-import { Link, useNavigate } from "react-router-dom";
-import { MAINROUTES } from "../../utils/const/routes";
-import ConfirmationModal from "../../components/ConfirmationModal.component";
-import { qfRegister } from "../../utils/query/userQuery";
+import React, { useState } from "react";
 import { useMutation } from "react-query";
-import LoadingModal from "../../components/LoadingModal.component";
+import { Link, useNavigate } from "react-router-dom";
+import ConfirmationModal from "../../components/ConfirmationModal.component";
+import {
+  MyPasswordInput,
+  MyTextInput
+} from "../../components/FormInput.component";
 import InfoNotification from "../../components/InfoNotification.component";
+import LoadingModal from "../../components/LoadingModal.component";
+import { SmallButton } from "../../components/MyButton";
+import AppLayout from "../../layouts/AppLayout";
+import { MAINROUTES } from "../../utils/const/routes";
+import { qfRegister } from "../../utils/query/userQuery";
 
 export interface IRegisterPage {}
 

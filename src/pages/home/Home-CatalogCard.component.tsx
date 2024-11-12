@@ -1,11 +1,11 @@
-import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Group, Stack, Text } from "@mantine/core";
 import React from "react";
-import emptyImage from "../../assets/images/empty-item.png";
 import { useNavigate } from "react-router-dom";
 import { IconCheckOutline, IconCloseOutline } from "../../assets/icon/Fluent";
+import emptyImage from "../../assets/images/empty-item.png";
+import { categoryMap } from "../../utils/const/globalConst";
 import { toTitleCase } from "../../utils/functions/string";
 import { TCategoryType } from "./Home-CatalogFilter.section";
-import { categoryMap } from "../../utils/const/globalConst";
 
 export interface ICatalogCard {
   id?: string;
@@ -25,10 +25,8 @@ const CatalogCard: React.FC<ICatalogCard> = ({
   isAvailable,
   itemName,
   price,
-  soldCount
 }) => {
   const navigate = useNavigate();
-  const theme = useMantineTheme();
 
   return (
     <Stack

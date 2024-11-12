@@ -1,12 +1,7 @@
 import { Button, Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import React from "react";
-import { SearchFilled } from "../../assets/icon/Fluent";
-import { MySearchInput } from "../../components/FormInput.component";
-import MediumButton from "../../components/MyButton";
 import {
   StickerBabyBottle,
-  StickerBabyGear,
-  StickerBabyGear2,
   StickerBabyStroller,
   StickerBearDoll
 } from "../../assets/icon/Sticker";

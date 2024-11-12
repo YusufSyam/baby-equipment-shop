@@ -119,7 +119,6 @@ export function StickerBearDoll({
 
 export function StickerBabyGear({
   size = 24,
-  color = 'black',
   onClick,
   className
 }: IFluentProps) {
@@ -581,7 +580,6 @@ export function StickerBabyGear({
 
 export function StickerBabyGear2({
   size = 24,
-  color = 'black',
   onClick,
   className
 }: IFluentProps) {
@@ -1047,7 +1045,6 @@ export function StickerBabyGear2({
 
 export function StickerBabyGear3({
   size = 24,
-  color = 'black',
   onClick,
   className
 }: IFluentProps) {

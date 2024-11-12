@@ -1,4 +1,3 @@
-import { IOrder } from "../../pages/admin-page/AdminPage.page";
 
 export function ParseFileBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {

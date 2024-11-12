@@ -10,7 +10,6 @@ import {
 } from "@mantine/core";
 import React from "react";
 import {
-  IconCalendarEmptyOutline,
   IconSearchOff
 } from "../../assets/icon/Fluent";
 import Loading from "../../components/Loading.component";

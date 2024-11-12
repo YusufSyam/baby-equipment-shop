@@ -1,8 +1,7 @@
-import { Group, ModalProps, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Group, ModalProps, Stack, Text } from "@mantine/core";
 import React from "react";
-import { IconInformationCircleFilled } from "../assets/icon/Fluent";
-import Modal from "./MyModal.component";
 import { SmallButton } from "./MyButton";
+import Modal from "./MyModal.component";
 
 interface IConfirmationModalForm {
   opened: boolean;
@@ -36,8 +35,6 @@ const ConfirmationModalForm = ({
   leftTitleIcon,
   ...props
 }: IConfirmationModalForm & ModalProps) => {
-  const theme = useMantineTheme();
-
   return (
     <Modal
       {...props}

@@ -1,6 +1,6 @@
 import { Group, Text, useMantineTheme } from "@mantine/core";
-import React, { useState } from "react";
-import { IconDownArrowNoTailOutline, IconFilterOutlined, IconUpArrowNoTailOutline } from "../../assets/icon/Fluent";
+import React from "react";
+import { IconDownArrowNoTailOutline } from "../../assets/icon/Fluent";
 
 export interface ICatalogSortItem {
   label: string;
